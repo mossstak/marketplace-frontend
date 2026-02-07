@@ -2,38 +2,25 @@
 
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 
-type Product = {
+export type CartProduct = {
+  [x: string]: ReactNode
   id: number
   productName: string
   productType: string
   roastLevel: string
   description: string
-  farmName: string
-  farmRegion: string
-  farmCountry: string
-  farmAltitude: string
-  producer: string
-  varietal: string
-  harvestSeason: string
-  farmingPractice?: string[]
-  farmStory: string
-  processingMethod: string
-  roastDate: string
-  roastProfile: string
-  tastingNotes?: string[]
-  brewingRecommendation?: string[]
   weight?: string[]
   price?: string[]
 }
 
 type CartItem = {
-  product: Product
+  product: CartProduct
   quantity: number
 }
 
 type CartContextType = {
   cart: CartItem[]
-  addToCart: (product: Product, quantity: number) => void
+  addToCart: (product: CartProduct, quantity: number) => void
   removeFromCart: (productId: number) => void
   clearCart: () => void
 }
@@ -47,7 +34,7 @@ type CartProviderProps = {
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([])
 
-  const addToCart = (product: Product, quantity: number) => {
+  const addToCart = (product: CartProduct, quantity: number) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find(
         (item) => item.product.id === product.id

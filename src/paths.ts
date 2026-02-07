@@ -1,3 +1,4 @@
 export const homepath  = () => "/"
-export const aboutpath = () => "/about"
+export const registerpath = () => "/register"
+export const loginpath = () => "/login"
 export const shoppath = () => "/shop"
