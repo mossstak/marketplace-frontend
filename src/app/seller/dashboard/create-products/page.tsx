@@ -1,8 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { api } from '@/api/api'
 import axios from 'axios'
+import { api } from '@/api/api'
+import { useSellerImagePicker } from '@/hooks/useSellerImagePicker'
+import { UploadedImageGallery } from '@/components/images/UploadedImageGallery'
+import { NewUploadPicker } from '@/components/images/NewUploadPicker'
+import { PrimaryImageSelector } from '@/components/images/PrimaryImageSelector'
 
 type CreateVariantForm = {
   size: string
@@ -12,7 +16,7 @@ type CreateVariantForm = {
 
 type ApiErrorBody = { message?: string }
 
-export default function AddProductForm() {
+export default function Page () {
   const categoryOptions = [
     { label: 'Coffee Beans', key: 'CoffeeBeans', value: 1 },
     { label: 'Grinder', key: 'Grinder', value: 2 },
@@ -35,16 +39,30 @@ export default function AddProductForm() {
     tastingNotes: '',
     roastDate: '',
   })
+
   const [variants, setVariants] = useState<CreateVariantForm[]>([
     { size: '', price: '', quantity: '' },
   ])
-  const [imageFiles, setImageFiles] = useState<File[]>([])
-  const [primaryImageIndex, setPrimaryImageIndex] = useState(0)
-  const [imageUploading, setImageUploading] = useState(false)
-  const [imageError, setImageError] = useState('')
+
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+
+  const {
+    uploadedImages,
+    selectedUploadedImageIds,
+    imageFiles,
+    loadingUploaded,
+    uploadedLoadError,
+    imageUploading,
+    imageError,
+    primaryImageChoice,
+    setPrimaryImageChoice,
+    setNewImageFiles,
+    toggleUploadedImageSelection,
+    prepareSubmissionImages,
+    resetImagePicker,
+  } = useSellerImagePicker()
 
   const normalizeCategory = (value: string) =>
     value.toLowerCase().replace(/[^a-z]/g, '')
@@ -94,71 +112,7 @@ export default function AddProductForm() {
       roastDate: '',
     })
     setVariants([{ size: '', price: '', quantity: '' }])
-    setImageFiles([])
-    setPrimaryImageIndex(0)
-    setImageError('')
-  }
-
-  const uploadSellerImage = async (file: File) => {
-    setImageUploading(true)
-    setImageError('')
-
-    try {
-      const signRes = await api.post('/seller/images/sign')
-      const { signature, timestamp, apiKey, cloudName, folder, publicId } =
-        signRes.data ?? {}
-
-      if (!signature || !timestamp || !apiKey || !cloudName || !folder) {
-        throw new Error('Missing upload signature data.')
-      }
-
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('api_key', apiKey)
-      formData.append('timestamp', String(timestamp))
-      formData.append('signature', signature)
-      formData.append('folder', folder)
-      if (publicId) formData.append('public_id', publicId)
-
-      const cloudRes = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        { method: 'POST', body: formData },
-      )
-
-      if (!cloudRes.ok) {
-        throw new Error('Image upload failed.')
-      }
-
-      const cloudData = await cloudRes.json()
-      const imageUrl = cloudData?.secure_url
-      const uploadedPublicId = cloudData?.public_id
-
-      if (!imageUrl || !uploadedPublicId) {
-        throw new Error('Upload response missing image data.')
-      }
-
-      const saved = await api.post('/seller/images', {
-        imageUrl,
-        publicId: uploadedPublicId,
-      })
-      return saved.data?.id ?? saved.data?.Id ?? null
-    } catch (err: unknown) {
-      setImageError(err instanceof Error ? err.message : 'Image upload failed.')
-      return null
-    } finally {
-      setImageUploading(false)
-    }
-  }
-
-  const uploadSellerImages = async (files: File[]) => {
-    if (files.length === 0) return []
-    const ids: number[] = []
-    for (let index = 0; index < files.length; index += 1) {
-      const file = files[index]
-      const id = await uploadSellerImage(file)
-      if (id) ids.push(Number(id))
-    }
-    return ids
+    resetImagePicker()
   }
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -173,12 +127,14 @@ export default function AddProductForm() {
       setError('Product name is required.')
       return
     }
+
     if (!resolvedCategory) {
       setError(
         'Category must match: CoffeeBeans, Grinder, EspressoMachine, BaristaTools, Misc.',
       )
       return
     }
+
     if (
       !form.roastLevel.trim() ||
       !form.coffeeProcess.trim() ||
@@ -188,18 +144,22 @@ export default function AddProductForm() {
       setError('Roast level, coffee process, and region are required.')
       return
     }
+
     if (!form.producer.trim() || !form.varietal.trim()) {
       setError('Producer and varietal are required.')
       return
     }
+
     if (!form.roastDate) {
       setError('Roast date is required.')
       return
     }
+
     if (!Number.isFinite(altitudeValue) || altitudeValue <= 0) {
       setError('Altitude must be a positive number.')
       return
     }
+
     if (variants.length === 0) {
       setError('At least one variant is required.')
       return
@@ -215,10 +175,12 @@ export default function AddProductForm() {
       setError('Each variant needs a size.')
       return
     }
+
     if (mappedVariants.some((v) => !Number.isFinite(v.Price) || v.Price < 0)) {
       setError('Each variant needs a valid price.')
       return
     }
+
     if (
       mappedVariants.some((v) => !Number.isFinite(v.Quantity) || v.Quantity < 0)
     ) {
@@ -229,20 +191,24 @@ export default function AddProductForm() {
     const roastDateUtc = new Date(`${form.roastDate}T00:00:00Z`).toISOString()
 
     let imageIds: number[] = []
-    if (imageFiles.length > 0) {
-      imageIds = await uploadSellerImages(imageFiles)
-      if (imageIds.length === 0) {
-        setError('Image upload failed.')
-        return
-      }
+    let primaryImageId: number | null = null
+
+    try {
+      const prepared = await prepareSubmissionImages()
+      imageIds = prepared.imageIds
+      primaryImageId = prepared.primaryImageId
+    } catch (imagePrepareError: unknown) {
+      const msg =
+        imagePrepareError instanceof Error
+          ? imagePrepareError.message
+          : 'Image upload failed.'
+      setError(msg)
+      return
     }
 
-    const primaryImageId =
-      imageIds.length > 0 ? imageIds[primaryImageIndex] : null
-
     const payload = {
-      Product_Name: form.productName.trim(),
-      Product_Description: form.productDescription.trim(),
+      ProductName: form.productName.trim(),
+      ProductDescription: form.productDescription.trim(),
       Category: resolvedCategory,
       RoastLevelName: form.roastLevel.trim(),
       CoffeeProcessName: form.coffeeProcess.trim(),
@@ -260,9 +226,7 @@ export default function AddProductForm() {
 
     try {
       setSaving(true)
-      const res = await api.post('/Product/addproduct', payload)
-      const createdId =
-        res?.data?.Id ?? res?.data?.id ?? res?.data?.productId ?? null
+      await api.post('/Product/addproduct', payload)
       setSuccess('Product created.')
       resetForm()
     } catch (e: unknown) {
@@ -271,7 +235,6 @@ export default function AddProductForm() {
         : e instanceof Error
           ? e.message
           : 'Failed to create product.'
-
       setError(msg)
     } finally {
       setSaving(false)
@@ -304,9 +267,7 @@ export default function AddProductForm() {
               className="rounded bg-white/10 p-2"
               list="category-options"
               value={form.category}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, category: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
               placeholder="CoffeeBeans"
               required
             />
@@ -339,9 +300,7 @@ export default function AddProductForm() {
             <input
               className="rounded bg-white/10 p-2"
               value={form.roastLevel}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, roastLevel: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, roastLevel: e.target.value }))}
               placeholder="Light"
               required
             />
@@ -365,9 +324,7 @@ export default function AddProductForm() {
             <input
               className="rounded bg-white/10 p-2"
               value={form.origin}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, origin: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, origin: e.target.value }))}
               placeholder="Ethiopia"
               required
             />
@@ -378,9 +335,7 @@ export default function AddProductForm() {
             <input
               className="rounded bg-white/10 p-2"
               value={form.region}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, region: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, region: e.target.value }))}
               placeholder="Sidamo"
               required
             />
@@ -391,9 +346,7 @@ export default function AddProductForm() {
             <input
               className="rounded bg-white/10 p-2"
               value={form.producer}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, producer: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, producer: e.target.value }))}
               placeholder="Bekele Estate"
               required
             />
@@ -404,9 +357,7 @@ export default function AddProductForm() {
             <input
               className="rounded bg-white/10 p-2"
               value={form.varietal}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, varietal: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, varietal: e.target.value }))}
               placeholder="Heirloom"
               required
             />
@@ -446,9 +397,7 @@ export default function AddProductForm() {
               className="rounded bg-white/10 p-2"
               type="date"
               value={form.roastDate}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, roastDate: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, roastDate: e.target.value }))}
               required
             />
           </label>
@@ -488,9 +437,7 @@ export default function AddProductForm() {
                 type="number"
                 placeholder="Quantity"
                 value={variant.quantity}
-                onChange={(e) =>
-                  updateVariant(index, 'quantity', e.target.value)
-                }
+                onChange={(e) => updateVariant(index, 'quantity', e.target.value)}
               />
               <button
                 type="button"
@@ -504,65 +451,43 @@ export default function AddProductForm() {
           ))}
         </div>
 
-        <div className="space-y-2">
-          <h4 className="font-semibold">Product Images</h4>
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="inline-flex cursor-pointer items-center rounded bg-white/20 px-3 py-2 text-sm">
-              Browse images
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                className="hidden"
-                onChange={(e) => {
-                  const files = Array.from(e.target.files ?? [])
-                  setImageFiles(files)
-                  setPrimaryImageIndex(0)
-                }}
-              />
-            </label>
-            <span className="text-xs text-white/70">
-              {imageFiles.length > 0
-                ? `${imageFiles.length} file${imageFiles.length > 1 ? 's' : ''} selected`
-                : 'No files selected'}
-            </span>
-          </div>
-          {imageFiles.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-xs text-white/70">
-                Select a primary image:
-              </p>
-              <div className="grid gap-2 md:grid-cols-2">
-                {imageFiles.map((file, index) => (
-                  <label
-                    key={`${file.name}-${index}`}
-                    className="flex items-center gap-2 rounded bg-white/5 p-2 text-xs"
-                  >
-                    <input
-                      type="radio"
-                      name="primary-image"
-                      checked={primaryImageIndex === index}
-                      onChange={() => setPrimaryImageIndex(index)}
-                    />
-                    <span className="truncate">{file.name}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-          {imageError && <div className="text-sm text-red-300">{imageError}</div>}
+        <div className="space-y-5 bg-gray-700 p-3">
+          <UploadedImageGallery
+            uploadedImages={uploadedImages}
+            selectedImageIds={selectedUploadedImageIds}
+            loading={loadingUploaded}
+            error={uploadedLoadError}
+            onToggle={toggleUploadedImageSelection}
+          />
+
+          <hr />
+
+          <NewUploadPicker
+            imageFiles={imageFiles}
+            imageError={imageError}
+            onFilesChange={setNewImageFiles}
+          />
+
+          <PrimaryImageSelector
+            uploadedImages={uploadedImages}
+            selectedUploadedImageIds={selectedUploadedImageIds}
+            imageFiles={imageFiles}
+            primaryImageChoice={primaryImageChoice}
+            onChange={setPrimaryImageChoice}
+          />
+
+          <hr/>
+          {error && <div className="text-sm text-red-300">{error}</div>}
+          {success && <div className="text-sm text-green-300">{success}</div>}
+
+          <button
+            type="submit"
+            className="rounded bg-white/30 px-4 py-2"
+            disabled={saving || imageUploading}
+          >
+            {saving || imageUploading ? 'Saving...' : 'Save Product'}
+          </button>
         </div>
-
-        {error && <div className="text-sm text-red-300">{error}</div>}
-        {success && <div className="text-sm text-green-300">{success}</div>}
-
-        <button
-          type="submit"
-          className="rounded bg-white/30 px-4 py-2"
-          disabled={saving || imageUploading}
-        >
-          {saving || imageUploading ? 'Saving...' : 'Save Product'}
-        </button>
       </form>
     </div>
   )

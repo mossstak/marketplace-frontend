@@ -13,8 +13,8 @@ type DropdownAccountProps = {
 
 type MyDetails = {
   id: string
-  first_Name: string
-  last_Name: string
+  firstName: string
+  lastName: string
 }
 
 const DropdownAccount = ({ logout }: DropdownAccountProps) => {
@@ -99,7 +99,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
           alt="profile-img"
         />
         <p className="hidden sm:block">
-          {details.first_Name} {details.last_Name}
+          {details.firstName} {details.lastName}
         </p>
         <ChevronDown
           className={`transition-transform ${open ? 'rotate-180' : ''}`}

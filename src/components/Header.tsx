@@ -45,7 +45,7 @@ const Header = () => {
   }, [mounted, pathname])
 
   return (
-    <nav className="grid grid-cols-1 sticky top-0 left-0 right-0 z-50 bg-[#D1C79E] drop-shadow-md/25 dark:bg-black dark:drop-shadow-[#888888]">
+    <nav className="grid grid-cols-1 sticky top-0 left-0 right-0 z-50 bg-[#d1966e] drop-shadow-md/40 dark:bg-black dark:drop-shadow-[#888888]">
       <div className="flex items-center justify-between p-4">
         {/* Logo */}
         <Link
@@ -60,7 +60,7 @@ const Header = () => {
             href={shoppath()}
             className={buttonVariants({ variant: 'ghost' })}
           >
-            <h1 className="text-lg font-semibold">Shop</h1>
+            <p className="text-lg font-semibold">Shop</p>
           </Link>
           {mounted && loggedIn ? (
             <DropdownAccount logout={handleLogout} />

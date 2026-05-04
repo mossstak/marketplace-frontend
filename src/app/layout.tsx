@@ -32,8 +32,8 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <CartProvider>
-            <Header />
-            <main className="min-h-screen overflow-y-auto overflow-x-hidden">
+            <main className="h-screen w-full overflow-hideen bg-[#eae8e0]">
+              <Header />
               {children}
             </main>
           </CartProvider>

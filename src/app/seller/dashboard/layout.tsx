@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import DashboardPage from '../../../components/DashboardPage'
 import { getRole, isLoggedIn } from '@/auth/auth'
 import { roleRedirect } from '@/auth/roleredirect'
+import { SellerProfileGate } from '@/components/SellerProfileGate'
 
 export default function SellerDashboardLayout({
   children,
@@ -43,33 +44,58 @@ export default function SellerDashboardLayout({
   if (!isSeller) return <div className="p-6">Loading dashboard...</div>
 
   return (
-    <DashboardPage
-      sidebar={
-        <div className="space-y-2">
-          <Link
-            href="/seller/dashboard/create-products"
-            className={`block rounded px-2 py-1 ${
-              pathname === '/seller/dashboard/create-products'
-                ? 'bg-white/20 font-bold'
-                : 'bg-white/5'
-            }`}
-          >
-            Create Product
-          </Link>
-          <Link
-            href="/seller/dashboard/view-products"
-            className={`block rounded px-2 py-1 ${
-              pathname === '/seller/dashboard/view-products'
-                ? 'bg-white/20 font-bold'
-                : 'bg-white/5'
-            }`}
-          >
-            View Products
-          </Link>
-        </div>
-      }
-    >
-      {children}
-    </DashboardPage>
+    <div>
+      <SellerProfileGate mode="redirect" />
+
+      <DashboardPage
+        sidebar={
+          <div className="space-y-2">
+            <Link
+              href="/seller/dashboard/create-products"
+              className={`block rounded px-2 py-1 ${
+                pathname === '/seller/dashboard/create-products'
+                  ? 'bg-white/20 font-bold'
+                  : 'bg-white/5'
+              }`}
+            >
+              Create Products
+            </Link>
+            <Link
+              href="/seller/dashboard/edit-products"
+              className={`block rounded px-2 py-1 ${
+                pathname === '/seller/dashboard/edit-products'
+                  ? 'bg-white/20 font-bold'
+                  : 'bg-white/5'
+              }`}
+            >
+              Edit Products
+            </Link>
+            <Link
+              href="/seller/dashboard/view-products"
+              className={`block rounded px-2 py-1 ${
+                pathname === '/seller/dashboard/view-products'
+                  ? 'bg-white/20 font-bold'
+                  : 'bg-white/5'
+              }`}
+            >
+              View Products
+            </Link>
+
+            <Link
+              href="/seller/dashboard/profile"
+              className={`block rounded px-2 py-1 ${
+                pathname === '/seller/dashboard/profile'
+                  ? 'bg-white/20 font-bold'
+                  : 'bg-white/5'
+              }`}
+            >
+              Edit Profile
+            </Link>
+          </div>
+        }
+      >
+        {children}
+      </DashboardPage>
+    </div>
   )
 }

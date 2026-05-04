@@ -1,12 +1,11 @@
 export type UserDetails = {
   id: string
-  first_Name: string
-  last_Name: string
+  firstName: string
+  lastName: string
   email: string
-  company_Name?: string | null
-  address_One?: string | null
-  address_Two?: string | null
+  addressOne?: string | null
+  addressTwo?: string | null
   city?: string | null
   country?: string | null
-  postal_Code?: string | null
+  postalCode?: string | null
 }

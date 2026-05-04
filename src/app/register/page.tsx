@@ -9,30 +9,28 @@ interface RegisterForm {
   Email: string
   Password: string
   ConfirmPassword: string
-  First_Name: string
-  Last_Name: string
+  FirstName: string
+  LastName: string
   Role: Role
-  Company_Name: string
-  Address_One: string
-  Address_Two: string
+  AddressOne: string
+  AddressTwo: string
   City: string
   Country: string
-  Postal_Code: string
+  PostalCode: string
 }
 
 const initialForm: RegisterForm = {
   Email: '',
   Password: '',
   ConfirmPassword: '',
-  First_Name: '',
-  Last_Name: '',
+  FirstName: '',
+  LastName: '',
   Role: 'Buyer',
-  Company_Name: '',
-  Address_One: '',
-  Address_Two: '',
+  AddressOne: '',
+  AddressTwo: '',
   City: '',
   Country: '',
-  Postal_Code: '',
+  PostalCode: '',
 }
 
 const Page = () => {
@@ -55,12 +53,11 @@ const Page = () => {
       setForm((prev) => ({
         ...prev,
         Role: value as Role,
-        Company_Name: value === 'Seller' ? prev.Company_Name : '',
-        Address_One: value === 'Admin' ? '' : prev.Address_One,
-        Address_Two: value === 'Admin' ? '' : prev.Address_Two,
+        AddressOne: value === 'Admin' ? '' : prev.AddressOne,
+        AddressTwo: value === 'Admin' ? '' : prev.AddressTwo,
         City: value === 'Admin' ? '' : prev.City,
         Country: value === 'Admin' ? '' : prev.Country,
-        Postal_Code: value === 'Admin' ? '' : prev.Postal_Code,
+        PostalCode: value === 'Admin' ? '' : prev.PostalCode,
       }))
       return
     }
@@ -73,18 +70,15 @@ const Page = () => {
     if (!form.Email || !form.Password || !form.ConfirmPassword) {
       return 'Email and password are required.'
     }
-    if (!form.First_Name || !form.Last_Name) {
+    if (!form.FirstName || !form.LastName) {
       return 'First name and last name are required.'
     }
     if (form.Password !== form.ConfirmPassword) {
       return 'Passwords do not match.'
     }
-    if (isSeller && !form.Company_Name) {
-      return 'Company name is required for sellers.'
-    }
     if (
       needsAddress &&
-      (!form.Address_One || !form.City || !form.Country || !form.Postal_Code)
+      (!form.AddressOne || !form.City || !form.Country || !form.PostalCode)
     ) {
       return 'Address fields are required for buyers and sellers.'
     }
@@ -121,7 +115,7 @@ const Page = () => {
     <div className="max-w-4xl mx-auto px-6 py-12 fixed top-10 bottom-0 left-0 right-0">
       <div className="bg-white shadow rounded-xl border border-gray-200 p-8">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mt-2 text-center">
+          <h1 className="text-3xl font-bold text-black mt-2 text-center">
             Register your account
           </h1>
           <p className="text-gray-600 mt-2 text-center">
@@ -129,16 +123,16 @@ const Page = () => {
           </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-6 text-black">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 First name
               </label>
               <input
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="First_Name"
-                value={form.First_Name}
+                className="mt-1 w-full rounded-lg border  border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="FirstName"
+                value={form.FirstName}
                 onChange={updateField}
                 placeholder="Jane"
                 required
@@ -150,8 +144,8 @@ const Page = () => {
               </label>
               <input
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="Last_Name"
-                value={form.Last_Name}
+                name="LastName"
+                value={form.LastName}
                 onChange={updateField}
                 placeholder="Doe"
                 required
@@ -222,22 +216,6 @@ const Page = () => {
             </div>
           </div>
 
-          {isSeller && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Company name
-              </label>
-              <input
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="Company_Name"
-                value={form.Company_Name}
-                onChange={updateField}
-                placeholder="Your company LLC"
-                required={isSeller}
-              />
-            </div>
-          )}
-
           {needsAddress && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
@@ -246,8 +224,8 @@ const Page = () => {
                 </label>
                 <input
                   className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  name="Address_One"
-                  value={form.Address_One}
+                  name="AddressOne"
+                  value={form.AddressOne}
                   onChange={updateField}
                   placeholder="123 Main St"
                   required={needsAddress}
@@ -259,8 +237,8 @@ const Page = () => {
                 </label>
                 <input
                   className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  name="Address_Two"
-                  value={form.Address_Two}
+                  name="AddressTwo"
+                  value={form.AddressTwo}
                   onChange={updateField}
                   placeholder="Suite, unit, etc."
                 />
@@ -297,8 +275,8 @@ const Page = () => {
                 </label>
                 <input
                   className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  name="Postal_Code"
-                  value={form.Postal_Code}
+                  name="PostalCode"
+                  value={form.PostalCode}
                   onChange={updateField}
                   placeholder="ZIP / Postal"
                   required={needsAddress}
