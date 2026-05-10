@@ -26,7 +26,6 @@ export default async function Page() {
         {products.map((product) => {
           const productId = product.id
           const name = product.productName ?? 'Untitled'
-          const description = product.productDescription ?? ''
           const variants = product.variants ?? []
           const prices = variants
             .map((v) => v.price)

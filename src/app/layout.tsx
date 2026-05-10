@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <CartProvider>
-            <main className="h-screen w-full overflow-hideen bg-[#eae8e0]">
+            <main className="main">
               <Header />
               {children}
             </main>

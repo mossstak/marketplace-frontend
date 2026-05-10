@@ -76,7 +76,7 @@ const Hero = ({}) => {
   }
 
   return (
-    <section className="bg-[#7c0808] text-white">
+    <section className="bg-[#582424] text-white">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
         <div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
@@ -104,11 +104,11 @@ const Hero = ({}) => {
             </Link>
           </div>
         </div>
-
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white/10">
+        <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-white/10">
           {/* Replace with your actual hero image */}
+          <h1>Roaster of the Week</h1>
           <Image
-            src="https://placehold.co/1024"
+            src="https://placehold.co/1024/png"
             alt="Coffee beans and brewing tools"
             fill
             priority

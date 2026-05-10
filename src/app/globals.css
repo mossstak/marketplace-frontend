@@ -123,4 +123,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .main {
+    @apply h-screen w-full overflow-hidden bg-[#eae8e0]
+  }
 }

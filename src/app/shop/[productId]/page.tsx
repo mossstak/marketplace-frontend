@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     id: Number(product.id),
     productName: product.productName ?? 'Untitled',
     productType: product.category ? String(product.category) : 'N/A',
-    roastLevel: product.roastLevel?.name ?? 'N/A',
+    roastLevel: product.roastLevel ? String(product.roastLevel) : 'N/A',
     description: product.productDescription ?? 'N/A',
     weight: (product.variants ?? [])
       .map((v) => (v.size ? String(v.size) : null))
@@ -91,17 +91,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <Card className="my-25 mx-auto w-400 bg-[#cac8be]">
-      <div className="flex gap-3">
+    <Card className=" my-5 mx-auto max-w-sm bg-[#cac8be]">
+      <div className="flex flex-col gap-3">
         <div className="m-5">
-          <Link href="/shop" className="mb-4 text-blue-500 underline">
+          <Link href="/shop" className="mb-4 text-black underline">
             Back to Products
           </Link>
 
           <CardHeader className="text-3xl">{cartProduct.productName}</CardHeader>
 
           {roasterHref && (
-            <Link href={roasterHref} className="text-blue-500 underline">
+            <Link href={roasterHref} className="text-black underline">
               {roaster?.companyName}
             </Link>
           )}
@@ -136,7 +136,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           )}
         </div>
 
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center p-2 ">
           <p> <strong>Roast Level:</strong> {product.roastLevel ?? 'N/A'} </p>
           <p>
             <strong>Description:</strong> {product.productDescription ?? 'N/A'}
