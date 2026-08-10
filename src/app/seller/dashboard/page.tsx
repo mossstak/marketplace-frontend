@@ -83,7 +83,7 @@ export default function SellerDashboardPage() {
   if (!details) return <div className="p-6">No user data.</div>
 
   return (
-    <div className="bg-gray-500 w-full h-100 p-5">
+    <div className="bg-gray-500 w-full p-5">
       <div className="bg-gray-400 p-3">
         <h1 className="text-center">Welcome back {details.firstName}!</h1>
         {(role === 'Seller' || role == 'Buyer') && (
@@ -98,9 +98,9 @@ export default function SellerDashboardPage() {
           </div>
         )}
       </div>
-      <div className="">
+      <div className="bg-gray-400 h-90 mt-3 p-3">
         <div>
-          <h2 className="text-xl">Profile</h2>
+          <h2 className="text-[32pt]">Profile</h2>
           <p>{profile?.companyName ?? ''}</p>
           <p>{profile?.bio ?? 'enter some detail for bio'}</p>
           <p>

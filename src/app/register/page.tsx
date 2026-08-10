@@ -170,11 +170,11 @@ const Page = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Role
+                Roles
               </label>
               <select
                 name="Role"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={form.Role}
                 onChange={updateField}
               >
