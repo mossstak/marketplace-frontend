@@ -39,12 +39,18 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     <div>
       <DashboardPage
         sidebar={
-          <div>
+          <div className="space-y-1">
             <Link
               href="/admin/dashboard/add-user"
-              className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
+              className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard/add-user' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
             >
               Add User
+            </Link>
+            <Link
+              href="/admin/dashboard/view-users"
+              className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard/view-users' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
+            >
+              View Users
             </Link>
           </div>
         }
