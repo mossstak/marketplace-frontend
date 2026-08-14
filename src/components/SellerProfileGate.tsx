@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { api } from '@/api/api'
-import { type RoasterDetails } from '@/types/user'
+import { type RoasterDetails } from '@/types/roaster'
 
 type GateMode = 'redirect' | 'render'
 
