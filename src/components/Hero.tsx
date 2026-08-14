@@ -76,7 +76,7 @@ const Hero = ({}) => {
   }
 
   return (
-    <section className="bg-[#582424] text-white">
+    <section className="bg-[#582424] shadow-[inset_0_4px_8px_rgba(0,0,0,0.25)] text-white">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
         <div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">

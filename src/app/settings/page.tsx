@@ -1,8 +1,11 @@
-;import React from 'react'
+import React from 'react';
+import ChangePasswordForm from '@/components/ChangePasswordForm';
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <ChangePasswordForm/>
+    </div>
   )
 }
 

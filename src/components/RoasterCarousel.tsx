@@ -59,27 +59,33 @@ export default function RoasterCarousel({
           'grid gap-4 sm:grid-cols-2 lg:grid-cols-3',
           phase === 'out' ? 'opacity-0 translate-y-1' : '',
           phase === 'in' ? 'opacity-100 translate-y-0' : '',
-          'transition-all duration-200',
+          'transition-all duration-200 ease-in-out',
         ].join(' ')}
       >
         {visible.map((r) => {
-
           return (
             <Link
-              key={r.userId} // ✅ unique key
+              key={r.userId}
               href={`/roaster/${r.userId}__${slugify(r.companyName ?? 'Unknown-Roaster')}`}
-              className="group rounded-2xl border p-4 shadow-sm transition hover:shadow-md"
+              className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 transition-all duration-200 hover:border-zinc-400 hover:shadow-xl hover:shadow-zinc-950/5 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
             >
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-xs font-semibold text-gray-600">
+              {/* Ambient background glow on hover */}
+              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-amber-500/10 blur-2xl transition-all duration-300 group-hover:scale-150 group-hover:bg-amber-500/20" />
+
+              <div className="relative flex items-center gap-4">
+                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-zinc-900 text-lg font-bold text-white shadow-sm ring-4 ring-zinc-100 dark:bg-zinc-100 dark:text-zinc-900 dark:ring-zinc-800">
                   {(r.companyName?.[0] ?? 'R').toUpperCase()}
                 </div>
 
-                <div>
-                  <h3 className="font-semibold leading-tight group-hover:underline">
-                    {r.companyName ?? 'Unnamed roaster'}
-                  </h3>
-                  <p className="text-xs opacity-70">View roaster</p>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <h3 className="truncate font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                      {r.companyName ?? 'Unnamed Roaster'}
+                    </h3>
+                  </div>
+                  <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-400">
+                    Single Origin &bull; Micro-lot
+                  </p>
                 </div>
               </div>
             </Link>
