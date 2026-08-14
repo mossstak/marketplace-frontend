@@ -8,10 +8,11 @@ export function saveAuth(token: string, role: Role){
   window.localStorage.setItem("role", role)
 }
 
-export function clearAuth() {
-  if (!hasStorage()) return;
-  window.localStorage.removeItem("token");
-  window.localStorage.removeItem("role");
+export const clearAuth = () => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('token')
+    localStorage.removeItem('role')
+  }
 }
 
 export function getToken() {

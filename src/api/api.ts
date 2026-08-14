@@ -1,16 +1,31 @@
-import axios from "axios";
-import { getToken } from "../auth/auth";
+import axios from 'axios'
+import { clearAuth } from '../auth/auth' // make sure you export a clearAuth/logout function
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // browser-safe
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
 })
 
-// export const render_api = axios.create({
-//   baseURL: process.env.RENDER_API_URL,
-// });
-
+// Request interceptor to attach token
 api.interceptors.request.use((config) => {
-  const token = getToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+  }
+  return config
+})
+
+// Response interceptor to handle expired tokens
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
+      }
+    }
+    return Promise.reject(error)
+  }
+)
