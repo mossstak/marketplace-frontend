@@ -52,7 +52,7 @@ const Header = () => {
           href={homepath()}
           className={buttonVariants({ variant: 'ghost' })}
         >
-          <h1 className="text-lg font-semibold">Market Place</h1>
+          <h1 className="text-lg font-semibold">Roaster's Market</h1>
         </Link>
         {/* Desktop Menu - Hidden on mobile */}
         <div className="hidden md:flex items-center gap-x-2">
