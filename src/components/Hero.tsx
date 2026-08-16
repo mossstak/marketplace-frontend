@@ -1,5 +1,5 @@
 'use client'
-import Image from "next/image";
+import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
@@ -91,7 +91,7 @@ const Hero = ({}) => {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/roaster"
-              className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black"
+              className="inline-flex items-center justify-center rounded-lg bg-white! px-5 py-3 text-sm font-semibold text-black hover:bg-gray-300!"
             >
               Explore roasters
             </Link>
