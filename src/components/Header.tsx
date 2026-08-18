@@ -45,7 +45,7 @@ const Header = () => {
   }, [mounted, pathname])
 
   return (
-    <nav className="grid grid-cols-1 sticky top-0 left-0 right-0 z-50 bg-[#d1966e] drop-shadow-md/40 dark:bg-gray-800 dark:drop-shadow-[#888888]">
+    <nav className="grid grid-cols-1 sticky top-0 left-0 right-0 z-50 bg-[#d1966e] dark:bg-gray-800 dark:drop-shadow-[#888888]">
       <div className="flex items-center justify-between p-4">
         {/* Logo */}
         <Link
