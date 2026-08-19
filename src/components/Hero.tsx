@@ -102,7 +102,7 @@ const Hero = () => {
           <div className="mt-6 flex flex-col justify-center gap-3 sm:mt-8 sm:flex-row">
             <Link
               href="/roaster"
-              className="inline-flex items-center justify-center rounded-lg !bg-white px-5 py-3 text-sm font-semibold !text-black shadow-sm transition hover:bg-zinc-100"
+              className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black! shadow-sm transition hover:bg-zinc-100"
             >
               Explore roasters
             </Link>
