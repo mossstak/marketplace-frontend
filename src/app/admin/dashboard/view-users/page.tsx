@@ -59,8 +59,8 @@ export default function ViewUsersPage() {
     setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, ...form } : u)))
   }
 
-  const roasters = users.filter((u) => u.roles.includes('Seller'))
-  const buyers = users.filter((u) => u.roles.includes('Buyer'))
+  const roasters = (users ?? []).filter((u) => u.roles?.includes('Seller'))
+  const buyers = (users ?? []).filter((u) => u.roles?.includes('Buyer'))
 
   if (loading) return <div className="p-6">Loading accounts...</div>
   if (error) return <div className="p-6 text-red-500">{error}</div>
@@ -132,7 +132,7 @@ function UserTable({
                     {u.firstName} {u.lastName}
                   </td>
                   <td className="py-2 pr-4">{u.email}</td>
-                  <td className="py-2 pr-4">{u.roles.join(', ')}</td>
+                  <td className="py-2 pr-4">{u.roles ? u.roles.join(', ') : '—'}</td>
                   <td className="py-2 pr-4 space-x-3">
                     <button
                       className="text-blue-600 hover:underline"
@@ -216,7 +216,7 @@ function EditRow({
         />
         {err && <p className="text-red-500 text-xs mt-1">{err}</p>}
       </td>
-      <td className="py-2 pr-4 align-top">{user.roles.join(', ')}</td>
+      <td className="py-2 pr-4 align-top">{user.roles ? user.roles.join(', ') : '—'}</td>
       <td className="py-2 pr-4 align-top space-x-3">
         <button
           className="text-green-600 hover:underline disabled:opacity-50"

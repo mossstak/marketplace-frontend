@@ -3,11 +3,13 @@ import { api } from '@/api/api'
 import { type ProductDetails } from '@/types/product'
 import { Card, CardTitle } from '@/components/ui/card'
 
+export const dynamic = 'force-dynamic'
+
 const getProducts = async () => {
   try {
     const res = await api.get<ProductDetails[]>('/Product/all')
-    return { products: res.data, error: '' }
-  } catch (error) {
+    return { products: res.data ?? [], error: '' }
+  } catch {
     return { products: [], error: 'Failed to load products.' }
   }
 }

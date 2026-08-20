@@ -4,7 +4,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 
 export type CartProduct = {
   [x: string]: ReactNode
-  id: number
+  id: string | number
   productName: string
   productType: string
   roastLevel: string
@@ -21,7 +21,7 @@ type CartItem = {
 type CartContextType = {
   cart: CartItem[]
   addToCart: (product: CartProduct, quantity: number) => void
-  removeFromCart: (productId: number) => void
+  removeFromCart: (productId: string | number) => void
   clearCart: () => void
 }
 
@@ -50,7 +50,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     })
   }
 
-  const removeFromCart = (productId: number) => {
+  const removeFromCart = (productId: string | number) => {
     setCart((prevCart) =>
       prevCart.filter((item) => item.product.id !== productId)
     )

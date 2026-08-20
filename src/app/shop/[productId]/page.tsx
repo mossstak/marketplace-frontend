@@ -35,6 +35,8 @@ async function getJson<T>(url: string): Promise<T | null> {
   }
 }
 
+export const dynamic = 'force-dynamic'
+
 interface ProductPageProps {
   params: Promise<{ productId: string }>
 }
@@ -42,8 +44,8 @@ interface ProductPageProps {
 export default async function ProductPage({ params }: ProductPageProps) {
   const { productId } = await params
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL
-  if (!baseUrl) notFound()
+  const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+  const baseUrl = rawBaseUrl.replace(/\/+$/, '')
 
   const product = await getJson<ProductDetails>(`${baseUrl}/Product/${productId}`)
   if (!product) notFound()
@@ -77,7 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   // Tiny inline “cart product” (no big normalize function)
   const cartProduct: CartProduct = {
-    id: Number(product.id),
+    id: product.id,
     productName: product.productName ?? 'Untitled',
     productType: product.category ? String(product.category) : 'N/A',
     roastLevel: product.roastLevel ? String(product.roastLevel) : 'N/A',

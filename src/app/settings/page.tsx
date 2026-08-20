@@ -1,12 +1,10 @@
 import React from 'react';
 import ChangePasswordForm from '@/components/ChangePasswordForm';
 
-const page = () => {
+export default function SettingsPage() {
   return (
     <div>
-      <ChangePasswordForm/>
+      <ChangePasswordForm />
     </div>
   )
 }
-
-export default page

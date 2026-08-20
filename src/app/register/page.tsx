@@ -1,7 +1,8 @@
 'use client'
 
 import axios from 'axios'
-import { type FormEvent, useMemo, useState } from 'react'
+import { type FormEvent, useState } from 'react'
+import { api } from '@/api/api'
 
 type Role = 'Buyer' | 'Seller' | 'Admin'
 
@@ -33,12 +34,10 @@ const initialForm: RegisterForm = {
   PostalCode: '',
 }
 
-const Page = () => {
+export default function RegisterPage() {
   const [form, setForm] = useState<RegisterForm>(initialForm)
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
-
-  const apiBaseUrl = useMemo(() => process.env.NEXT_PUBLIC_API_URL ?? '', [])
 
   const isSeller = form.Role === 'Seller'
   const isBuyer = form.Role === 'Buyer'
@@ -66,7 +65,6 @@ const Page = () => {
   }
 
   const validateForm = () => {
-    if (!apiBaseUrl) return 'API base URL is missing.'
     if (!form.Email || !form.Password || !form.ConfirmPassword) {
       return 'Email and password are required.'
     }
@@ -97,12 +95,19 @@ const Page = () => {
 
     try {
       setSubmitting(true)
-      await axios.post(`${apiBaseUrl}/User/register`, form)
+      await api.post('/User/register', form)
       setMessage('Registration successful. You can log in now.')
       setForm(initialForm)
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        setMessage(error.response?.data || 'Registration failed.')
+        const data = error.response?.data
+        if (typeof data === 'string') {
+          setMessage(data)
+        } else if (data && typeof data === 'object' && 'message' in data) {
+          setMessage(String(data.message))
+        } else {
+          setMessage('Registration failed. Please check your information.')
+        }
       } else {
         setMessage('Registration failed.')
       }
@@ -112,7 +117,7 @@ const Page = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 fixed top-10 bottom-0 left-0 right-0">
+    <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="bg-white shadow rounded-xl border border-gray-200 p-8">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-black mt-2 text-center">
@@ -304,4 +309,3 @@ const Page = () => {
   )
 }
 
-export default Page

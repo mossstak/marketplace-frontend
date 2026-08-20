@@ -3,12 +3,13 @@ import { api } from '@/api/api'
 import { type RoasterDetails } from '@/types/roaster'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 const getRoasters = async () => {
   try {
     const res = await api.get<RoasterDetails[]>('/RoasterProfile/all')
-    console.log(res)
-    return { roasters: res.data, error: '' }
-  } catch (error) {
+    return { roasters: res.data ?? [], error: '' }
+  } catch {
     return {
       roasters: [],
       error: 'Failed to load roasters',

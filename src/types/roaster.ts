@@ -6,6 +6,7 @@ export type RoasterForm = {
   country?: string | null
   websiteUrl?: string | null
   instagramUrl?: string | null
+  isVerified?: boolean | null
 }
 
 export type RoasterDetails = {
@@ -17,4 +18,5 @@ export type RoasterDetails = {
   country?: string | null
   websiteUrl?: string | null
   instagramUrl?: string | null
+  isVerified?: boolean | null
 }

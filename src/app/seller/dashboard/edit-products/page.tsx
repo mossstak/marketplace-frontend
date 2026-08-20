@@ -1,44 +1,20 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { api } from '@/api/api'
-import { ProductDetails } from '@/types/product'
+import Link from 'next/link'
 
-const page = ({ id }: { id: number }) => {
-  const [loading, setLoading] = useState(true)
-  const [productName, setProductName] = useState('')
-  const [productDescription, setProductDescription] = useState('')
-  const [category, setCategory] = useState(0)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    const myProduct = async () => {
-      try {
-        setLoading(true)
-        setError('')
-        const res = await api.patch<ProductDetails>(`/editProduct/${id}`)
-        const data = res.data
-        productName: productName.trim()
-      } catch (e: any) {
-        const msg =
-          e?.response?.data?.message ||
-          (typeof e?.response?.data === 'string' ? e.response.data : '') ||
-          e?.message ||
-          'Failed to load profile.'
-
-        setError(msg)
-      } finally {
-        setLoading(false)
-      }
-    }
-    myProduct()
-  }, [])
-
+export default function EditProductsPage() {
   return (
-    <div>
-
+    <div className="border p-6 rounded bg-white/10 max-w-2xl">
+      <h1 className="text-xl font-semibold mb-2">Edit Products</h1>
+      <p className="text-sm opacity-80 mb-4">
+        To edit an existing product, please select the product from your products list.
+      </p>
+      <Link
+        href="/seller/dashboard/view-products"
+        className="inline-block rounded bg-blue-600 px-4 py-2 text-sm text-white font-medium hover:bg-blue-700 transition"
+      >
+        View Products List
+      </Link>
     </div>
   )
 }
-
-export default page

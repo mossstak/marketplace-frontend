@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { api } from '@/api/api'
 import { getRole, isLoggedIn, type Role } from '@/auth/auth'
@@ -17,7 +16,7 @@ export default function SellerDashboardPage() {
 
   useEffect(() => {
     if (!isLoggedIn()) {
-      router.push('/logout')
+      router.push('/login')
       return
     }
 
@@ -25,61 +24,46 @@ export default function SellerDashboardPage() {
     setRole(currentRole)
 
     if (!currentRole) {
-      router.push('/logout')
+      router.push('/login')
       return
     }
 
-    const myDashboard = async () => {
+    const loadSellerData = async () => {
       try {
         setLoading(true)
         setError('')
-        const res = await api.get<UserDetails>('/User/me')
-        setDetails(res.data)
-      } catch (e: any) {
-        const msg =
-          e?.response?.data?.message ||
-          (typeof e?.response?.data === 'string' ? e.response.data : '') ||
-          e?.message ||
-          'Failed to load profile.'
 
-        setError(msg)
+        const [userRes, profileRes] = await Promise.allSettled([
+          api.get<UserDetails>('/User/me'),
+          api.get<RoasterDetails>('/RoasterProfile/me'),
+        ])
 
-        // If token is invalid/expired, kick back to login
-        if (e?.response?.status === 401) router.push('/login')
+        if (userRes.status === 'fulfilled') {
+          setDetails(userRes.value.data)
+        } else {
+          const err = userRes.reason
+          if (err?.response?.status === 401) {
+            router.push('/login')
+            return
+          }
+          setError('Failed to load user profile.')
+        }
+
+        if (profileRes.status === 'fulfilled') {
+          setProfile(profileRes.value.data)
+        }
+      } catch {
+        setError('Failed to load dashboard.')
       } finally {
         setLoading(false)
       }
     }
 
-    const myProfile = async () => {
-      try {
-        setLoading(true)
-        setError('')
-        const res = await api.get<RoasterDetails>('/RoasterProfile/me')
-        setProfile(res.data)
-        console.log(res.data)
-      } catch (e: any) {
-        const msg =
-          e?.response?.data?.message ||
-          (typeof e?.response?.data === 'string' ? e.response.data : '') ||
-          e?.message ||
-          'Failed to load profile.'
-
-        setError(msg)
-
-        // If token is invalid/expired, kick back to login
-        if (e?.response?.status === 401) router.push('/login')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    myDashboard()
-    myProfile()
+    loadSellerData()
   }, [router])
 
   if (loading) return <div className="p-6">Loading dashboard...</div>
-  if (error) return <div className="p-6 text-red-500">{error}</div>
+  if (error && !details) return <div className="p-6 text-red-500">{error}</div>
   if (!details) return <div className="p-6">No user data.</div>
 
   return (

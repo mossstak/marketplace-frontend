@@ -125,6 +125,6 @@
   }
 
   .main {
-    @apply h-screen w-full overflow-hidden bg-[#eae8e0]
+    @apply min-h-screen w-full bg-[#eae8e0];
   }
 }

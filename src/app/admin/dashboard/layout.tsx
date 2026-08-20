@@ -7,7 +7,7 @@ import { getRole, isLoggedIn } from '@/auth/auth'
 import { roleRedirect } from '@/auth/roleredirect'
 import Link from 'next/link'
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
   const authSnapshot = useMemo(() => {
@@ -61,4 +61,3 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default layout

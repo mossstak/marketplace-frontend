@@ -1,17 +1,18 @@
-import Image from 'next/image'
 import Hero from '@/components/Hero'
 import RoasterCarousel from '@/components/RoasterCarousel'
-import {api} from '@/api/api'
-import type { RoasterDetails } from "@/types/roaster"
+import { api } from '@/api/api'
+import type { RoasterDetails } from '@/types/roaster'
+
+export const dynamic = 'force-dynamic'
 
 export default async function Page() {
   let roasters: RoasterDetails[] = []
 
   try {
-    const res = await api.get<RoasterDetails[]>('RoasterProfile/all')
-    roasters = res.data
-  }catch (e) {
-    return <div>Failed to load roasters.</div>
+    const res = await api.get<RoasterDetails[]>('/RoasterProfile/all')
+    roasters = res.data ?? []
+  } catch {
+    return <div className="p-6 text-center">Failed to load roasters.</div>
   }
   return (
     <div className="font-sans  dark:bg-gray-800 h-full dark:text-white">

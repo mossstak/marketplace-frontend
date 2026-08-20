@@ -17,7 +17,6 @@ export default function SellerProducts() {
         setError('')
         const res = await api.get<ProductDetails[]>('/Product/me')
         setProducts(res.data ?? [])
-        console.log(res.data)
       } catch (e: any) {
         const msg =
           e?.response?.data?.message ||
@@ -34,12 +33,13 @@ export default function SellerProducts() {
   }, [])
 
   const handleDelete = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this product?')) return
+
     try {
-      await api.delete<ProductDetails[]>(`/Product/delete/${id}`)
+      await api.delete(`/Product/delete/${id}`)
       setProducts((prev) => prev.filter((product) => product.id !== id))
-      console.log("Deleting:", `/Product/delete/${id}`)
-    } catch (error: any) {
-      console.log(error)
+    } catch {
+      alert('Failed to delete product.')
     }
   }
 
@@ -60,6 +60,7 @@ export default function SellerProducts() {
               <th className="px-4 py-2 border border-gray-700">Name</th>
               <th className="px-4 py-2 border border-gray-700">Category</th>
               <th className="px-4 py-2 border border-gray-700">Variants</th>
+              <th className="px-4 py-2 border border-gray-700">Actions</th>
             </tr>
           </thead>
 
@@ -67,14 +68,18 @@ export default function SellerProducts() {
             {products.map((product) => (
               <tr key={product.id} className="hover:bg-gray-800">
                 <td className="px-4 py-2 border border-gray-700">
-                  {product.images[0]?.imageUrl && (
+                  {product.images?.[0]?.imageUrl ? (
                     <Image
                       src={product.images[0].imageUrl}
                       width={60}
                       height={60}
-                      alt={product.productName}
-                      className="rounded"
+                      alt={product.productName || 'Product'}
+                      className="rounded object-cover"
                     />
+                  ) : (
+                    <div className="w-15 h-15 bg-gray-700 rounded flex items-center justify-center text-xs text-gray-400">
+                      No image
+                    </div>
                   )}
                 </td>
 
@@ -88,7 +93,7 @@ export default function SellerProducts() {
 
                 <td className="px-4 py-2 border border-gray-700">
                   <div className="flex flex-col gap-1">
-                    {product.variants.map((variant, index) => (
+                    {(product.variants ?? []).map((variant, index) => (
                       <div
                         key={index}
                         className="text-xs bg-gray-800 px-2 py-1 rounded hover:bg-gray-100 hover:text-black"
@@ -99,9 +104,12 @@ export default function SellerProducts() {
                     ))}
                   </div>
                 </td>
-                <td>
-                  <button onClick={() => handleDelete(product.id)}>
-                    <span className="hover:bg-gray-300">Delete</span>
+                <td className="px-4 py-2 border border-gray-700">
+                  <button
+                    className="text-red-400 hover:underline cursor-pointer"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>

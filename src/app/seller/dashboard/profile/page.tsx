@@ -4,7 +4,7 @@ import { type FormEvent, useState, useEffect } from 'react'
 import { api } from '@/api/api'
 import { type RoasterForm } from '@/types/roaster'
 
-const page = () => {
+export default function SellerProfilePage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -193,4 +193,3 @@ const page = () => {
   )
 }
 
-export default page

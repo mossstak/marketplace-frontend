@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { api } from '../api/api'
 import { getRole } from '../auth/auth'
-import router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 type DropdownAccountProps = {
   logout: () => void
@@ -18,6 +18,7 @@ type MyDetails = {
 }
 
 const DropdownAccount = ({ logout }: DropdownAccountProps) => {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [details, setDetails] = useState<MyDetails | null>(null)
   const [loading, setLoading] = useState(true)
@@ -78,9 +79,15 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
     userName()
   }, [])
 
-  if (loading) return <div className="p-6">Loading dashboard...</div>
-  if (error) return <div className="p-6 text-red-500">{error}</div>
-  if (!details) return <div className="p-6">No user data.</div>
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 rounded-full p-2 animate-pulse">
+        <div className="w-8 h-8 rounded-full bg-gray-400/40" />
+        <span className="hidden sm:block text-xs opacity-70">Loading...</span>
+      </div>
+    )
+  }
+  if (error || !details) return null
 
   return (
     <div ref={wrapperRef} className="relative">

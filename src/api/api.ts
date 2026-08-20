@@ -1,8 +1,9 @@
 import axios from 'axios'
-import { clearAuth } from '../auth/auth' // make sure you export a clearAuth/logout function
+
+const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+  baseURL: rawBaseUrl.replace(/\/+$/, ''),
 })
 
 // Request interceptor to attach token
