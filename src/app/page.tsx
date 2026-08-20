@@ -15,11 +15,31 @@ export default async function Page() {
     return <div className="p-6 text-center">Failed to load roasters.</div>
   }
   return (
-    <div className="font-sans  dark:bg-gray-800 h-full dark:text-white">
-      <Hero/>
-      <div className="h-75 w-4xl flex flex-col m-auto relative top-17">
-        <RoasterCarousel  roasters={roasters}/>
-      </div>
-    </div>
+    <main className="min-h-screen font-sans bg-[#d1966e] dark:bg-neutral-900 text-stone-900 dark:text-stone-100 antialiased transition-colors duration-200">
+      {/* Hero Section */}
+      <section className="w-full">
+        <Hero />
+      </section>
+
+      {/* Featured Roasters Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
+                Featured Roasters
+              </h2>
+              <p className="text-sm opacity-80 mt-1">
+                Explore handcrafted beans from independent partners
+              </p>
+            </div>
+          </div>
+
+          <div className="w-full">
+            <RoasterCarousel roasters={roasters} />
+          </div>
+        </div>
+      </section>
+    </main>
   )
 }

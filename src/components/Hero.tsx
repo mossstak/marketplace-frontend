@@ -46,6 +46,7 @@ const Hero = () => {
           // Automatically picks a consistent coffee for this week
           const weeklyIndex = getWeeklyProductIndex(products.length)
           const product = products[weeklyIndex]
+          console.log(product)
           setFeaturedProduct(product)
 
           const sellerId = (product as any).sellerId || (product as any).userId
@@ -90,7 +91,7 @@ const Hero = () => {
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-24">
         {/* Left Column: Heading & CTAs */}
         <div>
-          <h1 className="mt-4 text-center text-3xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">
             Find your next favourite coffee.
           </h1>
 
@@ -99,10 +100,10 @@ const Hero = () => {
             roasters who take coffee seriously.
           </p>
 
-          <div className="mt-6 flex flex-col justify-center gap-3 sm:mt-8 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
             <Link
               href="/roaster"
-              className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black! shadow-sm transition hover:bg-zinc-100"
+              className="inline-flex items-center justify-center rounded-lg bg-white text-sm font-semibold text-black! shadow-sm transition hover:bg-zinc-100"
             >
               Explore roasters
             </Link>
@@ -184,7 +185,7 @@ const Hero = () => {
                   {/* Price */}
                   <div className="flex items-baseline gap-2">
                     <span className="text-2xl font-black text-amber-300">
-                      ${Number((featuredProduct as any)?.price || 0).toFixed(2)}
+                      £{Number(featuredProduct?.price?.[0] || 0).toFixed(2)}
                     </span>
                     <span className="text-xs text-white/60">/ bag</span>
                   </div>
