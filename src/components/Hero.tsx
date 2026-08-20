@@ -46,7 +46,6 @@ const Hero = () => {
           // Automatically picks a consistent coffee for this week
           const weeklyIndex = getWeeklyProductIndex(products.length)
           const product = products[weeklyIndex]
-          console.log(product)
           setFeaturedProduct(product)
 
           const sellerId = (product as any).sellerId || (product as any).userId
