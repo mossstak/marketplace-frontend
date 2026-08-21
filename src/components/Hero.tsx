@@ -184,7 +184,12 @@ const Hero = () => {
                   {/* Price */}
                   <div className="flex items-baseline gap-2">
                     <span className="text-2xl font-black text-amber-300">
-                      £{Number((featuredProduct as any)?.price || 0).toFixed(2)}
+                      £
+                      {Number(
+                        (featuredProduct as any)?.variants?.[0]?.price ??
+                          (featuredProduct as any)?.price ??
+                          0,
+                      ).toFixed(2)}
                     </span>
                     <span className="text-xs text-white/60">/ bag</span>
                   </div>
