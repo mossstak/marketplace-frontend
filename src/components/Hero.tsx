@@ -144,10 +144,9 @@ const Hero = () => {
                 <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl bg-white/10 sm:w-44">
                   <Image
                     src={
-                      typeof featuredProduct.imageUrl === 'string' &&
-                      featuredProduct.imageUrl
-                        ? featuredProduct.imageUrl
-                        : 'https://placehold.co/600x600/png?text=Coffee+Beans'
+                      (featuredProduct as any)?.images?.[0]?.imageUrl ||
+                      (featuredProduct as any)?.imageUrl ||
+                      'https://placehold.co/600x600/png?text=Coffee+Beans'
                     }
                     alt={featuredProduct.productName || 'Featured Coffee'}
                     fill
@@ -176,7 +175,8 @@ const Hero = () => {
 
                     {/* Description */}
                     <p className="mt-1 line-clamp-2 text-xs text-white/80 sm:text-sm">
-                      {featuredProduct.description ||
+                      {(featuredProduct as any)?.productDescription ||
+                        featuredProduct.description ||
                         'Single-origin roast with balanced acidity and deep tasting notes.'}
                     </p>
                   </div>
