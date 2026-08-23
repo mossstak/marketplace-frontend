@@ -48,19 +48,22 @@ export default function SellerProducts() {
   if (products.length === 0) return <div className="p-4">No products yet.</div>
 
   return (
-    <div className="flex flex-col">
-      <Link href="/seller/dashboard" className="text-blue-500 underline mb-4">
-        Back to Dashboard
-      </Link>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-700 text-sm">
+    <div className="flex flex-col space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl sm:text-2xl font-semibold">Your Products</h1>
+        <Link href="/seller/dashboard" className="text-sm text-blue-400 hover:text-blue-300 underline">
+          Back to Dashboard
+        </Link>
+      </div>
+      <div className="overflow-x-auto rounded-xl border border-gray-700 bg-gray-800/50 shadow-sm">
+        <table className="min-w-[600px] w-full divide-y divide-gray-700 text-sm">
           <thead className="bg-gray-800 text-left">
             <tr>
-              <th className="px-4 py-2 border border-gray-700">Image</th>
-              <th className="px-4 py-2 border border-gray-700">Name</th>
-              <th className="px-4 py-2 border border-gray-700">Category</th>
-              <th className="px-4 py-2 border border-gray-700">Variants</th>
-              <th className="px-4 py-2 border border-gray-700">Actions</th>
+              <th className="px-4 py-3 border-b border-gray-700">Image</th>
+              <th className="px-4 py-3 border-b border-gray-700">Name</th>
+              <th className="px-4 py-3 border-b border-gray-700">Category</th>
+              <th className="px-4 py-3 border-b border-gray-700">Variants</th>
+              <th className="px-4 py-3 border-b border-gray-700">Actions</th>
             </tr>
           </thead>
 

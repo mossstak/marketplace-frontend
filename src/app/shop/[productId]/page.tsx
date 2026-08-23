@@ -93,29 +93,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <Card className=" my-5 mx-auto max-w-sm bg-[#cac8be]">
+    <Card className="my-6 mx-auto max-w-sm w-[calc(100%-2rem)] sm:w-full bg-[#cac8be] p-4 sm:p-5 shadow-lg">
       <div className="flex flex-col gap-3">
-        <div className="m-5">
-          <Link href="/shop" className="mb-4 text-black underline">
-            Back to Products
+        <div>
+          <Link href="/shop" className="mb-4 inline-block text-black underline font-medium text-sm">
+            &larr; Back to Products
           </Link>
 
-          <CardHeader className="text-3xl">{cartProduct.productName}</CardHeader>
+          <CardHeader className="text-2xl sm:text-3xl px-0 pt-2 pb-1 font-bold text-zinc-900">{cartProduct.productName}</CardHeader>
 
           {roasterHref && (
-            <Link href={roasterHref} className="text-black underline">
+            <Link href={roasterHref} className="text-black underline text-sm font-medium">
               {roaster?.companyName}
             </Link>
           )}
 
           {primaryImage ? (
-            <div className="m-5">
+            <div className="my-4">
               <Image
                 src={primaryImage.url}
                 alt={cartProduct.productName}
                 width={626}
                 height={470}
-                className="w-full max-w-xl rounded border drop-shadow"
+                className="w-full max-w-xl rounded border drop-shadow object-cover"
               />
 
               {images.length > 1 && (
@@ -127,7 +127,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       width={626}
                       height={470}
                       alt={`${cartProduct.productName} ${index + 1}`}
-                      className="h-20 w-20 rounded border object-cover p-3"
+                      className="h-16 w-16 sm:h-20 sm:w-20 rounded border object-cover p-1.5 bg-white/20"
                     />
                   ))}
                 </div>

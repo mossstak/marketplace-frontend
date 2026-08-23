@@ -98,16 +98,16 @@ export default function ChangePasswordForm({ className = '', onSuccess }: Change
   }
 
   return (
-    <div className={`bg-card m-25 text-card-foreground rounded-xl border border-border shadow-sm dark:bg-zinc-900 ${className}`}>
+    <div className={`bg-card my-6 sm:my-10 mx-auto max-w-2xl w-[calc(100%-2rem)] sm:w-full text-card-foreground rounded-xl border border-border shadow-sm dark:bg-zinc-900 ${className}`}>
       {/* Header */}
-      <div className="border-b border-border px-6 py-5">
+      <div className="border-b border-border px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary dark:bg-primary/20">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary dark:bg-primary/20">
             <KeyRound className="h-5 w-5" />
           </div>
           <div>
             <h2 className="text-lg font-semibold tracking-tight text-foreground">Change Password</h2>
-            <p className="text-sm text-muted-foreground dark:text-gray-400">
+            <p className="text-xs sm:text-sm text-muted-foreground dark:text-gray-400">
               Update your password to keep your account secure.
             </p>
           </div>
@@ -115,7 +115,7 @@ export default function ChangePasswordForm({ className = '', onSuccess }: Change
       </div>
 
       {/* Form Content */}
-      <form onSubmit={handleSubmit} className="space-y-5 p-6">
+      <form onSubmit={handleSubmit} className="space-y-5 p-4 sm:p-6">
         {/* Success Alert */}
         {successMessage && (
           <div className="flex items-center gap-2.5 rounded-lg border border-green-200 bg-green-50 p-3.5 text-sm text-green-800 dark:border-green-900/40 dark:bg-green-950/40 dark:text-green-300">

@@ -58,28 +58,29 @@ export default function AdminDashboardPage() {
   if (!details) return <div className="p-6">No user data.</div>
 
   return (
-    <div className="bg-gray-500 w-full px-6 py-20">
+    <div className="bg-gray-500 w-full p-4 sm:p-6 lg:py-20 rounded-lg shadow-sm">
       {/* Shared user info */}
-      <div className="flex gap-6">
-        <div>
+      <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+        <div className="shrink-0">
           <Image
             src="https://placehold.co/300/png"
             width={300}
             height={300}
             alt="Profile Picture"
+            className="rounded-xl object-cover max-w-[200px] sm:max-w-[300px] w-full shadow-md"
           />
         </div>
 
-        <div className="space-y-3">
-          <div className="flex">
-            <p>Welcome back {details.firstName}!</p>
+        <div className="space-y-3 text-center sm:text-left">
+          <div className="flex justify-center sm:justify-start">
+            <h2 className="text-xl sm:text-2xl font-bold">Welcome back {details.firstName}!</h2>
           </div>
 
-          <p>{details.email}</p>
+          <p className="text-sm sm:text-base text-gray-200">{details.email}</p>
 
           {(role === 'Admin' || role === 'Buyer') && (
-            <div className="space-y-1">
-              <h3 className="font-semibold">Address</h3>
+            <div className="space-y-1 text-sm bg-gray-600/50 p-3 rounded-lg">
+              <h3 className="font-semibold text-base">Address</h3>
               <p>{details.addressOne ?? 'N/A'}</p>
               {details.addressTwo && <p>{details.addressTwo}</p>}
               <p>
@@ -89,7 +90,7 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
-          <p className="">Role: {role ?? 'Unknown'}</p>
+          <p className="text-sm font-medium bg-black/20 inline-block px-2.5 py-1 rounded">Role: {role ?? 'Unknown'}</p>
         </div>
       </div>
     </div>

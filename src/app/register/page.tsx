@@ -117,13 +117,13 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      <div className="bg-white shadow rounded-xl border border-gray-200 p-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-black mt-2 text-center">
+    <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-12">
+      <div className="bg-white shadow rounded-xl border border-gray-200 p-4 sm:p-8">
+        <header className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-black mt-2 text-center">
             Register your account
           </h1>
-          <p className="text-gray-600 mt-2 text-center">
+          <p className="text-gray-600 mt-2 text-center text-sm sm:text-base">
             Choose a role and share the details we need to get you started.
           </p>
         </header>

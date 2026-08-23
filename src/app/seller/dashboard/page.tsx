@@ -67,12 +67,12 @@ export default function SellerDashboardPage() {
   if (!details) return <div className="p-6">No user data.</div>
 
   return (
-    <div className="bg-gray-500 w-full p-5">
-      <div className="bg-gray-400 p-3">
-        <h1 className="text-center">Welcome back {details.firstName}!</h1>
+    <div className="bg-gray-500 w-full p-4 sm:p-5 rounded-lg shadow-sm">
+      <div className="bg-gray-400 p-4 rounded-lg">
+        <h1 className="text-xl sm:text-2xl font-bold text-center mb-3">Welcome back {details.firstName}!</h1>
         {(role === 'Seller' || role == 'Buyer') && (
-          <div className="space-y-1">
-            <h3 className="font-semibold">Address</h3>
+          <div className="space-y-1 text-sm sm:text-base">
+            <h3 className="font-semibold text-base">Address</h3>
             <p>{details.addressOne ?? 'N/A'}</p>
             {details.addressTwo && <p>{details.addressTwo}</p>}
             <p>
@@ -82,14 +82,16 @@ export default function SellerDashboardPage() {
           </div>
         )}
       </div>
-      <div className="bg-gray-400 h-90 mt-3 p-3">
+      <div className="bg-gray-400 min-h-[180px] mt-4 p-4 rounded-lg">
         <div>
-          <h2 className="text-[32pt]">Profile</h2>
-          <p>{profile?.companyName ?? ''}</p>
-          <p>{profile?.bio ?? 'enter some detail for bio'}</p>
-          <p>
-            {profile?.city}, {profile?.country}
-          </p>
+          <h2 className="text-xl sm:text-2xl font-bold mb-2">Profile</h2>
+          <p className="font-semibold">{profile?.companyName ?? ''}</p>
+          <p className="text-sm mt-1">{profile?.bio ?? 'Enter some detail for bio'}</p>
+          {(profile?.city || profile?.country) && (
+            <p className="text-xs text-gray-200 mt-2">
+              {profile?.city ? `${profile.city}, ` : ''}{profile?.country ?? ''}
+            </p>
+          )}
         </div>
       </div>
     </div>

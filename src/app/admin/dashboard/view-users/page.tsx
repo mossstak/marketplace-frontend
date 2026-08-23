@@ -98,60 +98,62 @@ function UserTable({
   const [editingId, setEditingId] = useState<string | null>(null)
 
   return (
-    <div className=" rounded p-4">
-      <h2 className="text-lg font-semibold mb-3">
+    <div className="rounded-xl bg-gray-800/40 border border-gray-600/60 p-4 sm:p-5">
+      <h2 className="text-base sm:text-lg font-semibold mb-3">
         {title} ({users.length})
       </h2>
       {users.length === 0 ? (
-        <p className="text-sm text-gray-500">No {title.toLowerCase()} found.</p>
+        <p className="text-sm text-gray-400">No {title.toLowerCase()} found.</p>
       ) : (
-        <table className="flex flex-col justify-around ">
-          <thead>
-            <tr className="border-b">
-              <th className="py-2 pr-4">Name</th>
-              <th className="py-2 pr-4">Email</th>
-              <th className="py-2 pr-4">Roles</th>
-              <th className="py-2 pr-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {users.map((u) =>
-              editingId === u.id ? (
-                <EditRow
-                  key={u.id}
-                  user={u}
-                  onCancel={() => setEditingId(null)}
-                  onSave={async (form) => {
-                    await onSave(u.id, form)
-                    setEditingId(null)
-                  }}
-                />
-              ) : (
-                <tr key={u.id} className="border-b last:border-0">
-                  <td className="">
-                    {u.firstName} {u.lastName}
-                  </td>
-                  <td className="py-2 pr-4">{u.email}</td>
-                  <td className="py-2 pr-4">{u.roles ? u.roles.join(', ') : '—'}</td>
-                  <td className="py-2 pr-4 space-x-3">
-                    <button
-                      className="text-blue-600 hover:underline"
-                      onClick={() => setEditingId(u.id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="text-red-600 hover:underline"
-                      onClick={() => onDelete(u.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ),
-            )}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-600 text-left text-sm">
+            <thead>
+              <tr className="border-b border-gray-600">
+                <th className="py-2.5 pr-4 font-semibold">Name</th>
+                <th className="py-2.5 pr-4 font-semibold">Email</th>
+                <th className="py-2.5 pr-4 font-semibold">Roles</th>
+                <th className="py-2.5 pr-4 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-700/50">
+              {users.map((u) =>
+                editingId === u.id ? (
+                  <EditRow
+                    key={u.id}
+                    user={u}
+                    onCancel={() => setEditingId(null)}
+                    onSave={async (form) => {
+                      await onSave(u.id, form)
+                      setEditingId(null)
+                    }}
+                  />
+                ) : (
+                  <tr key={u.id} className="hover:bg-white/5 transition-colors">
+                    <td className="py-2.5 pr-4 font-medium">
+                      {u.firstName} {u.lastName}
+                    </td>
+                    <td className="py-2.5 pr-4 text-gray-300">{u.email}</td>
+                    <td className="py-2.5 pr-4 text-gray-300">{u.roles ? u.roles.join(', ') : '—'}</td>
+                    <td className="py-2.5 pr-4 space-x-3 whitespace-nowrap">
+                      <button
+                        className="text-blue-400 hover:text-blue-300 underline cursor-pointer"
+                        onClick={() => setEditingId(u.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="text-red-400 hover:text-red-300 underline cursor-pointer"
+                        onClick={() => onDelete(u.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ),
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )

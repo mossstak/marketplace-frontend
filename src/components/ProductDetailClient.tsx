@@ -27,13 +27,13 @@ export default function ProductDetailClient({
   return (
     <div className="mt-4 space-y-3">
       {variants.length > 0 && (
-        <div className="flex items-center gap-3">
-          <label htmlFor="variant" className="text-sm">
-            Variant
+        <div className="flex flex-wrap items-center gap-3">
+          <label htmlFor="variant" className="text-sm font-medium">
+            Variant:
           </label>
           <select
             id="variant"
-            className="rounded border px-2 py-1"
+            className="rounded border border-black/30 bg-white/80 dark:bg-zinc-800 px-2.5 py-1.5 text-sm"
             value={selectedIndex}
             onChange={(e) => setSelectedIndex(Number(e.target.value))}
           >
@@ -43,7 +43,7 @@ export default function ProductDetailClient({
               </option>
             ))}
           </select>
-          <div className="text-sm">
+          <div className="text-sm font-semibold">
             Price:{' '}
             {selectedVariant?.price !== undefined
               ? `£${selectedVariant.price}`
@@ -51,20 +51,22 @@ export default function ProductDetailClient({
           </div>
         </div>
       )}
-      <div className="flex items-center gap-3">
-        <label htmlFor="quantity" className="text-sm">
-          Quantity
-        </label>
-        <input
-          id="quantity"
-          type="number"
-          min={1}
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          className="w-20 border rounded px-2 py-1"
-        />
+      <div className="flex flex-wrap items-center gap-3 pt-1">
+        <div className="flex items-center gap-2">
+          <label htmlFor="quantity" className="text-sm font-medium">
+            Quantity:
+          </label>
+          <input
+            id="quantity"
+            type="number"
+            min={1}
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            className="w-16 border border-black/30 bg-white/80 dark:bg-zinc-800 rounded px-2 py-1.5 text-sm"
+          />
+        </div>
         <button
-          className="px-4 py-2 bg-blue-600 text-white rounded"
+          className="flex-1 sm:flex-initial px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded transition text-sm cursor-pointer"
           onClick={() => addToCart(product, quantity)}
         >
           Add to Cart

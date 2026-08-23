@@ -29,28 +29,37 @@ function slugify(input: string) {
 export default async function Page() {
   const { roasters, error } = await getRoasters()
   return (
-    <div className="container mx-auto p-25">
-      <h1 className="text-3xl font-bold text-center">Roaster</h1>
+    <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <h1 className="text-3xl font-bold text-center">Roasters</h1>
       {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
       {!error && roasters.length === 0 && (
-        <p className="mt-4 text-center">No Roasters Yet.</p>
+        <p className="mt-4 text-center text-stone-500">No Roasters Yet.</p>
       )}
-      <div className="lg:grid lg:grid-cols-3 gap-6 space-y-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center mt-8">
         {roasters.map((roaster) => {
           const roasterId = roaster.userId
-          const name = roaster.companyName
+          const name = roaster.companyName || 'Unnamed Roaster'
           return (
             <div
-              className="w-full max-w-sm rounded border border-gray-300 p-2 space-y-10"
+              className="w-full max-w-sm rounded-xl border border-gray-300 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 p-6 flex flex-col justify-between shadow-sm transition hover:shadow-md"
               key={roasterId ?? name}
             >
-              <h2 className="font-bold text-center">{name}</h2>
-              <Link
-                href={`/roaster/${roasterId}__${slugify(name ?? 'Unknown-Roaster')}`}
-                className=""
-              >
-                <p className="text-center">View details</p>
-              </Link>
+              <div>
+                <h2 className="font-bold text-lg text-center text-zinc-900 dark:text-zinc-100">{name}</h2>
+                {(roaster.city || roaster.country) && (
+                  <p className="text-xs text-center text-stone-500 dark:text-stone-400 mt-1">
+                    {[roaster.city, roaster.country].filter(Boolean).join(', ')}
+                  </p>
+                )}
+              </div>
+              <div className="mt-6 text-center">
+                <Link
+                  href={`/roaster/${roasterId}__${slugify(name)}`}
+                  className="inline-block text-sm font-medium text-blue-600 dark:text-amber-300 underline hover:no-underline"
+                >
+                  View details
+                </Link>
+              </div>
             </div>
           )
         })}

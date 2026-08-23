@@ -24,7 +24,7 @@ export function UploadedImageGallery({
         <p className="text-xs text-white/70">No previous uploads yet. Upload new files below.</p>
       )}
       {!loading && uploadedImages.length > 0 && (
-        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3 md:w-150">
+        <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 max-w-2xl w-full">
           {uploadedImages.map((img) => {
             const selected = selectedImageIds.includes(img.id)
             return (
@@ -37,7 +37,7 @@ export function UploadedImageGallery({
                 <img
                   src={img.imageUrl}
                   alt={`Uploaded image ${img.id}`}
-                  className="w-50 h-50 rounded object-cover"
+                  className="w-full aspect-square rounded object-cover"
                 />
                 <span className="flex items-center gap-2">
                   <input

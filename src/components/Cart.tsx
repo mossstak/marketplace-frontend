@@ -1,41 +1,82 @@
-'use client'
-
 import React from 'react'
+import Link from 'next/link'
+import { LucideShoppingCart, Trash2 } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, clearCart } = useCart()
 
   if (cart.length === 0) {
-    return <div className="p-4 mt-[100px]">
-      <h2 className="text-center">Your cart is empty.</h2>
-    </div>
+    return (
+      <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-zinc-900/60 p-8 text-center shadow-sm">
+        <LucideShoppingCart className="mx-auto h-12 w-12 text-stone-400 mb-3" />
+        <h2 className="text-xl font-bold mb-2">Your cart is empty</h2>
+        <p className="text-sm text-stone-500 mb-6">Looks like you haven't added any coffees to your cart yet.</p>
+        <Link
+          href="/shop"
+          className="inline-flex items-center justify-center rounded-lg bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-black"
+        >
+          Explore Shop
+        </Link>
+      </div>
+    )
   }
 
   return (
-    <div className="p-4 mt-[100px]">
-      <h2 className="text-xl font-bold mb-2">Shopping Cart</h2>
-      <ul>
-        {cart.map(item => (
-          <li key={item.product.id} className="mb-2 flex items-center justify-between">
-            <span>
-              {item.product.productName} (x{item.quantity})
-            </span>
-            <button
-              className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
-              onClick={() => removeFromCart(item.product.id)}
-            >
-              Remove
-            </button>
+    <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-zinc-900/70 p-4 sm:p-6 shadow-sm">
+      <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-4 mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+          <LucideShoppingCart className="h-6 w-6" /> Shopping Cart
+        </h2>
+        <span className="text-xs sm:text-sm text-stone-500 font-medium">
+          {cart.reduce((sum, i) => sum + i.quantity, 0)} items
+        </span>
+      </div>
+
+      <ul className="divide-y divide-black/10 dark:divide-white/10">
+        {cart.map((item) => (
+          <li
+            key={item.product.id}
+            className="py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+          >
+            <div className="flex-1 min-w-0 pr-2">
+              <p className="font-semibold text-sm sm:text-base truncate">
+                {item.product.productName}
+              </p>
+              <p className="text-xs text-stone-500">
+                Quantity: {item.quantity}
+              </p>
+            </div>
+            <div className="flex items-center justify-between sm:justify-end gap-3 pt-1 sm:pt-0">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 text-xs font-semibold rounded-lg transition"
+                onClick={() => removeFromCart(item.product.id)}
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>
-      <button
-        className="mt-4 px-4 py-2 bg-gray-700 text-white rounded"
-        onClick={clearCart}
-      >
-        Clear Cart
-      </button>
+
+      <div className="mt-6 pt-4 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <button
+          type="button"
+          className="px-4 py-2 text-xs sm:text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white border border-stone-300 dark:border-stone-700 rounded-lg transition"
+          onClick={clearCart}
+        >
+          Clear Cart
+        </button>
+
+        <Link
+          href="/shop"
+          className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
+        >
+          Continue Shopping
+        </Link>
+      </div>
     </div>
   )
 }

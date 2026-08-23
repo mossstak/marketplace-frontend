@@ -242,9 +242,9 @@ export default function Page () {
   }
 
   return (
-    <div className="border p-4 rounded bg-white/10">
-      <h1 className="font-semibold mb-2">Add Products</h1>
-      <p className="mb-4">Add a product to your shopfront.</p>
+    <div className="border border-white/15 p-4 sm:p-6 rounded-xl bg-white/10 max-w-4xl">
+      <h1 className="font-semibold text-xl mb-1">Add Products</h1>
+      <p className="mb-4 text-sm text-gray-300">Add a product to your shopfront.</p>
 
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid gap-3 md:grid-cols-2">
@@ -451,7 +451,7 @@ export default function Page () {
           ))}
         </div>
 
-        <div className="space-y-5 bg-gray-700 p-3">
+        <div className="space-y-5 bg-gray-700/60 p-4 rounded-xl border border-white/10">
           <UploadedImageGallery
             uploadedImages={uploadedImages}
             selectedImageIds={selectedUploadedImageIds}

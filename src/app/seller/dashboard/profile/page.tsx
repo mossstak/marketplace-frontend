@@ -88,29 +88,31 @@ export default function SellerProfilePage() {
   if (loading) return <div className="p-6">Loading profile…</div>
 
   return (
-    <div className="p-6 max-w-3xl m-auto">
-      <h1 className="text-2xl text-center font-semibold mb-4">Profile</h1>
-      {!isEditing && (
-        <button
-          onClick={() => setIsEditing(true)}
-          className="rounded border px-3 py-2"
-        >
-          Edit
-        </button>
-      )}
+    <div className="p-4 sm:p-6 max-w-3xl w-full mx-auto">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-xl sm:text-2xl font-semibold">Roaster Profile</h1>
+        {!isEditing && (
+          <button
+            onClick={() => setIsEditing(true)}
+            className="rounded border border-white/20 bg-white/10 px-3.5 py-1.5 text-sm font-medium hover:bg-white/20 transition cursor-pointer"
+          >
+            Edit Profile
+          </button>
+        )}
+      </div>
       {error && (
-        <div className="my-4 rounded border border-red-300 bg-red-50 p-3 text-red-700">
+        <div className="my-4 rounded border border-red-300 bg-red-50 p-3 text-red-700 text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="my-4 rounded border border-green-300 bg-green-50 p-3 text-green-700">
+        <div className="my-4 rounded border border-green-300 bg-green-50 p-3 text-green-700 text-sm">
           {success}
         </div>
       )}
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">
             Company name *

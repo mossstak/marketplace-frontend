@@ -38,8 +38,8 @@ export default function SearchBar() {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search roasts, origins..."
-        className="w-full rounded-full bg-black/20 border border-white/15 pl-9 pr-8 py-1.5 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
+        placeholder="Search Origins, Roaster..."
+        className="w-full h-10 rounded-full bg-black/20 border border-white/15 pl-9 pr-8 py-1.5 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
       />
 
       {query && (
