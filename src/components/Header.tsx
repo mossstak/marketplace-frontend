@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCart } from '@/context/CartContext'
 import { loginpath, registerpath, homepath, shoppath } from '@/paths'
+import SearchBar from '@/components/SearchBar'
 import { ThemeSwticher } from './theme/theme-switcher'
 import { buttonVariants } from './ui/button'
 import DropdownAccount from './DropdownAccount'
@@ -54,6 +55,7 @@ const Header = () => {
         >
           <h1 className="text-lg font-semibold">Roaster's Market</h1>
         </Link>
+        <SearchBar/>
         {/* Desktop Menu - Hidden on mobile */}
         <div className="hidden md:flex items-center gap-x-2">
           <Link
