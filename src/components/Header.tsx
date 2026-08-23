@@ -7,7 +7,7 @@ import {
   LucideX,
 } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCart } from '@/context/CartContext'
 import { loginpath, registerpath, homepath, shoppath } from '@/paths'
@@ -55,7 +55,11 @@ const Header = () => {
         >
           <h1 className="text-lg font-semibold">Roaster's Market</h1>
         </Link>
-        <SearchBar/>
+        <Suspense
+          fallback={<div className="w-48 h-8 rounded-full bg-white/10" />}
+        >
+          <SearchBar />
+        </Suspense>
         {/* Desktop Menu - Hidden on mobile */}
         <div className="hidden md:flex items-center gap-x-2">
           <Link
