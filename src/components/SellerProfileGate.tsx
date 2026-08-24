@@ -81,7 +81,6 @@ export function SellerProfileGate({
       cancelled = true
     }
     // NOTE: `ready` is intentionally NOT in deps; we set it inside run().
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, pathname, router, redirectTo])
 
   if (mode === 'render') {

@@ -51,7 +51,10 @@ export default function SellerProducts() {
     <div className="flex flex-col space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl sm:text-2xl font-semibold">Your Products</h1>
-        <Link href="/seller/dashboard" className="text-sm text-blue-400 hover:text-blue-300 underline">
+        <Link
+          href="/seller/dashboard"
+          className="text-sm text-blue-400 hover:text-blue-300 underline"
+        >
           Back to Dashboard
         </Link>
       </div>
@@ -95,14 +98,27 @@ export default function SellerProducts() {
                 </td>
 
                 <td className="px-4 py-2 border border-gray-700">
-                  <div className="flex flex-col gap-1">
+                  <div className="text-xs bg-gray-800 rounded p-2 min-w-[200px]">
+                    {/* Table Header */}
+                    <div className="grid grid-cols-3 gap-2 font-semibold text-gray-400 border-b border-gray-700 pb-1 mb-1">
+                      <span>Weight</span>
+                      <span className="text-center">Qty</span>
+                      <span className="text-right">Price</span>
+                    </div>
+
+                    {/* Table Rows */}
                     {(product.variants ?? []).map((variant, index) => (
                       <div
                         key={index}
-                        className="text-xs bg-gray-800 px-2 py-1 rounded hover:bg-gray-100 hover:text-black"
+                        className="grid grid-cols-3 gap-2 py-0.5 hover:text-white"
                       >
-                        Size: {variant.size ?? '—'} | Qty:{' '}
-                        {variant.quantity ?? 0}
+                        <span>{variant.size ?? '—'}</span>
+                        <span className="text-center">
+                          {variant.quantity ?? 0}
+                        </span>
+                        <span className="text-right">
+                          £{variant.price ?? '—'}
+                        </span>
                       </div>
                     ))}
                   </div>

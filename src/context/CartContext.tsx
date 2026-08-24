@@ -1,58 +1,65 @@
 'use client'
 
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useState, useMemo } from 'react'
 
 export type CartProduct = {
-  [x: string]: ReactNode
   id: string | number
   productName: string
-  productType: string
-  roastLevel: string
-  description: string
+  productType?: string
+  roastLevel?: string
+  description?: string
   weight?: string[]
   price?: string[]
+  roasterProfileId?: number
+  sellerId?: string
 }
 
-type CartItem = {
-  product: CartProduct
+export type SelectedVariant = {
+  variantId: number
+  size: string
+  price: number
+}
+
+export type CartItem = {
+  productId: number
+  productName: string
+  roasterProfileId?: number // Needed for Stripe destination charge
+  sellerId?: string
+  variant: SelectedVariant
   quantity: number
 }
 
 type CartContextType = {
   cart: CartItem[]
-  addToCart: (product: CartProduct, quantity: number) => void
-  removeFromCart: (productId: string | number) => void
+  addToCart: (item: Omit<CartItem, 'quantity'>, quantity: number) => void
+  removeFromCart: (variantId: number) => void
   clearCart: () => void
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-type CartProviderProps = {
-  children: ReactNode
-}
-
-export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([])
 
-  const addToCart = (product: CartProduct, quantity: number) => {
+  const addToCart = (item: Omit<CartItem, 'quantity'>, quantity: number) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (item) => item.product.id === product.id
+      const existingIndex = prevCart.findIndex(
+        (i) => i.variant.variantId === item.variant.variantId
       )
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+
+      if (existingIndex > -1) {
+        return prevCart.map((i, idx) =>
+          idx === existingIndex ? { ...i, quantity: i.quantity + quantity } : i
         )
       }
-      return [...prevCart, { product, quantity }]
+
+      return [...prevCart, { ...item, quantity }]
     })
   }
 
-  const removeFromCart = (productId: string | number) => {
+  const removeFromCart = (variantId: number) => {
     setCart((prevCart) =>
-      prevCart.filter((item) => item.product.id !== productId)
+      prevCart.filter((item) => item.variant.variantId !== variantId)
     )
   }
 
@@ -60,7 +67,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCart([])
   }
 
-  const contextValue = React.useMemo(
+  const contextValue = useMemo(
     () => ({ cart, addToCart, removeFromCart, clearCart }),
     [cart]
   )

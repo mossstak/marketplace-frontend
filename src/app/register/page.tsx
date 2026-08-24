@@ -4,7 +4,7 @@ import axios from 'axios'
 import { type FormEvent, useState } from 'react'
 import { api } from '@/api/api'
 
-type Role = 'Buyer' | 'Seller' | 'Admin'
+type Role = 'Buyer' | 'Seller'
 
 interface RegisterForm {
   Email: string
@@ -118,24 +118,24 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-12">
-      <div className="bg-white shadow rounded-xl border border-gray-200 p-4 sm:p-8">
+      <div className="bg-white/80 dark:bg-zinc-900/80 shadow-md rounded-xl border border-gray-200 dark:border-zinc-800 p-4 sm:p-8">
         <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-black mt-2 text-center">
+          <h1 className="text-2xl sm:text-3xl font-bold text-stone-900 dark:text-stone-100 mt-2 text-center">
             Register your account
           </h1>
-          <p className="text-gray-600 mt-2 text-center text-sm sm:text-base">
+          <p className="text-stone-600 dark:text-stone-400 mt-2 text-center text-sm sm:text-base">
             Choose a role and share the details we need to get you started.
           </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-6 text-black">
+        <form onSubmit={handleSubmit} className="space-y-6 text-stone-900 dark:text-stone-100">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                 First name
               </label>
               <input
-                className="mt-1 w-full rounded-lg border  border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                 name="FirstName"
                 value={form.FirstName}
                 onChange={updateField}
@@ -144,11 +144,11 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                 Last name
               </label>
               <input
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                 name="LastName"
                 value={form.LastName}
                 onChange={updateField}
@@ -160,12 +160,12 @@ export default function RegisterPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                 Email
               </label>
               <input
                 type="email"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                 name="Email"
                 value={form.Email}
                 onChange={updateField}
@@ -174,16 +174,15 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                 Roles
               </label>
               <select
                 name="Role"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 px-3 py-2 bg-white/90 dark:bg-zinc-800 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                 value={form.Role}
                 onChange={updateField}
               >
-                <option value="Admin">Admin</option>
                 <option value="Buyer">Buyer</option>
                 <option value="Seller">Seller</option>
               </select>
@@ -192,12 +191,12 @@ export default function RegisterPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                 Password
               </label>
               <input
                 type="password"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                 name="Password"
                 value={form.Password}
                 onChange={updateField}
@@ -206,12 +205,12 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                 Confirm password
               </label>
               <input
                 type="password"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                 name="ConfirmPassword"
                 value={form.ConfirmPassword}
                 onChange={updateField}
@@ -224,11 +223,11 @@ export default function RegisterPage() {
           {needsAddress && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                   Address line 1
                 </label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                   name="AddressOne"
                   value={form.AddressOne}
                   onChange={updateField}
@@ -237,11 +236,11 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                   Address line 2 (optional)
                 </label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                   name="AddressTwo"
                   value={form.AddressTwo}
                   onChange={updateField}
@@ -249,11 +248,11 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                   City
                 </label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                   name="City"
                   value={form.City}
                   onChange={updateField}
@@ -262,11 +261,11 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                   Country
                 </label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                   name="Country"
                   value={form.Country}
                   onChange={updateField}
@@ -275,11 +274,11 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300">
                   Postal code
                 </label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full rounded-lg border border-stone-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-800 px-3 py-2 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
                   name="PostalCode"
                   value={form.PostalCode}
                   onChange={updateField}
@@ -291,7 +290,7 @@ export default function RegisterPage() {
           )}
 
           {message && (
-            <div className="rounded-lg bg-gray-100 border border-gray-200 px-4 py-3 text-gray-800">
+            <div className="rounded-lg bg-stone-100 dark:bg-zinc-800 border border-stone-300 dark:border-zinc-700 px-4 py-3 text-stone-800 dark:text-stone-200 text-sm">
               {message}
             </div>
           )}
@@ -299,7 +298,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex justify-center w-full md:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-70 disabled:cursor-not-allowed"
+            className="inline-flex justify-center w-full md:w-auto bg-black dark:bg-white text-white dark:text-black font-semibold px-6 py-3 rounded-lg shadow hover:opacity-90 transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
           >
             {submitting ? 'Submitting...' : 'Create account'}
           </button>

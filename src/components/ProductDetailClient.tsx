@@ -38,7 +38,10 @@ export default function ProductDetailClient({
             onChange={(e) => setSelectedIndex(Number(e.target.value))}
           >
             {variants.map((variant, index) => (
-              <option key={variant.id ?? `${variant.size}-${index}`} value={index}>
+              <option
+                key={variant.id ?? `${variant.size}-${index}`}
+                value={index}
+              >
                 {variant.size}
               </option>
             ))}
@@ -66,8 +69,26 @@ export default function ProductDetailClient({
           />
         </div>
         <button
-          className="flex-1 sm:flex-initial px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded transition text-sm cursor-pointer"
-          onClick={() => addToCart(product, quantity)}
+          className="flex-1 sm:flex-initial px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded transition text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!selectedVariant}
+          onClick={() => {
+            if (!selectedVariant) return
+
+            addToCart(
+              {
+                productId: Number(product.id),
+                productName: String(product.productName),
+                sellerId: product.sellerId,
+                roasterProfileId: product.roasterProfileId,
+                variant: {
+                  variantId: selectedVariant.id ?? 0,
+                  size: selectedVariant.size,
+                  price: selectedVariant.price ?? 0,
+                },
+              },
+              quantity,
+            )
+          }}
         >
           Add to Cart
         </button>

@@ -10,7 +10,7 @@ export default function SearchBar() {
   const initialQuery = searchParams.get('q') || ''
   
   const [query, setQuery] = useState(initialQuery)
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()

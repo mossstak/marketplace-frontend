@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Loader2, ShoppingBag, Sparkles, Store } from 'lucide-react'
+import { Loader2, ShoppingBag, Store } from 'lucide-react'
 import { api } from '@/api/api'
 import { useCart, type CartProduct } from '@/context/CartContext'
 import type { RoasterDetails } from '@/types/roaster'
@@ -198,8 +198,35 @@ const Hero = () => {
                   <div className="flex items-center gap-2 pt-1">
                     <button
                       type="button"
-                      onClick={() => addToCart(featuredProduct, 1)}
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-xs font-bold text-zinc-950 shadow-sm transition hover:bg-amber-300"
+                      onClick={() => {
+                        const firstVariant = (featuredProduct as any)?.variants?.[0]
+                        addToCart(
+                          {
+                            productId: Number(featuredProduct.id),
+                            productName: String(featuredProduct.productName),
+                            sellerId:
+                              (featuredProduct as any)?.sellerId ||
+                              (featuredProduct as any)?.userId ||
+                              roasterInfo?.userId,
+                            roasterProfileId: roasterInfo?.id
+                              ? Number(roasterInfo.id)
+                              : undefined,
+                            variant: {
+                              variantId: firstVariant?.id ?? 0,
+                              size: firstVariant?.size
+                                ? String(firstVariant.size)
+                                : 'Standard',
+                              price: Number(
+                                firstVariant?.price ??
+                                  (featuredProduct as any)?.price ??
+                                  0,
+                              ),
+                            },
+                          },
+                          1,
+                        )
+                      }}
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-xs font-bold text-zinc-950 shadow-sm transition hover:bg-amber-300 cursor-pointer"
                     >
                       <ShoppingBag className="h-4 w-4" /> Quick Add
                     </button>

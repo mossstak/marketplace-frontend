@@ -112,11 +112,11 @@ const Page = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-200">
               First name
             </label>
             <input
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="FirstName"
               value={form.FirstName}
               onChange={updateField}
@@ -125,11 +125,11 @@ const Page = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-200">
               Last name
             </label>
             <input
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="LastName"
               value={form.LastName}
               onChange={updateField}
@@ -141,10 +141,10 @@ const Page = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm font-medium mb-1 text-gray-200">Email</label>
             <input
               type="email"
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="Email"
               value={form.Email}
               onChange={updateField}
@@ -153,10 +153,10 @@ const Page = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Role</label>
+            <label className="block text-sm font-medium mb-1 text-gray-200">Role</label>
             <select
               name="Role"
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               value={form.Role}
               onChange={updateField}
             >
@@ -168,12 +168,12 @@ const Page = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-200">
               Password
             </label>
             <input
               type="password"
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="Password"
               value={form.Password}
               onChange={updateField}
@@ -182,12 +182,12 @@ const Page = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-200">
               Confirm password
             </label>
             <input
               type="password"
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="ConfirmPassword"
               value={form.ConfirmPassword}
               onChange={updateField}
@@ -198,11 +198,11 @@ const Page = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-1 text-gray-200">
             Address line 1
           </label>
           <input
-            className="w-full rounded border p-2"
+            className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
             name="AddressOne"
             value={form.AddressOne}
             onChange={updateField}
@@ -212,11 +212,11 @@ const Page = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-1 text-gray-200">
             Address line 2 (optional)
           </label>
           <input
-            className="w-full rounded border p-2"
+            className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
             name="AddressTwo"
             value={form.AddressTwo}
             onChange={updateField}
@@ -226,9 +226,9 @@ const Page = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">City</label>
+            <label className="block text-sm font-medium mb-1 text-gray-200">City</label>
             <input
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="City"
               value={form.City}
               onChange={updateField}
@@ -237,9 +237,9 @@ const Page = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Country</label>
+            <label className="block text-sm font-medium mb-1 text-gray-200">Country</label>
             <input
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="Country"
               value={form.Country}
               onChange={updateField}
@@ -248,11 +248,11 @@ const Page = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-200">
               Postal code
             </label>
             <input
-              className="w-full rounded border p-2"
+              className="w-full rounded-lg border border-gray-500 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               name="PostalCode"
               value={form.PostalCode}
               onChange={updateField}
@@ -265,7 +265,7 @@ const Page = () => {
         <button
           type="submit"
           disabled={submitting}
-          className="rounded border px-4 py-2 disabled:opacity-50"
+          className="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black hover:bg-gray-200 transition disabled:opacity-50 cursor-pointer"
         >
           {submitting ? 'Creating…' : 'Create user'}
         </button>

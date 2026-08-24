@@ -77,7 +77,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
     }
 
     userName()
-  }, [])
+  }, [router])
 
   if (loading) {
     return (
@@ -137,7 +137,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
           </Link>
 
           <Link
-            href="/orders"
+            href={dashboardHref}
             role="menuitem"
             className="block rounded-lg px-3 py-2 hover:bg-white/10 text-white"
             onClick={() => setOpen(false)}

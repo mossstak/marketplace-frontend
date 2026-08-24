@@ -1,5 +1,5 @@
 export type RoasterForm = {
-  id: string
+  id: string | number
   companyName?: string | null
   bio?: string | null
   city?: string | null
@@ -10,7 +10,7 @@ export type RoasterForm = {
 }
 
 export type RoasterDetails = {
-  id: string
+  id: string | number
   userId: string
   companyName?: string | null
   bio?: string | null

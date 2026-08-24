@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { type ExistingSellerImage } from '@/types/images'
 
 type UploadedImageGalleryProps = {
@@ -34,11 +35,15 @@ export function UploadedImageGallery({
                   selected ? 'border-green-300 bg-green-500/10' : 'border-white/20 bg-white/5'
                 }`}
               >
-                <img
-                  src={img.imageUrl}
-                  alt={`Uploaded image ${img.id}`}
-                  className="w-full aspect-square rounded object-cover"
-                />
+                <div className="relative w-full aspect-square overflow-hidden rounded">
+                  <Image
+                    src={img.imageUrl}
+                    alt={`Uploaded image ${img.id}`}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 640px) 200px, 50vw"
+                  />
+                </div>
                 <span className="flex items-center gap-2">
                   <input
                     type="checkbox"

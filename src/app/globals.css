@@ -125,6 +125,6 @@
   }
 
   .main {
-    @apply min-h-screen w-full bg-[#eae8e0];
+    @apply min-h-screen w-full bg-[#eae8e0] dark:bg-zinc-950 text-stone-900 dark:text-stone-100 transition-colors duration-200;
   }
 }

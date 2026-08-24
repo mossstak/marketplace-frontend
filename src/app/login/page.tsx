@@ -1,16 +1,9 @@
 'use client'
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { api } from '../../api/api'
-import { saveAuth, type Role } from '../../auth/auth'
-
-type LoginResponse = {
-  token: string
-  role: Role
-  email: string
-  expiresAtUtc: string
-}
+import { saveAuth } from '../../auth/auth'
 
 const Login = () => {
   const router = useRouter()

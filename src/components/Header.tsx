@@ -104,37 +104,57 @@ const Header = () => {
 
         {/* Desktop Search Bar */}
         <div className="hidden md:block flex-1 max-w-sm mx-6">
-          <Suspense fallback={<div className="w-full h-10 rounded-full bg-white/10" />}>
+          <Suspense
+            fallback={<div className="w-full h-10 rounded-full bg-white/10" />}
+          >
             <SearchBar />
           </Suspense>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-x-2 shrink-0">
-          <Link href={shoppath()} className={buttonVariants({ variant: 'ghost' })}>
+          <Link
+            href={shoppath()}
+            className={buttonVariants({ variant: 'ghost' })}
+          >
             <p className="text-lg font-semibold">Shop</p>
           </Link>
-          <Link href="/roaster" className={buttonVariants({ variant: 'ghost' })}>
+          <Link
+            href="/roaster"
+            className={buttonVariants({ variant: 'ghost' })}
+          >
             <p className="text-lg font-semibold">Roasters</p>
           </Link>
           {mounted && loggedIn ? (
             <DropdownAccount logout={handleLogout} />
           ) : (
             <>
-              <Link href={registerpath()} className={buttonVariants({ variant: 'ghost' })}>
+              <Link
+                href={registerpath()}
+                className={buttonVariants({ variant: 'ghost' })}
+              >
                 <p className="text-lg font-semibold">Register</p>
               </Link>
-              <Link href={loginpath()} className={buttonVariants({ variant: 'ghost' })}>
+              <Link
+                href={loginpath()}
+                className={buttonVariants({ variant: 'ghost' })}
+              >
                 <p className="text-lg font-semibold">Login</p>
               </Link>
             </>
           )}
           <ThemeSwticher />
-          <Link href="/cart" className={buttonVariants({ variant: 'outline' })}>
-            <h1 className="text-lg font-semibold flex items-center">
-              <LucideShoppingCart className="h-5 w-5" />
-              {cartCount > 0 ? ` (${cartCount})` : ''}
-            </h1>
+          <Link
+            href="/cart"
+            className="relative p-2"
+            aria-label="Shopping Cart"
+          >
+            <LucideShoppingCart className="h-5 w-5" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#b24823] text-[10px] font-bold text-white shadow-sm">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
 
@@ -178,7 +198,9 @@ const Header = () => {
             aria-label="Toggle menu"
             aria-expanded={isOpen}
           >
-            <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+            <div
+              className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+            >
               {isOpen ? (
                 <LucideX className="h-5 w-5 sm:h-6 sm:w-6" />
               ) : (
@@ -192,7 +214,9 @@ const Header = () => {
       {/* Mobile Expandable Search Bar */}
       {searchOpen && (
         <div className="md:hidden px-3 py-2 bg-[#c2865d] dark:bg-zinc-900 border-t border-black/10 dark:border-white/10 animate-in slide-in-from-top-2 duration-200">
-          <Suspense fallback={<div className="w-full h-9 rounded-full bg-white/10" />}>
+          <Suspense
+            fallback={<div className="w-full h-9 rounded-full bg-white/10" />}
+          >
             <SearchBar />
           </Suspense>
         </div>
@@ -274,7 +298,7 @@ const Header = () => {
                   </Link>
 
                   <Link
-                    href="/orders"
+                    href={dashboardHref}
                     className={`${buttonVariants({
                       variant: 'ghost',
                     })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 flex items-center gap-2.5`}

@@ -194,41 +194,41 @@ function EditRow({
   }
 
   return (
-    <tr className="border-b last:border-0">
-      <td className="py-2 pr-4 space-y-1">
+    <tr className="border-b border-gray-700 last:border-0 bg-gray-900/40">
+      <td className="py-2.5 pr-4 space-y-1.5">
         <input
-          className="w-full rounded border p-1"
+          className="w-full rounded border border-gray-500 bg-gray-900 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
           value={form.firstName}
           onChange={(e) => setForm((p) => ({ ...p, firstName: e.target.value }))}
           placeholder="First name"
         />
         <input
-          className="w-full rounded border p-1"
+          className="w-full rounded border border-gray-500 bg-gray-900 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
           value={form.lastName}
           onChange={(e) => setForm((p) => ({ ...p, lastName: e.target.value }))}
           placeholder="Last name"
         />
       </td>
-      <td className="py-2 pr-4 align-top">
+      <td className="py-2.5 pr-4 align-top">
         <input
-          className="w-full rounded border p-1"
+          className="w-full rounded border border-gray-500 bg-gray-900 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
           value={form.email}
           onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
           placeholder="Email"
         />
-        {err && <p className="text-red-500 text-xs mt-1">{err}</p>}
+        {err && <p className="text-red-400 text-xs mt-1">{err}</p>}
       </td>
-      <td className="py-2 pr-4 align-top">{user.roles ? user.roles.join(', ') : '—'}</td>
-      <td className="py-2 pr-4 align-top space-x-3">
+      <td className="py-2.5 pr-4 align-top text-gray-300">{user.roles ? user.roles.join(', ') : '—'}</td>
+      <td className="py-2.5 pr-4 align-top space-x-3 whitespace-nowrap">
         <button
-          className="text-green-600 hover:underline disabled:opacity-50"
+          className="text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer disabled:opacity-50"
           disabled={saving}
           onClick={handleSubmit}
         >
           {saving ? 'Saving…' : 'Save'}
         </button>
         <button
-          className="text-gray-600 hover:underline disabled:opacity-50"
+          className="text-gray-300 hover:text-white font-semibold cursor-pointer disabled:opacity-50"
           disabled={saving}
           onClick={onCancel}
         >
