@@ -6,7 +6,7 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { stripePromise } from '@/lib/stripe'
 
 function CheckoutInnerForm({
@@ -43,14 +43,14 @@ function CheckoutInnerForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
       {errorMessage && (
-        <div className="text-sm text-red-500 bg-red-50 p-2.5 rounded border border-red-200">
+        <div className="text-sm text-red-500 bg-red-50 dark:bg-red-950/40 p-2.5 rounded border border-red-200 dark:border-red-900/40">
           {errorMessage}
         </div>
       )}
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:opacity-90 disabled:opacity-50"
+        className="w-full py-3 bg-black dark:bg-white text-white dark:text-black font-semibold rounded-lg hover:opacity-90 disabled:opacity-50 transition cursor-pointer"
       >
         {processing ? 'Processing Payment...' : 'Pay Now'}
       </button>
@@ -65,8 +65,10 @@ export default function StripeCheckoutWrapper({
   clientSecret: string
   onSuccess: (paymentIntentId: string) => void
 }) {
+  const options = useMemo(() => ({ clientSecret }), [clientSecret])
+
   return (
-    <Elements stripe={stripePromise} options={{ clientSecret }}>
+    <Elements key={clientSecret} stripe={stripePromise} options={options}>
       <CheckoutInnerForm onSuccess={onSuccess} />
     </Elements>
   )

@@ -80,7 +80,7 @@ export default function SellerDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Roaster Profile Card */}
         <div className="bg-gray-900/60 border border-gray-700/60 p-5 rounded-xl space-y-3">
-          <h2 className="text-lg font-bold text-white uppercase tracking-wider text-xs">Roaster Profile</h2>
+          <h2 className="text-lg font-bold text-white uppercase tracking-wider">Roaster Profile</h2>
           <div>
             <p className="font-semibold text-lg text-amber-300">
               {profile?.companyName || 'Profile Incomplete'}
@@ -98,7 +98,7 @@ export default function SellerDashboardPage() {
 
         {/* Address Card */}
         <div className="bg-gray-900/60 border border-gray-700/60 p-5 rounded-xl space-y-3">
-          <h2 className="text-lg font-bold text-white uppercase tracking-wider text-xs">Address</h2>
+          <h2 className="text-lg font-bold text-white uppercase tracking-wider">Address</h2>
           <div className="space-y-1 text-sm text-gray-300">
             <p>{details.addressOne ?? 'N/A'}</p>
             {details.addressTwo && <p>{details.addressTwo}</p>}

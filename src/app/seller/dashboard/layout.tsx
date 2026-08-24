@@ -49,33 +49,43 @@ export default function SellerDashboardLayout({
 
       <DashboardPage
         sidebar={
-          <div className="space-y-2">
+          <div className="space-y-1.5">
+            <Link
+              href="/seller/dashboard"
+              className={`block rounded-lg px-3 py-2 text-sm transition ${
+                pathname === '/seller/dashboard'
+                  ? 'bg-white/20 font-bold text-white'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+              }`}
+            >
+              Dashboard Overview
+            </Link>
             <Link
               href="/seller/dashboard/create-products"
-              className={`block rounded px-2 py-1 ${
+              className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/create-products'
-                  ? 'bg-white/20 font-bold'
-                  : 'bg-white/5'
+                  ? 'bg-white/20 font-bold text-white'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
               }`}
             >
               Create Products
             </Link>
             <Link
               href="/seller/dashboard/edit-products"
-              className={`block rounded px-2 py-1 ${
+              className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/edit-products'
-                  ? 'bg-white/20 font-bold'
-                  : 'bg-white/5'
+                  ? 'bg-white/20 font-bold text-white'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
               }`}
             >
               Edit Products
             </Link>
             <Link
               href="/seller/dashboard/view-products"
-              className={`block rounded px-2 py-1 ${
+              className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/view-products'
-                  ? 'bg-white/20 font-bold'
-                  : 'bg-white/5'
+                  ? 'bg-white/20 font-bold text-white'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
               }`}
             >
               View Products
@@ -83,13 +93,24 @@ export default function SellerDashboardLayout({
 
             <Link
               href="/seller/dashboard/profile"
-              className={`block rounded px-2 py-1 ${
+              className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/profile'
-                  ? 'bg-white/20 font-bold'
-                  : 'bg-white/5'
+                  ? 'bg-white/20 font-bold text-white'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
               }`}
             >
               Edit Profile
+            </Link>
+
+            <Link
+              href="/seller/dashboard/payouts"
+              className={`block rounded-lg px-3 py-2 text-sm transition ${
+                pathname === '/seller/dashboard/payouts'
+                  ? 'bg-white/20 font-bold text-white'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+              }`}
+            >
+              Payouts & Stripe
             </Link>
           </div>
         }
