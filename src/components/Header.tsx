@@ -97,7 +97,6 @@ const Header = () => {
           href={homepath()}
           className="shrink min-w-0 flex items-center gap-1.5 sm:gap-2 px-1 py-1 rounded hover:bg-black/5 dark:hover:bg-white/5 transition"
         >
-          <Coffee className="h-5 w-5 shrink-0 text-amber-900 dark:text-amber-300" />
           <h1 className=" sm:text-lg font-bold tracking-tight text-stone-900 dark:text-white truncate">
             Roaster's Market
           </h1>
