@@ -16,7 +16,7 @@ const Cart: React.FC = () => {
         </p>
         <Link
           href="/shop"
-          className="inline-flex items-center justify-center rounded-lg bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-black"
+          className="inline-flex items-center justify-center rounded-lg bg-black px-5 py-2.5 text-sm font-semibold transition hover:bg-zinc-800 dark:bg-white dark:text-black"
         >
           Explore Shop
         </Link>
@@ -96,7 +96,7 @@ const Cart: React.FC = () => {
 
           <Link
             href="/checkout"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition"
+            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold hover:bg-blue-700 transition"
           >
             Proceed to Checkout
           </Link>
