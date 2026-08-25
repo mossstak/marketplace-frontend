@@ -123,7 +123,13 @@ export default function SellerProducts() {
                     ))}
                   </div>
                 </td>
-                <td className="px-4 py-2 border border-gray-700">
+                <td className="px-4 py-2 border flex flex-col justify-center border-gray-700 space-x-3">
+                  <Link
+                    href={`/seller/dashboard/edit-products/${product.id}`}
+                    className="text-amber-400 hover:underline cursor-pointer"
+                  >
+                    Edit
+                  </Link>
                   <button
                     className="text-red-400 hover:underline cursor-pointer"
                     onClick={() => handleDelete(product.id)}
