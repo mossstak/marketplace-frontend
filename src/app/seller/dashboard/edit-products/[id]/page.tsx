@@ -4,6 +4,10 @@ import { useEffect, useState, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { api } from '@/api/api'
+import { useSellerImagePicker } from '@/hooks/useSellerImagePicker'
+import { UploadedImageGallery } from '@/components/images/UploadedImageGallery'
+import { NewUploadPicker } from '@/components/images/NewUploadPicker'
+import { PrimaryImageSelector } from '@/components/images/PrimaryImageSelector'
 
 interface VariantFormItem {
   id?: number
@@ -33,6 +37,22 @@ export default function EditProductPage({ params }: EditProductPageProps) {
   const [roastDate, setRoastDate] = useState('')
   const [variants, setVariants] = useState<VariantFormItem[]>([])
 
+  const {
+    uploadedImages,
+    selectedUploadedImageIds,
+    imageFiles,
+    loadingUploaded,
+    uploadedLoadError,
+    imageUploading,
+    imageError,
+    primaryImageChoice,
+    setPrimaryImageChoice,
+    setNewImageFiles,
+    toggleUploadedImageSelection,
+    prepareSubmissionImages,
+    resetImagePicker,
+  } = useSellerImagePicker()
+
   const [attributeIds, setAttributeIds] = useState({
     roastLevelId: 1,
     coffeeProcessId: 1,
@@ -54,11 +74,9 @@ export default function EditProductPage({ params }: EditProductPageProps) {
         setProductName(data.productName ?? '')
         setProductDescription(data.productDescription ?? '')
         setTastingNotes(data.tastingNotes ?? '')
-
         if (data.roastDate) {
           setRoastDate(new Date(data.roastDate).toISOString().split('T')[0])
         }
-
         setVariants(
           (data.variants ?? []).map((v: any) => ({
             id: v.id,
@@ -67,7 +85,6 @@ export default function EditProductPage({ params }: EditProductPageProps) {
             quantity: v.quantity ?? 0,
           })),
         )
-
         if (data.roastLevelId) {
           setAttributeIds({
             roastLevelId: data.roastLevelId,
@@ -79,6 +96,10 @@ export default function EditProductPage({ params }: EditProductPageProps) {
             altitudeId: data.altitudeId,
           })
         }
+
+        if (data.primaryImageId && setPrimaryImageChoice) {
+          setPrimaryImageChoice(`existing:${data.primaryImageId}`)
+        }
       } catch (err: any) {
         setError(
           err?.response?.data?.message || 'Failed to fetch product details.',
@@ -87,8 +108,17 @@ export default function EditProductPage({ params }: EditProductPageProps) {
         setLoading(false)
       }
     }
+
     fetchProduct()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId])
+
+  useEffect(() => {
+    return () => {
+      resetImagePicker()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const updateVariantField = (
     index: number,
@@ -115,6 +145,23 @@ export default function EditProductPage({ params }: EditProductPageProps) {
     setError('')
     setSuccess('')
 
+    let imageIds: number[] = []
+    let primaryImageId: number | null = null
+
+    try {
+      const prepared = await prepareSubmissionImages()
+      imageIds = prepared.imageIds
+      primaryImageId = prepared.primaryImageId
+    } catch (imagePrepareError: unknown) {
+      const msg =
+        imagePrepareError instanceof Error
+          ? imagePrepareError.message
+          : 'Image upload failed.'
+      setError(msg)
+      setSaving(false)
+      return
+    }
+
     const payload = {
       productName: productName.trim(),
       productDescription: productDescription.trim(),
@@ -136,6 +183,8 @@ export default function EditProductPage({ params }: EditProductPageProps) {
         price: Number(v.price),
         quantity: Number(v.quantity),
       })),
+      imageIds: imageIds,
+      primaryImageId: primaryImageId,
     }
 
     try {
@@ -176,6 +225,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
           {error}
         </div>
       )}
+
       {success && (
         <div className="p-3 bg-emerald-950/50 border border-emerald-500/50 rounded-lg text-emerald-300 text-sm">
           {success}
@@ -245,7 +295,6 @@ export default function EditProductPage({ params }: EditProductPageProps) {
               + Add Variant
             </button>
           </div>
-
           <div className="space-y-2">
             {variants.map((v, index) => (
               <div
@@ -268,7 +317,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
                 </div>
                 <div className="col-span-3">
                   <label className="text-[10px] text-gray-400 uppercase">
-                    Price (£)
+                    Price ($)
                   </label>
                   <input
                     className="w-full rounded bg-gray-800 border border-gray-700 p-2 text-sm text-white focus:outline-none"
@@ -312,12 +361,35 @@ export default function EditProductPage({ params }: EditProductPageProps) {
           </div>
         </div>
 
+        <div className="space-y-5 bg-gray-900/60 p-4 rounded-xl border border-gray-700">
+          <UploadedImageGallery
+            uploadedImages={uploadedImages}
+            selectedImageIds={selectedUploadedImageIds}
+            loading={loadingUploaded}
+            error={uploadedLoadError}
+            onToggle={toggleUploadedImageSelection}
+          />
+          <hr className="border-gray-700" />
+          <NewUploadPicker
+            imageFiles={imageFiles}
+            imageError={imageError}
+            onFilesChange={setNewImageFiles}
+          />
+          <PrimaryImageSelector
+            uploadedImages={uploadedImages}
+            selectedUploadedImageIds={selectedUploadedImageIds}
+            imageFiles={imageFiles}
+            primaryImageChoice={primaryImageChoice}
+            onChange={setPrimaryImageChoice}
+          />
+        </div>
+
         <button
           type="submit"
-          disabled={saving}
+          disabled={saving || imageUploading}
           className="w-full sm:w-auto px-6 py-2.5 bg-amber-400 text-zinc-950 font-bold rounded-lg hover:bg-amber-300 transition disabled:opacity-50 cursor-pointer"
         >
-          {saving ? 'Saving Changes...' : 'Save Product'}
+          {saving || imageUploading ? 'Saving Changes...' : 'Save Product'}
         </button>
       </form>
     </div>
