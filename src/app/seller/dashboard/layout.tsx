@@ -71,16 +71,6 @@ export default function SellerDashboardLayout({
               Create Products
             </Link>
             <Link
-              href="/seller/dashboard/edit-products"
-              className={`block rounded-lg px-3 py-2 text-sm transition ${
-                pathname === '/seller/dashboard/edit-products'
-                  ? 'bg-white/20 font-bold text-white'
-                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
-              }`}
-            >
-              Edit Products
-            </Link>
-            <Link
               href="/seller/dashboard/view-products"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/view-products'

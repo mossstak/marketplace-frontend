@@ -86,7 +86,7 @@ export default function SellerProfilePage() {
   if (loading) return <div className="p-6 text-gray-200">Loading profile…</div>
 
   return (
-    <div className="p-4 sm:p-6 max-w-3xl w-full mx-auto bg-gray-800/80 border border-gray-700/80 rounded-2xl shadow-lg">
+    <div className="p-4 sm:p-6 max-w-3xl w-full mx-auto mt-25 bg-gray-800/80 border border-gray-700/80 rounded-2xl shadow-lg">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-700">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-white">Roaster Profile</h1>
@@ -141,7 +141,7 @@ export default function SellerProfilePage() {
         <div>
           <label className="block text-sm font-medium mb-1 text-gray-200">Bio</label>
           <textarea
-            className="w-full rounded-lg border border-gray-600 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-[110px] disabled:opacity-75 disabled:bg-gray-900/50"
+            className="w-full rounded-lg border border-gray-600 bg-gray-900 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-27.5 disabled:opacity-75 disabled:bg-gray-900/50"
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             placeholder="Tell customers about your roastery…"
