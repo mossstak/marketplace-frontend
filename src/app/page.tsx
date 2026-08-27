@@ -15,7 +15,7 @@ export default async function Page() {
     return <div className="p-6 text-center">Failed to load roasters.</div>
   }
   return (
-    <div className="min-h-screen font-sans bg-[#d1966e] dark:bg-neutral-900 text-stone-900 dark:text-stone-100 antialiased transition-colors duration-200">
+    <div className="min-h-screen font-sans bg-background/25 dark:bg-background text-foreground/50 dark:text-stone-100 antialiased transition-colors duration-200">
       {/* Hero Section */}
       <section className="w-full">
         <Hero />

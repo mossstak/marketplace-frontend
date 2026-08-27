@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { api } from '@/api/api'
 import { type ProductDetails } from '@/types/product'
 import { type RoasterDetails } from '@/types/roaster'
@@ -93,24 +94,50 @@ export default async function Page({ searchParams }: ShopPageProps) {
             ''
           const roasterName = roasterMap.get(sellerId)
 
+          // 1. Resolve primary or first available image
+          const primaryImage =
+            (product.images ?? []).find((img) => img.isPrimary && img.imageUrl)
+              ?.imageUrl ||
+            (product.images ?? [])[0]?.imageUrl ||
+            null
+
           return (
             <Card
-              className="w-full max-w-sm rounded border border-gray-300 dark:border-zinc-700 p-4"
+              className="w-full max-w-sm rounded-xl border border-gray-300 dark:border-zinc-700 p-4 flex flex-col justify-between overflow-hidden"
               key={productId ?? name}
             >
-              <CardTitle className="font-bold mb-1">{name}</CardTitle>
+              <div>
+                {/* 2. Product Image Preview */}
+                <div className="relative aspect-square w-full mb-4 overflow-hidden rounded-lg bg-stone-100 dark:bg-zinc-800 dark:border-zinc-700">
+                  {primaryImage ? (
+                    <Image
+                      src={primaryImage}
+                      alt={name}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-xs text-stone-400">
+                      No image available
+                    </div>
+                  )}
+                </div>
 
-              {roasterName && (
-                <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">
-                  Roasted by <span className="font-medium">{roasterName}</span>
-                </p>
-              )}
+                <CardTitle className="font-bold mb-1 line-clamp-1">{name}</CardTitle>
 
-              <div className="flex items-center justify-between text-sm mt-2">
-                <span>{product.category ?? 'Uncategorized'}</span>
-                {minPrice !== null && (
-                  <span className="font-semibold">£{minPrice.toFixed(2)}</span>
+                {roasterName && (
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">
+                    Roasted by <span className="font-medium">{roasterName}</span>
+                  </p>
                 )}
+
+                <div className="flex items-center justify-between text-sm mt-2">
+                  <span>{product.category ?? 'Uncategorized'}</span>
+                  {minPrice !== null && (
+                    <span className="font-semibold">£{minPrice.toFixed(2)}</span>
+                  )}
+                </div>
               </div>
 
               {productId !== undefined ? (

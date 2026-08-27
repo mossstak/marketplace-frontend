@@ -8,7 +8,7 @@ export default function SearchBar() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const initialQuery = searchParams.get('q') || ''
-  
+
   const [query, setQuery] = useState(initialQuery)
   const [, startTransition] = useTransition()
 
@@ -31,15 +31,18 @@ export default function SearchBar() {
   }
 
   return (
-    <form onSubmit={handleSearch} className="relative w-full max-w-xs sm:max-w-sm">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50" />
-      
+    <form
+      onSubmit={handleSearch}
+      className="relative w-full max-w-xs sm:max-w-sm"
+    >
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-black/50" />
+
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search Origins, Roaster..."
-        className="w-full h-10 rounded-full bg-black/20 border border-white/15 pl-9 pr-8 py-1.5 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
+        className="w-full h-10 rounded-full bg-background border border-foreground/15 pl-9 pr-8 py-1.5 text-xs sm:text-sm text-black placeholder-black/50 dark:placeholder-white/75 focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
       />
 
       {query && (
