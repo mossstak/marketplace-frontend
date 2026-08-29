@@ -1,36 +1,14 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Marketplace Frontend
 
-## Getting Started
+A coffee marketplace application built with ASP.NET Core (.NET 10). Roasters can list and manage their coffee products, Coffee Enthusiast can browse and purchase, With Admin (Me) can oversee the platform.
+Purpose of the application is to make it affordable for Roasters, finding better solutions to make a better profitable for them while it's also affordable for buyers
 
-First, run the development server:
+> Created by [Mostak Khan](https://github.com/mossstak) — built to combine a passion for coffee with frontend development. The backend (.NET (C#)) lives at [marketplace-backend](https://github.com/mossstak/marketplace-api) This is the the link to the backend (https://roastersmarket.onrender.com/swagger/index.html).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech Stack
+- ASP.NET Framework (C#) for RestfulAPI
+- Postgres for Database
+- Cloudinary for Images
+- Stripe Connect for Payment and Onboarding Process
+- NextJS for Frotend
+- TailwindCSS for Styling
