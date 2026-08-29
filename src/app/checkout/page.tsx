@@ -13,6 +13,9 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // ADDED: State to hold the address from the Stripe Address Element
+  const [shippingAddress, setShippingAddress] = useState<any>(null)
+
   const totalPrice = cart.reduce(
     (sum, item) => sum + (item.variant?.price ?? 0) * item.quantity,
     0,
@@ -32,13 +35,16 @@ export default function CheckoutPage() {
           return
         }
 
-        // Grab roasterProfileId from cart items
         const roasterProfileId =
-          cart.find((i) => typeof i.roasterProfileId === 'number' && i.roasterProfileId > 0)
-            ?.roasterProfileId ?? cart[0]?.roasterProfileId
+          cart.find(
+            (i) =>
+              typeof i.roasterProfileId === 'number' && i.roasterProfileId > 0,
+          )?.roasterProfileId ?? cart[0]?.roasterProfileId
 
         if (!roasterProfileId) {
-          setError('Unable to identify the roaster for this order. Please return to the shop and add the item again.')
+          setError(
+            'Unable to identify the roaster for this order. Please return to the shop and add the item again.',
+          )
           setLoading(false)
           return
         }
@@ -85,12 +91,18 @@ export default function CheckoutPage() {
 
   const handlePaymentSuccess = async () => {
     try {
-      // Record the order on your backend database
+      // ADDED: Pass the shipping address from state alongside the items
       await api.post('/Order/place', {
         items: cart.map((i) => ({
           variantId: i.variant.variantId,
           quantity: i.quantity,
         })),
+        shippingAddressLine1: shippingAddress?.line1 || '',
+        shippingAddressLine2: shippingAddress?.line2 || null,
+        shippingCity: shippingAddress?.city || '',
+        shippingStateOrProvince: shippingAddress?.state || null,
+        postalCode: shippingAddress?.postal_code || '',
+        shippingCountry: shippingAddress?.country || 'GB',
       })
 
       clearCart()
@@ -139,6 +151,10 @@ export default function CheckoutPage() {
           <StripeCheckoutWrapper
             clientSecret={clientSecret}
             onSuccess={handlePaymentSuccess}
+            // ADDED: Capture the address as the user types it in the Stripe Element
+            onAddressChange={(eventValue) =>
+              setShippingAddress(eventValue.address)
+            }
           />
         </div>
       )}

@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  AddressElement,
   Elements,
   PaymentElement,
   useElements,
@@ -9,11 +10,15 @@ import {
 import { useMemo, useState } from 'react'
 import { stripePromise } from '@/lib/stripe'
 
+interface CheckoutInnerFormProps {
+  onSuccess: (paymentIntentId: string) => void
+  onAddressChange?: (address: any) => void
+}
+
 function CheckoutInnerForm({
   onSuccess,
-}: {
-  onSuccess: (paymentIntentId: string) => void
-}) {
+  onAddressChange,
+}: CheckoutInnerFormProps) {
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -25,6 +30,18 @@ function CheckoutInnerForm({
 
     setProcessing(true)
     setErrorMessage(null)
+
+    const addressElement = elements.getElement('address')
+    if (addressElement) {
+      const addressResult = await addressElement.getValue()
+      if (!addressResult.complete) {
+        setErrorMessage(
+          'Please complete all required address fields for tax calculation.',
+        )
+        setProcessing(false)
+        return
+      }
+    }
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
@@ -40,13 +57,39 @@ function CheckoutInnerForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <PaymentElement />
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* 1. Stripe Address Element (Calculates Tax Jurisdiction) */}
+      <div className="space-y-2">
+        <h3 className="text-sm font-semibold text-stone-900 dark:text-stone-100">
+          Shipping Address
+        </h3>
+        <AddressElement
+          options={{
+            mode: 'shipping',
+            allowedCountries: ['GB', 'US', 'CA', 'IE', 'DE', 'FR'],
+          }}
+          onChange={(event) => {
+            if (event.complete && onAddressChange) {
+              onAddressChange(event.value)
+            }
+          }}
+        />
+      </div>
+
+      {/* 2. Stripe Payment Element (Cards, Apple Pay, Google Pay) */}
+      <div className="space-y-2">
+        <h3 className="text-sm font-semibold text-stone-900 dark:text-stone-100">
+          Payment Details
+        </h3>
+        <PaymentElement />
+      </div>
+
       {errorMessage && (
         <div className="text-sm text-red-500 bg-red-50 dark:bg-red-950/40 p-2.5 rounded border border-red-200 dark:border-red-900/40">
           {errorMessage}
         </div>
       )}
+
       <button
         type="submit"
         disabled={!stripe || processing}
@@ -61,15 +104,17 @@ function CheckoutInnerForm({
 export default function StripeCheckoutWrapper({
   clientSecret,
   onSuccess,
+  onAddressChange,
 }: {
   clientSecret: string
   onSuccess: (paymentIntentId: string) => void
+  onAddressChange?: (address: any) => void
 }) {
   const options = useMemo(() => ({ clientSecret }), [clientSecret])
 
   return (
     <Elements key={clientSecret} stripe={stripePromise} options={options}>
-      <CheckoutInnerForm onSuccess={onSuccess} />
+      <CheckoutInnerForm onSuccess={onSuccess} onAddressChange={onAddressChange}/>
     </Elements>
   )
 }
