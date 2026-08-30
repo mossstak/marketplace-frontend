@@ -82,6 +82,17 @@ export default function SellerDashboardLayout({
             </Link>
 
             <Link
+              href="/seller/dashboard/order"
+              className={`block rounded-lg px-3 py-2 text-sm transition ${
+                pathname === '/seller/dashboard/order'
+                  ? 'bg-white/20 font-bold text-white'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+              }`}
+            >
+              Check Orders
+            </Link>
+
+            <Link
               href="/seller/dashboard/profile"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/profile'
