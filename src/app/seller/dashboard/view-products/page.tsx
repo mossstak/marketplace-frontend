@@ -59,8 +59,8 @@ export default function SellerProducts() {
         </Link>
       </div>
       <div className="overflow-x-auto rounded-xl border border-gray-700 bg-gray-800/50 shadow-sm">
-        <table className="min-w-[600px] w-full divide-y divide-gray-700 text-sm">
-          <thead className="bg-gray-800 text-left">
+        <table className="min-w-150 w-full divide-y text-justify divide-gray-700 text-sm">
+          <thead className="bg-gray-800 text-center">
             <tr>
               <th className="px-4 py-3 border-b border-gray-700">Image</th>
               <th className="px-4 py-3 border-b border-gray-700">Name</th>
@@ -98,7 +98,7 @@ export default function SellerProducts() {
                 </td>
 
                 <td className="px-4 py-2 border border-gray-700">
-                  <div className="text-xs bg-gray-800 rounded p-2 min-w-[200px]">
+                  <div className="text-xs bg-gray-800 rounded p-2 min-w-50">
                     {/* Table Header */}
                     <div className="grid grid-cols-3 gap-2 font-semibold text-gray-400 border-b border-gray-700 pb-1 mb-1">
                       <span>Weight</span>
@@ -123,19 +123,21 @@ export default function SellerProducts() {
                     ))}
                   </div>
                 </td>
-                <td className="px-4 py-2 border flex flex-col justify-center border-gray-700 space-x-3">
-                  <Link
-                    href={`/seller/dashboard/edit-products/${product.id}`}
-                    className="text-amber-400 hover:underline cursor-pointer"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    className="text-red-400 hover:underline cursor-pointer"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    Delete
-                  </button>
+                <td className="px-4 py-2 border border-gray-700">
+                  <div className="flex flex-col items-center justify-center w-full gap-1">
+                    <Link
+                      href={`/seller/dashboard/edit-products/${product.id}`}
+                      className="w-full text-center text-amber-400 hover:underline cursor-pointer"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      className="w-full text-center text-red-400 hover:underline cursor-pointer"
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
