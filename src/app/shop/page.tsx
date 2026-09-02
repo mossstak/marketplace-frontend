@@ -103,49 +103,51 @@ export default async function Page({ searchParams }: ShopPageProps) {
 
           return (
             <Card
-              className="w-full max-w-sm rounded-xl border border-gray-300 dark:border-zinc-700 p-4 flex flex-col justify-between overflow-hidden"
+              className="w-full max-w-sm rounded-xl border border-gray-300 dark:border-zinc-700 p-4 flex flex-col justify-between overflow-hidden hover:shadow-sm hover:shadow-black"
               key={productId ?? name}
             >
-              <div>
-                {/* 2. Product Image Preview */}
-                <div className="relative aspect-square w-full mb-4 overflow-hidden rounded-lg bg-stone-100 dark:bg-zinc-800 dark:border-zinc-700">
-                  {primaryImage ? (
-                    <Image
-                      src={primaryImage}
-                      alt={name}
-                      fill
-                      className="object-cover transition-transform duration-300 hover:scale-105"
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs text-stone-400">
-                      No image available
-                    </div>
-                  )}
-                </div>
-
-                <CardTitle className="font-bold mb-1 line-clamp-1">{name}</CardTitle>
-
-                {roasterName && (
-                  <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">
-                    Roasted by <span className="font-medium">{roasterName}</span>
-                  </p>
-                )}
-
-                <div className="flex items-center justify-between text-sm mt-2">
-                  <span>{product.category ?? 'Uncategorized'}</span>
-                  {minPrice !== null && (
-                    <span className="font-semibold">£{minPrice.toFixed(2)}</span>
-                  )}
-                </div>
-              </div>
-
               {productId !== undefined ? (
                 <Link
                   href={`/shop/${productId}`}
-                  className="mt-4 inline-block text-blue-600 dark:text-amber-300 underline font-medium"
                 >
-                  View details
+                  <div>
+                    {/* 2. Product Image Preview */}
+                    <div className="relative aspect-square w-full mb-4 overflow-hidden rounded-lg bg-stone-100 dark:bg-zinc-800 dark:border-zinc-700">
+                      {primaryImage ? (
+                        <Image
+                          src={primaryImage}
+                          alt={name}
+                          fill
+                          className="object-cover transition-transform duration-300 hover:scale-105"
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xs text-stone-400">
+                          No image available
+                        </div>
+                      )}
+                    </div>
+
+                    <CardTitle className="font-bold mb-1 line-clamp-1">
+                      {name}
+                    </CardTitle>
+
+                    {roasterName && (
+                      <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">
+                        Roasted by{' '}
+                        <span className="font-medium">{roasterName}</span>
+                      </p>
+                    )}
+
+                    <div className="flex items-center justify-between text-sm mt-2">
+                      <span>{product.category ?? 'Uncategorized'}</span>
+                      {minPrice !== null && (
+                        <span className="font-semibold">
+                          £{minPrice.toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </Link>
               ) : (
                 <p className="mt-4 text-sm text-gray-500">

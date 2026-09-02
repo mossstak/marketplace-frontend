@@ -23,12 +23,16 @@ import { ThemeSwticher } from './theme/theme-switcher'
 import { buttonVariants } from './ui/button'
 import DropdownAccount from './DropdownAccount'
 import { clearAuth, getRole, isLoggedIn } from '@/auth/auth'
+import Cart from './Cart'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const { cart } = useCart()
+
+  // 1. Destructure openCart along with cart
+  const { cart, openCart } = useCart()
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
+
   const router = useRouter()
   const pathname = usePathname()
   const [loggedIn, setLoggedIn] = useState(false)
@@ -89,23 +93,23 @@ const Header = () => {
         : '/buyer/dashboard'
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 bg-background dark:bg-background transition-colors duration-200">
+    <nav className="sticky top-0 left-0 right-0 z-50 bg-background border-b-5 border-[#441a1a]/60 shadow-sm transition-colors duration-200">
       {/* Main Navigation Bar */}
       <div className="flex items-center justify-between px-2.5 py-2.5 sm:p-4 max-w-7xl mx-auto">
-        {/* Brand / Logo */}
         <Link
           href={homepath()}
-          className="shrink min-w-0 flex items-center gap-1.5 sm:gap-2 px-1 py-1 rounded hover:bg-black/5 dark:hover:bg-white/5 transition"
+          className="shrink min-w-0 flex items-center gap-1.5 sm:gap-2 px-1.5 py-1 rounded-md hover:bg-muted/60 transition"
         >
-          <h1 className=" sm:text-lg font-bold tracking-tight text-stone-900 dark:text-white truncate">
+          <h1 className="sm:text-lg font-bold tracking-tight text-foreground truncate">
             Roaster's Market
           </h1>
         </Link>
 
-        {/* Desktop Search Bar */}
         <div className="hidden md:block flex-1 max-w-sm mx-6">
           <Suspense
-            fallback={<div className="w-full h-10 rounded-full bg-white/10" />}
+            fallback={
+              <div className="w-full h-10 rounded-full bg-muted/40 animate-pulse" />
+            }
           >
             <SearchBar />
           </Suspense>
@@ -117,13 +121,17 @@ const Header = () => {
             href={shoppath()}
             className={buttonVariants({ variant: 'ghost' })}
           >
-            <p className="text-lg font-semibold">Shop</p>
+            <span className="text-base font-medium text-foreground/90 hover:text-foreground">
+              Shop
+            </span>
           </Link>
           <Link
             href="/roaster"
             className={buttonVariants({ variant: 'ghost' })}
           >
-            <p className="text-lg font-semibold">Roasters</p>
+            <span className="text-base font-medium text-foreground/90 hover:text-foreground">
+              Roasters
+            </span>
           </Link>
           {mounted && loggedIn ? (
             <DropdownAccount logout={handleLogout} />
@@ -133,68 +141,74 @@ const Header = () => {
                 href={registerpath()}
                 className={buttonVariants({ variant: 'ghost' })}
               >
-                <p className="text-lg font-semibold">Register</p>
+                <span className="text-base font-medium text-foreground/90 hover:text-foreground">
+                  Register
+                </span>
               </Link>
               <Link
                 href={loginpath()}
                 className={buttonVariants({ variant: 'ghost' })}
               >
-                <p className="text-lg font-semibold">Login</p>
+                <span className="text-base font-medium text-foreground/90 hover:text-foreground">
+                  Login
+                </span>
               </Link>
             </>
           )}
           <ThemeSwticher />
-          <Link
-            href="/cart"
-            className="relative p-2"
+
+          {/* Desktop Cart Button */}
+          <button
+            type="button"
+            onClick={openCart}
+            className="relative p-2 text-foreground/90 hover:text-foreground hover:bg-muted/60 rounded-md transition"
             aria-label="Shopping Cart"
           >
             <LucideShoppingCart className="h-5 w-5" />
             {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#b24823] text-[10px] font-bold text-white shadow-sm">
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c27d38] text-[10px] font-bold text-white shadow-sm">
                 {cartCount}
               </span>
             )}
-          </Link>
+          </button>
         </div>
 
         {/* Mobile Action Controls */}
         <div className="flex md:hidden items-center gap-0.5 sm:gap-1 shrink-0">
-          {/* Mobile Search Toggle */}
           <button
             type="button"
             onClick={toggleSearch}
-            className="p-1.5 sm:p-2 rounded-lg text-stone-900 dark:text-stone-100 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            className="p-1.5 sm:p-2 rounded-lg text-foreground hover:bg-muted/60 transition-colors"
             aria-label="Toggle search bar"
             aria-expanded={searchOpen}
           >
             <Search className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
 
-          {/* Mobile Theme Toggle */}
           <div className="scale-75 sm:scale-90 origin-center">
             <ThemeSwticher />
           </div>
 
           {/* Mobile Cart Button */}
-          <Link
-            href="/cart"
-            className="relative p-1.5 sm:p-2 rounded-lg text-stone-900 dark:text-stone-100 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+          <button
+            type="button"
+            onClick={openCart}
+            className="relative p-1.5 sm:p-2 rounded-lg text-foreground hover:bg-muted/60 transition-colors"
             aria-label="Shopping Cart"
           >
             <LucideShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
             {cartCount > 0 && (
-              <span className="absolute 0 top-0.5 right-0.5 flex h-3.5 w-3.5 sm:h-4 sm:w-4 items-center justify-center rounded-full bg-amber-400 text-[9px] sm:text-[10px] font-black text-black">
+              <span className="absolute top-0 right-0 flex h-3.5 w-3.5 sm:h-4 sm:w-4 items-center justify-center rounded-full bg-primary text-[9px] sm:text-[10px] font-bold text-primary-foreground">
                 {cartCount}
               </span>
             )}
-          </Link>
+          </button>
 
-          {/* Mobile Hamburger / Close Button */}
+          {/* Mobile Hamburger Button */}
           <button
             type="button"
             onClick={toggleMenu}
-            className="p-1.5 sm:p-2 rounded-lg text-stone-900 dark:text-stone-100 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            className="p-1.5 sm:p-2 rounded-lg text-foreground hover:bg-muted/60 transition-colors"
             aria-label="Toggle menu"
             aria-expanded={isOpen}
           >
@@ -213,95 +227,82 @@ const Header = () => {
 
       {/* Mobile Expandable Search Bar */}
       {searchOpen && (
-        <div className="md:hidden px-3 py-2 bg-[#c2865d] dark:bg-zinc-900 border-t border-black/10 dark:border-white/10 animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden px-4 py-2.5 bg-card border-t border-border animate-in slide-in-from-top-2 duration-200">
           <Suspense
-            fallback={<div className="w-full h-9 rounded-full bg-white/10" />}
+            fallback={
+              <div className="w-full h-9 rounded-full bg-muted/50 animate-pulse" />
+            }
           >
             <SearchBar />
           </Suspense>
         </div>
       )}
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer Menu */}
       {isOpen && (
-        <div className="md:hidden bg-[#c98e67] dark:bg-zinc-950 border-t border-black/10 dark:border-white/10 max-h-[calc(100vh-60px)] overflow-y-auto transform transition-all duration-300 shadow-2xl">
+        <div className="md:hidden bg-card border-t border-border max-h-[calc(100vh-60px)] overflow-y-auto transform transition-all duration-300 shadow-xl">
           <div className="p-4 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-black/10 dark:border-white/10">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
               <Link
                 href={homepath()}
-                className={`${buttonVariants({ variant: 'outline', size: 'sm' })} flex items-center gap-1.5`}
+                className={`${buttonVariants({ variant: 'outline', size: 'sm' })} flex items-center gap-1.5 border-border`}
                 onClick={() => setIsOpen(false)}
               >
                 <LucideHome className="h-4 w-4" />
                 <span>Home</span>
               </Link>
               {mounted && loggedIn && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-400/30 text-amber-950 dark:text-amber-300 border border-amber-500/30">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/15 text-primary border border-primary/20">
                   {role ?? 'User'}
                 </span>
               )}
             </div>
 
             <div className="flex flex-col space-y-1">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-black/60 dark:text-white/50 px-3 pb-1">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 pb-1">
                 Explore
               </p>
-
               <Link
                 href={shoppath()}
-                className={`${buttonVariants({
-                  variant: 'ghost',
-                })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 flex items-center gap-2.5`}
+                className={`${buttonVariants({ variant: 'ghost' })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-muted flex items-center gap-2.5 text-foreground`}
                 onClick={() => setIsOpen(false)}
               >
-                <Coffee className="h-4 w-4 text-amber-900 dark:text-amber-300" />
+                <Coffee className="h-4 w-4 text-primary" />
                 <span>Shop All Products</span>
               </Link>
-
               <Link
                 href="/roaster"
-                className={`${buttonVariants({
-                  variant: 'ghost',
-                })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 flex items-center gap-2.5`}
+                className={`${buttonVariants({ variant: 'ghost' })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-muted flex items-center gap-2.5 text-foreground`}
                 onClick={() => setIsOpen(false)}
               >
-                <Store className="h-4 w-4 text-amber-900 dark:text-amber-300" />
+                <Store className="h-4 w-4 text-primary" />
                 <span>Explore Roasters</span>
               </Link>
 
               {mounted && loggedIn && (
                 <>
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-black/60 dark:text-white/50 px-3 pt-3 pb-1">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 pt-3 pb-1">
                     Account
                   </p>
-
                   <Link
                     href={dashboardHref}
-                    className={`${buttonVariants({
-                      variant: 'ghost',
-                    })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 flex items-center gap-2.5`}
+                    className={`${buttonVariants({ variant: 'ghost' })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-muted flex items-center gap-2.5 text-foreground`}
                     onClick={() => setIsOpen(false)}
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     <span>Dashboard</span>
                   </Link>
-
                   <Link
                     href="/settings"
-                    className={`${buttonVariants({
-                      variant: 'ghost',
-                    })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 flex items-center gap-2.5`}
+                    className={`${buttonVariants({ variant: 'ghost' })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-muted flex items-center gap-2.5 text-foreground`}
                     onClick={() => setIsOpen(false)}
                   >
                     <Settings className="h-4 w-4" />
                     <span>Settings</span>
                   </Link>
-
                   <Link
                     href={dashboardHref}
-                    className={`${buttonVariants({
-                      variant: 'ghost',
-                    })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 flex items-center gap-2.5`}
+                    className={`${buttonVariants({ variant: 'ghost' })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-muted flex items-center gap-2.5 text-foreground`}
                     onClick={() => setIsOpen(false)}
                   >
                     <Package className="h-4 w-4" />
@@ -310,23 +311,19 @@ const Header = () => {
                 </>
               )}
 
-              <div className="pt-3 mt-2 border-t border-black/10 dark:border-white/10">
+              <div className="pt-3 mt-2 border-t border-border">
                 {!loggedIn ? (
                   <div className="grid grid-cols-2 gap-2.5 pt-1">
                     <Link
                       href={loginpath()}
-                      className={`${buttonVariants({
-                        variant: 'outline',
-                      })} justify-center text-sm font-semibold py-2 rounded-lg`}
+                      className={`${buttonVariants({ variant: 'outline' })} justify-center text-sm font-semibold py-2 rounded-lg border-border`}
                       onClick={() => setIsOpen(false)}
                     >
                       Login
                     </Link>
                     <Link
                       href={registerpath()}
-                      className={`${buttonVariants({
-                        variant: 'default',
-                      })} justify-center text-sm font-semibold py-2 rounded-lg bg-black text-white dark:bg-white dark:text-black`}
+                      className={`${buttonVariants({ variant: 'default' })} justify-center text-sm font-semibold py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90`}
                       onClick={() => setIsOpen(false)}
                     >
                       Register
@@ -335,7 +332,7 @@ const Header = () => {
                 ) : (
                   <button
                     type="button"
-                    className="w-full flex items-center justify-center gap-2 text-center px-4 py-2.5 text-sm font-semibold text-red-700 dark:text-red-400 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition"
+                    className="w-full flex items-center justify-center gap-2 text-center px-4 py-2.5 text-sm font-semibold text-destructive bg-destructive/10 hover:bg-destructive/15 rounded-lg transition"
                     onClick={handleLogout}
                   >
                     <LogOut className="h-4 w-4" />
@@ -347,6 +344,8 @@ const Header = () => {
           </div>
         </div>
       )}
+
+      <Cart />
     </nav>
   )
 }

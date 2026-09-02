@@ -1,6 +1,13 @@
 'use client'
 
-import React, { createContext, ReactNode, useContext, useState, useMemo } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react'
 
 export type CartProduct = {
   id: string | number
@@ -23,7 +30,7 @@ export type SelectedVariant = {
 export type CartItem = {
   productId: number
   productName: string
-  roasterProfileId?: number // Needed for Stripe destination charge
+  roasterProfileId?: number
   sellerId?: string
   variant: SelectedVariant
   quantity: number
@@ -34,47 +41,82 @@ type CartContextType = {
   addToCart: (item: Omit<CartItem, 'quantity'>, quantity: number) => void
   removeFromCart: (variantId: number) => void
   clearCart: () => void
+  isCartOpen: boolean
+  openCart: () => void
+  closeCart: () => void
+  toggleCart: () => void
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [cart, setCart] = useState<CartItem[]>([])
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
-  const addToCart = (item: Omit<CartItem, 'quantity'>, quantity: number) => {
-    setCart((prevCart) => {
-      const existingIndex = prevCart.findIndex(
-        (i) => i.variant.variantId === item.variant.variantId
-      )
+  const openCart = useCallback(() => setIsCartOpen(true), [])
+  const closeCart = useCallback(() => setIsCartOpen(false), [])
+  const toggleCart = useCallback(() => setIsCartOpen((prev) => !prev), [])
 
-      if (existingIndex > -1) {
-        return prevCart.map((i, idx) =>
-          idx === existingIndex ? { ...i, quantity: i.quantity + quantity } : i
+  const addToCart = useCallback(
+    (item: Omit<CartItem, 'quantity'>, quantity: number) => {
+      // 1. Open the drawer outside the state updater
+      setIsCartOpen(true)
+
+      // 2. Purely update the cart state
+      setCart((prevCart) => {
+        const existingIndex = prevCart.findIndex(
+          (i) => i.variant.variantId === item.variant.variantId,
         )
-      }
 
-      return [...prevCart, { ...item, quantity }]
-    })
-  }
+        if (existingIndex > -1) {
+          return prevCart.map((i, idx) =>
+            idx === existingIndex
+              ? { ...i, quantity: i.quantity + quantity }
+              : i,
+          )
+        }
+        return [...prevCart, { ...item, quantity }]
+      })
+    },
+    [],
+  )
 
-  const removeFromCart = (variantId: number) => {
+  const removeFromCart = useCallback((variantId: number) => {
     setCart((prevCart) =>
-      prevCart.filter((item) => item.variant.variantId !== variantId)
+      prevCart.filter((item) => item.variant.variantId !== variantId),
     )
-  }
+  }, [])
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([])
-  }
+  }, [])
 
-  const contextValue = useMemo(
-    () => ({ cart, addToCart, removeFromCart, clearCart }),
-    [cart]
+  const value = useMemo(
+    () => ({
+      cart,
+      addToCart,
+      removeFromCart,
+      clearCart,
+      isCartOpen,
+      openCart,
+      closeCart,
+      toggleCart,
+    }),
+    [
+      cart,
+      addToCart,
+      removeFromCart,
+      clearCart,
+      isCartOpen,
+      openCart,
+      closeCart,
+      toggleCart,
+    ],
   )
 
-  return (
-    <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
-  )
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 
 export const useCart = () => {
