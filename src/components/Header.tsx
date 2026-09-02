@@ -93,7 +93,7 @@ const Header = () => {
         : '/buyer/dashboard'
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 bg-background border-b-5 border-[#441a1a]/60 shadow-sm transition-colors duration-200">
+    <nav className="sticky top-0 left-0 right-0 z-50 bg-background border-b-5 border-[#441a1a]75 dark:border-[#977676]/50 shadow-sm transition-colors duration-200">
       {/* Main Navigation Bar */}
       <div className="flex items-center justify-between px-2.5 py-2.5 sm:p-4 max-w-7xl mx-auto">
         <Link
