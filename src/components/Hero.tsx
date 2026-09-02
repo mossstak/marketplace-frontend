@@ -103,14 +103,14 @@ const Hero = () => {
           <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
             <Link
               href="/roaster"
-              className="inline-flex items-center justify-center rounded-xl bg-[#582424] px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:bg-[#441a1a] hover:shadow-md"
+              className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:shadow-md"
             >
               Explore roasters
             </Link>
 
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center rounded-xl bg-[#582424] px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:bg-[#441a1a] hover:shadow-md"
+              className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:shadow-md"
             >
               View All Products
             </Link>
