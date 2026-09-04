@@ -101,16 +101,18 @@ const Hero = () => {
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
+            {/* Primary Button: Solid Oxblood with light parchment text */}
             <Link
               href="/roaster"
-              className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:shadow-md"
+              className="inline-flex items-center justify-center rounded-xl border-l-2 border-[#d8cdc2] bg-[#faf7f2] text-[#2b211e] dark:text-gray-300 px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:bg-[#ede5df] hover:border-[#582424]/40 hover:text-[#582424] dark:hover:text-white hover:shadow-md active:scale-98"
             >
               Explore roasters
             </Link>
 
+            {/* Secondary Button: Clean border and surface against the oat background */}
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:shadow-md"
+              className="inline-flex items-center justify-center rounded-xl border-l-2 border-[#d8cdc2] bg-[#faf7f2] text-[#2b211e] dark:text-gray-300 px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:bg-[#ede5df] hover:border-[#582424]/40 hover:text-[#582424] dark:hover:text-white hover:shadow-md active:scale-98"
             >
               View All Products
             </Link>
