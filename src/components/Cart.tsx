@@ -2,11 +2,11 @@
 
 import React, { useEffect } from 'react'
 import Link from 'next/link'
-import { LucideShoppingCart, Trash2, X } from 'lucide-react'
+import { LucideShoppingCart, Minus, Plus, Trash2, X } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
 const Cart: React.FC = () => {
-  const { cart, removeFromCart, clearCart, isCartOpen, closeCart } = useCart()
+  const { cart, removeFromCart, updateQuantity, clearCart, isCartOpen, closeCart } = useCart()
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -99,26 +99,57 @@ const Cart: React.FC = () => {
                       <p className="font-semibold text-sm truncate">
                         {item.productName}
                       </p>
-                      <div className="flex items-center gap-3 text-xs text-stone-500 mt-0.5">
+                      <div className="flex items-center gap-2 text-xs text-stone-500 mt-0.5">
                         {item.variant?.size && (
                           <span>Size: {item.variant.size}</span>
                         )}
-                        <span>Qty: {item.quantity}</span>
                         <span className="font-medium text-stone-800 dark:text-stone-200">
                           £{(price * item.quantity).toFixed(2)}
                         </span>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-500/10 rounded-lg transition"
-                      onClick={() =>
-                        removeFromCart(item.variant?.variantId ?? item.productId)
-                      }
-                      aria-label="Remove item"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+
+                    {/* Quantity Stepper & Delete */}
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center rounded-lg border border-black/10 dark:border-white/10 bg-stone-50 dark:bg-zinc-800 p-0.5">
+                        <button
+                          type="button"
+                          className="p-1 rounded-md text-stone-600 dark:text-stone-300 hover:bg-black/5 dark:hover:bg-white/10 transition disabled:opacity-30"
+                          onClick={() => {
+                            if (item.quantity > 1) {
+                              updateQuantity(variantKey, item.quantity - 1)
+                            } else {
+                              removeFromCart(variantKey)
+                            }
+                          }}
+                          aria-label="Decrease quantity"
+                        >
+                          <Minus className="h-3.5 w-3.5" />
+                        </button>
+
+                        <span className="w-7 text-center text-xs font-semibold">
+                          {item.quantity}
+                        </span>
+
+                        <button
+                          type="button"
+                          className="p-1 rounded-md text-stone-600 dark:text-stone-300 hover:bg-black/5 dark:hover:bg-white/10 transition"
+                          onClick={() => updateQuantity(variantKey, item.quantity + 1)}
+                          aria-label="Increase quantity"
+                        >
+                          <Plus className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-500/10 rounded-lg transition"
+                        onClick={() => removeFromCart(variantKey)}
+                        aria-label="Remove item"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </li>
                 )
               })}

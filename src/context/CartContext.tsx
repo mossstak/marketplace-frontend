@@ -39,6 +39,7 @@ export type CartItem = {
 type CartContextType = {
   cart: CartItem[]
   addToCart: (item: Omit<CartItem, 'quantity'>, quantity: number) => void
+  updateQuantity: (variantKey: number, newQuantity: number) => void
   removeFromCart: (variantId: number) => void
   clearCart: () => void
   isCartOpen: boolean
@@ -83,6 +84,17 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     [],
   )
 
+  const updateQuantity = (variantKey: number, newQuantity: number) => {
+  setCart((prev) =>
+    prev.map((item) => {
+      const currentKey = item.variant?.variantId ?? item.productId
+      return currentKey === variantKey
+        ? { ...item, quantity: Math.max(1, newQuantity) }
+        : item
+    })
+  )
+}
+
   const removeFromCart = useCallback((variantId: number) => {
     setCart((prevCart) =>
       prevCart.filter((item) => item.variant.variantId !== variantId),
@@ -97,6 +109,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     () => ({
       cart,
       addToCart,
+      updateQuantity,
       removeFromCart,
       clearCart,
       isCartOpen,
@@ -107,6 +120,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     [
       cart,
       addToCart,
+      updateQuantity,
       removeFromCart,
       clearCart,
       isCartOpen,

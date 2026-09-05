@@ -29,7 +29,7 @@ export default function ProductDetailClient({
       {variants.length > 0 && (
         <div className="flex flex-wrap items-center gap-3">
           <label htmlFor="variant" className="text-sm font-medium">
-            Variant:
+            Size:
           </label>
           <select
             id="variant"
@@ -49,7 +49,7 @@ export default function ProductDetailClient({
           <div className="text-sm font-semibold">
             Price:{' '}
             {selectedVariant?.price !== undefined
-              ? `£${selectedVariant.price}`
+              ? `£${Number(selectedVariant.price).toFixed(2)}`
               : 'N/A'}
           </div>
         </div>
