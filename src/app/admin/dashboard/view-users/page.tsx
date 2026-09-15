@@ -1,7 +1,7 @@
 'use client'
 
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { api } from '@/api/api'
 import { type AdminUser } from '@/types/user'
 
@@ -11,10 +11,14 @@ type EditForm = {
   email: string
 }
 
+type RoleFilter = 'ALL' | 'Seller' | 'Buyer'
+
 export default function ViewUsersPage() {
   const [users, setUsers] = useState<AdminUser[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [activeFilter, setActiveFilter] = useState<RoleFilter>('ALL')
+  const [editingId, setEditingId] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -57,104 +61,150 @@ export default function ViewUsersPage() {
   const handleSave = async (id: string, form: EditForm) => {
     await api.patch(`/User/edituser/${id}`, form)
     setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, ...form } : u)))
+    setEditingId(null)
   }
 
-  const roasters = (users ?? []).filter((u) => u.roles?.includes('Seller'))
-  const buyers = (users ?? []).filter((u) => u.roles?.includes('Buyer'))
+  const filteredUsers = useMemo(() => {
+    if (activeFilter === 'ALL') return users
+    return users.filter((u) => u.roles?.includes(activeFilter))
+  }, [users, activeFilter])
+
+  const counts = useMemo(
+    () => ({
+      all: users.length,
+      sellers: users.filter((u) => u.roles?.includes('Seller')).length,
+      buyers: users.filter((u) => u.roles?.includes('Buyer')).length,
+    }),
+    [users],
+  )
 
   if (loading) return <div className="p-6">Loading accounts...</div>
   if (error) return <div className="p-6 text-red-500">{error}</div>
 
   return (
-    <div className="p-6 space-y-8">
-      <h1 className="text-2xl font-semibold">Manage Accounts</h1>
-      <UserTable
-        title="Roasters"
-        users={roasters}
-        onDelete={handleDelete}
-        onSave={handleSave}
-      />
-      <UserTable
-        title="Buyers"
-        users={buyers}
-        onDelete={handleDelete}
-        onSave={handleSave}
-      />
-    </div>
-  )
-}
-
-function UserTable({
-  title,
-  users,
-  onDelete,
-  onSave,
-}: {
-  title: string
-  users: AdminUser[]
-  onDelete: (id: string) => void
-  onSave: (id: string, form: EditForm) => Promise<void>
-}) {
-  const [editingId, setEditingId] = useState<string | null>(null)
-
-  return (
-    <div className="rounded-xl bg-gray-800/40 border border-gray-600/60 p-4 sm:p-5">
-      <h2 className="text-base sm:text-lg font-semibold mb-3">
-        {title} ({users.length})
-      </h2>
-      {users.length === 0 ? (
-        <p className="text-sm text-gray-400">No {title.toLowerCase()} found.</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-600 text-left text-sm">
-            <thead>
-              <tr className="border-b border-gray-600">
-                <th className="py-2.5 pr-4 font-semibold">Name</th>
-                <th className="py-2.5 pr-4 font-semibold">Email</th>
-                <th className="py-2.5 pr-4 font-semibold">Roles</th>
-                <th className="py-2.5 pr-4 font-semibold">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-700/50">
-              {users.map((u) =>
-                editingId === u.id ? (
-                  <EditRow
-                    key={u.id}
-                    user={u}
-                    onCancel={() => setEditingId(null)}
-                    onSave={async (form) => {
-                      await onSave(u.id, form)
-                      setEditingId(null)
-                    }}
-                  />
-                ) : (
-                  <tr key={u.id} className="hover:bg-white/5 transition-colors">
-                    <td className="py-2.5 pr-4 font-medium">
-                      {u.firstName} {u.lastName}
-                    </td>
-                    <td className="py-2.5 pr-4 text-gray-300">{u.email}</td>
-                    <td className="py-2.5 pr-4 text-gray-300">{u.roles ? u.roles.join(', ') : '—'}</td>
-                    <td className="py-2.5 pr-4 space-x-3 whitespace-nowrap">
-                      <button
-                        className="text-blue-400 hover:text-blue-300 underline cursor-pointer"
-                        onClick={() => setEditingId(u.id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-400 hover:text-red-300 underline cursor-pointer"
-                        onClick={() => onDelete(u.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ),
-              )}
-            </tbody>
-          </table>
+    <div className="p-6 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-white">Manage Accounts</h1>
+          <p className="text-sm text-gray-400 mt-1">
+            View, filter, edit, and remove marketplace user accounts.
+          </p>
         </div>
-      )}
+
+        {/* Filter Pills */}
+        <div className="inline-flex rounded-lg bg-gray-900/60 p-1 border border-gray-700/50 self-start sm:self-auto">
+          <button
+            type="button"
+            onClick={() => setActiveFilter('ALL')}
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              activeFilter === 'ALL'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            All ({counts.all})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('Seller')}
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              activeFilter === 'Seller'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            Roasters ({counts.sellers})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('Buyer')}
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              activeFilter === 'Buyer'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            Buyers ({counts.buyers})
+          </button>
+        </div>
+      </div>
+
+      <div className="rounded-xl bg-gray-800/40 border border-gray-700/60 overflow-hidden">
+        {filteredUsers.length === 0 ? (
+          <p className="p-6 text-sm text-gray-400">
+            No accounts found in this category.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-700/60 text-left text-sm">
+              <thead>
+                <tr className="border-b border-gray-700/60 text-gray-400 bg-gray-900/20">
+                  <th className="py-3 pl-6 pr-4 font-semibold">Name</th>
+                  <th className="py-3 px-4 font-semibold">Email</th>
+                  <th className="py-3 px-4 font-semibold">Roles</th>
+                  <th className="py-3 pl-4 pr-6 font-semibold text-right">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-800/60">
+                {filteredUsers.map((u) =>
+                  editingId === u.id ? (
+                    <EditRow
+                      key={u.id}
+                      user={u}
+                      onCancel={() => setEditingId(null)}
+                      onSave={(form) => handleSave(u.id, form)}
+                    />
+                  ) : (
+                    <tr
+                      key={u.id}
+                      className="hover:bg-white/[0.02] transition-colors"
+                    >
+                      <td className="py-3.5 pl-6 pr-4 font-medium text-white whitespace-nowrap">
+                        {u.firstName} {u.lastName}
+                      </td>
+                      <td className="py-3.5 px-4 text-gray-300">{u.email}</td>
+                      <td className="py-3.5 px-4">
+                        <div className="flex flex-wrap gap-1.5">
+                          {u.roles && u.roles.length > 0 ? (
+                            u.roles.map((role) => (
+                              <span
+                                key={role}
+                                className="inline-flex items-center rounded-md bg-gray-800 px-2 py-0.5 text-xs font-medium text-gray-300 ring-1 ring-inset ring-gray-700"
+                              >
+                                {role}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-gray-500">—</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="flex justify-around p-3">
+                        <button
+                          type="button"
+                          className="font-medium text-sky-400 hover:text-sky-300 transition-colors mr-3"
+                          onClick={() => setEditingId(u.id)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          className="font-medium text-rose-400 hover:text-rose-300 transition-colors"
+                          onClick={() => handleDelete(u.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ),
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -194,41 +244,64 @@ function EditRow({
   }
 
   return (
-    <tr className="border-b border-gray-700 last:border-0 bg-gray-900/40">
-      <td className="py-2.5 pr-4 space-y-1.5">
-        <input
-          className="w-full rounded border border-gray-500 bg-gray-900 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
-          value={form.firstName}
-          onChange={(e) => setForm((p) => ({ ...p, firstName: e.target.value }))}
-          placeholder="First name"
-        />
-        <input
-          className="w-full rounded border border-gray-500 bg-gray-900 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
-          value={form.lastName}
-          onChange={(e) => setForm((p) => ({ ...p, lastName: e.target.value }))}
-          placeholder="Last name"
-        />
+    <tr className="bg-gray-900/50">
+      <td className="py-3 pl-6 pr-4 align-top">
+        <div className="flex gap-2">
+          <input
+            className="w-full rounded border border-gray-600 bg-gray-950 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+            value={form.firstName}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, firstName: e.target.value }))
+            }
+            placeholder="First"
+          />
+          <input
+            className="w-full rounded border border-gray-600 bg-gray-950 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+            value={form.lastName}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, lastName: e.target.value }))
+            }
+            placeholder="Last"
+          />
+        </div>
       </td>
-      <td className="py-2.5 pr-4 align-top">
+      <td className="py-3 px-4 align-top">
         <input
-          className="w-full rounded border border-gray-500 bg-gray-900 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+          className="w-full rounded border border-gray-600 bg-gray-950 text-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
           value={form.email}
           onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
           placeholder="Email"
         />
-        {err && <p className="text-red-400 text-xs mt-1">{err}</p>}
+        {err && <p className="text-rose-400 text-xs mt-1">{err}</p>}
       </td>
-      <td className="py-2.5 pr-4 align-top text-gray-300">{user.roles ? user.roles.join(', ') : '—'}</td>
-      <td className="py-2.5 pr-4 align-top space-x-3 whitespace-nowrap">
+      <td className="py-3 px-4 align-top">
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          {user.roles && user.roles.length > 0 ? (
+            user.roles.map((role) => (
+              <span
+                key={role}
+                className="inline-flex items-center rounded-md bg-gray-800 px-2 py-0.5 text-xs font-medium text-gray-400 ring-1 ring-inset ring-gray-700"
+              >
+                {role}
+              </span>
+            ))
+          ) : (
+            <span className="text-gray-500">—</span>
+          )}
+        </div>
+      </td>
+      <td className="flex justify-around p-3">
         <button
-          className="text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer disabled:opacity-50"
+          type="button"
+          className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors mr-3 disabled:opacity-50"
           disabled={saving}
           onClick={handleSubmit}
         >
           {saving ? 'Saving…' : 'Save'}
         </button>
         <button
-          className="text-gray-300 hover:text-white font-semibold cursor-pointer disabled:opacity-50"
+          type="button"
+          className="text-gray-400 hover:text-white font-medium transition-colors disabled:opacity-50"
           disabled={saving}
           onClick={onCancel}
         >

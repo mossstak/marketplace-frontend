@@ -4,7 +4,7 @@ import { api } from '@/api/api'
 import type { RoasterDetails } from '@/types/roaster'
 import type { ProductDetails } from '@/types/product'
 import { Card, CardTitle } from '@/components/ui/card'
-import { Globe, Instagram, MapPin, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { Globe, Instagram, MapPin, ArrowLeft } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -114,11 +114,6 @@ export default async function Page({
               <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">
                 {roaster.companyName ?? 'Unnamed Roaster'}
               </h1>
-              {roaster.isVerified && (
-                <span title="Verified Roaster" className="text-blue-500">
-                  <CheckCircle2 className="h-5 w-5 fill-blue-500 text-white" />
-                </span>
-              )}
             </div>
 
             {location && (
