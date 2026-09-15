@@ -8,6 +8,8 @@ export type UserDetails = {
   city?: string | null
   country?: string | null
   postalCode?: string | null
+  roles?: string[]
+  hasRoasterProfile?: boolean
 }
 
 export type AdminUser = {

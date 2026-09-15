@@ -63,6 +63,9 @@ export default function SellerDashboardPage() {
   if (error && !details) return <div className="p-6 text-red-400">{error}</div>
   if (!details) return <div className="p-6 text-gray-200">No user data.</div>
 
+  const isPending = profile?.approvalStatus === 'Pending' || profile?.approvalStatus === 0 || profile?.approvalStatus === 'pending'
+  const isApproved = profile?.approvalStatus === 'Approved' || profile?.approvalStatus === 1 || profile?.approvalStatus === 'approved'
+
   return (
     <div className="bg-gray-800/80 border border-gray-700/80 w-full p-6 sm:p-8 rounded-2xl shadow-lg space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-700">
@@ -80,7 +83,26 @@ export default function SellerDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Roaster Profile Card */}
         <div className="bg-gray-900/60 border border-gray-700/60 p-5 rounded-xl space-y-3">
-          <h2 className="text-lg font-bold text-white uppercase tracking-wider">Roaster Profile</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-white uppercase tracking-wider">Roaster Profile</h2>
+            {profile?.approvalStatus !== undefined && profile?.approvalStatus !== null && (
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
+                  isPending
+                    ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+                    : isApproved
+                      ? 'bg-green-500/20 text-green-300 border-green-500/30'
+                      : 'bg-red-500/20 text-red-300 border-red-500/30'
+                }`}
+              >
+                {isPending
+                  ? 'Pending Approval'
+                  : isApproved
+                    ? 'Approved'
+                    : 'Rejected'}
+              </span>
+            )}
+          </div>
           <div>
             <p className="font-semibold text-lg text-amber-300">
               {profile?.companyName || 'Profile Incomplete'}

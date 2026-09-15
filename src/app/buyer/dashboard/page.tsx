@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import DashboardPage from '../../../components/DashboardPage'
-import { isLoggedIn } from '@/auth/auth'
+import { getRole, isLoggedIn } from '@/auth/auth'
 import { api } from '@/api/api'
 import { type UserDetails } from '@/types/user'
 import Link from 'next/link'
-import { Package, ShoppingBag } from 'lucide-react'
+import { Package, ShoppingBag, Store, Sparkles, ArrowRight } from 'lucide-react'
+import BecomeRoasterModal from '@/components/BecomeRoasterModal'
 
 type OrderItemData = {
   id: number
@@ -44,6 +45,7 @@ export default function BuyerDashboard() {
   const [orders, setOrders] = useState<OrderData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showBecomeRoasterModal, setShowBecomeRoasterModal] = useState(false)
 
   const handleCancelOrder = async (orderId: number) => {
     const confirmed = window.confirm(
@@ -93,6 +95,11 @@ export default function BuyerDashboard() {
     loadData()
   }, [router])
 
+  const isRoaster =
+    details?.hasRoasterProfile ||
+    details?.roles?.includes('Seller') ||
+    getRole() === 'Seller'
+
   return (
     <DashboardPage
       sidebar={
@@ -112,6 +119,15 @@ export default function BuyerDashboard() {
           >
             Explore Shop
           </Link>
+          {!isRoaster && (
+            <button
+              type="button"
+              onClick={() => setShowBecomeRoasterModal(true)}
+              className="w-full text-left rounded-lg px-3 py-2 bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 text-sm font-semibold transition flex items-center gap-1.5 cursor-pointer"
+            >
+              <Sparkles className="h-3.5 w-3.5" /> Become a Roaster
+            </button>
+          )}
           <Link
             href="/settings"
             className="block rounded-lg px-3 py-2 bg-white/5 hover:bg-white/10 text-gray-200 text-sm transition"
@@ -131,6 +147,41 @@ export default function BuyerDashboard() {
             Track your artisan coffee orders and view your purchase history.
           </p>
         </div>
+
+        {/* Become a Roaster Banner/Card (for accounts without a roaster profile) */}
+        {!isRoaster && (
+          <div className="relative overflow-hidden rounded-2xl border border-amber-500/40 bg-gradient-to-r from-stone-900 via-amber-950/40 to-stone-900 p-6 sm:p-8 shadow-xl">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+              <div className="space-y-2 max-w-xl">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                  <Store className="h-3.5 w-3.5" /> Start Selling
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-white">
+                  Become a Roaster on Roaster&apos;s Market
+                </h2>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  Turn your coffee craft into a business. Set up your roastery storefront, sell signature bags directly to customers, and configure instant payouts with Stripe Express.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setShowBecomeRoasterModal(true)}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-400 text-zinc-950 font-bold hover:bg-amber-300 transition shadow-lg text-sm cursor-pointer"
+                >
+                  <Sparkles className="h-4 w-4" /> Become a Roaster
+                </button>
+                <Link
+                  href="/become-roaster"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl border border-gray-700 bg-gray-900/60 hover:bg-gray-800 text-gray-200 text-xs font-medium transition"
+                >
+                  Learn More <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Orders Section */}
         <div className="bg-gray-800/80 border border-gray-700/80 p-6 sm:p-8 rounded-2xl shadow-lg space-y-4">
@@ -154,7 +205,7 @@ export default function BuyerDashboard() {
           ) : orders.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-300 text-sm mb-4">
-                You haven't placed any orders yet.
+                You haven&apos;t placed any orders yet.
               </p>
               <Link
                 href="/shop"
@@ -224,7 +275,7 @@ export default function BuyerDashboard() {
                             <button
                               type="button"
                               onClick={() => handleCancelOrder(order.id)}
-                              className="text-xs px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg transition"
+                              className="text-xs px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg transition cursor-pointer"
                             >
                               Cancel Order
                             </button>
@@ -239,6 +290,13 @@ export default function BuyerDashboard() {
           )}
         </div>
       </div>
+
+      {/* Become a Roaster Modal */}
+      <BecomeRoasterModal
+        isOpen={showBecomeRoasterModal}
+        onClose={() => setShowBecomeRoasterModal(false)}
+        initialAddress={details ?? undefined}
+      />
     </DashboardPage>
   )
 }

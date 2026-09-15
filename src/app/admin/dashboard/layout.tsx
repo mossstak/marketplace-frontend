@@ -41,16 +41,16 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
         sidebar={
           <div className="space-y-1">
             <Link
-              href="/admin/dashboard/add-user"
-              className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard/add-user' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
-            >
-              Add User
-            </Link>
-            <Link
               href="/admin/dashboard/view-users"
               className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard/view-users' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
             >
               View Users
+            </Link>
+            <Link
+              href="/admin/dashboard/verify-roasters"
+              className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard/roasters' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
+            >
+              Verify Roasters
             </Link>
           </div>
         }

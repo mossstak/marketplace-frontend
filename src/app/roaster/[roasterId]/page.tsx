@@ -17,6 +17,8 @@ function slugify(input: string) {
     .replace(/(^-|-$)/g, '')
 }
 
+
+
 async function getRoaster(
   roasterIdParam: string,
 ): Promise<RoasterDetails | null> {

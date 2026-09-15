@@ -92,6 +92,10 @@ const Header = () => {
         ? '/seller/dashboard'
         : '/buyer/dashboard'
 
+  const isSeller = role === 'Seller'
+  const isDashboardMode =
+    pathname.startsWith('/seller') || pathname.startsWith('/roaster/dashboard')
+
   return (
     <nav className="sticky top-0 left-0 right-0 z-50 bg-background border-b-[5px] border-[#441a1a]/75 dark:border-stone-400 shadow-sm transition-colors duration-200">
       {/* Main Navigation Bar */}
@@ -257,6 +261,40 @@ const Header = () => {
                 </span>
               )}
             </div>
+
+            {mounted && loggedIn && isSeller && (
+              <div className="p-3 rounded-xl bg-muted/50 border border-border space-y-2">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  View Mode
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href="/buyer/dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold transition ${
+                      !isDashboardMode
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'bg-card text-muted-foreground hover:text-foreground border border-border/50'
+                    }`}
+                  >
+                    <LucideShoppingCart className="h-3.5 w-3.5" />
+                    <span>Buyer Dashboard</span>
+                  </Link>
+                  <Link
+                    href="/roaster/dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold transition ${
+                      isDashboardMode
+                        ? 'bg-amber-500 text-zinc-950 font-bold shadow-sm'
+                        : 'bg-card text-muted-foreground hover:text-foreground border border-border/50'
+                    }`}
+                  >
+                    <Store className="h-3.5 w-3.5" />
+                    <span>Roaster Dashboard</span>
+                  </Link>
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-col space-y-1">
               <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 pb-1">

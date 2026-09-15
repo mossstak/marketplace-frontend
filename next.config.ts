@@ -17,6 +17,18 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/roaster/dashboard',
+        destination: '/seller/dashboard',
+      },
+      {
+        source: '/roaster/dashboard/:path*',
+        destination: '/seller/dashboard/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

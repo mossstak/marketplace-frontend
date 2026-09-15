@@ -1,12 +1,15 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import DashboardPage from '../../../components/DashboardPage'
 import { getRole, isLoggedIn } from '@/auth/auth'
 import { roleRedirect } from '@/auth/roleredirect'
 import { SellerProfileGate } from '@/components/SellerProfileGate'
+import { api } from '@/api/api'
+import { type RoasterDetails } from '@/types/roaster'
+import { AlertCircle } from 'lucide-react'
 
 export default function SellerDashboardLayout({
   children,
@@ -15,6 +18,7 @@ export default function SellerDashboardLayout({
 }) {
   const router = useRouter()
   const pathname = usePathname()
+  const [profileStatus, setProfileStatus] = useState<string | number | null>(null)
   const authSnapshot = useMemo(() => {
     const loggedIn = isLoggedIn()
     return {
@@ -40,6 +44,19 @@ export default function SellerDashboardLayout({
       return
     }
   }, [router, authSnapshot])
+
+  useEffect(() => {
+    if (!isSeller) return
+    api.get<RoasterDetails>('/RoasterProfile/me')
+      .then((res) => {
+        if (res.data?.approvalStatus !== undefined) {
+          setProfileStatus(res.data.approvalStatus)
+        }
+      })
+      .catch(() => {})
+  }, [isSeller, pathname])
+
+  const isPending = profileStatus === 'Pending' || profileStatus === 0 || profileStatus === 'pending'
 
   if (!isSeller) return <div className="p-6">Loading dashboard...</div>
 
@@ -116,6 +133,19 @@ export default function SellerDashboardLayout({
           </div>
         }
       >
+        {isPending && (
+          <div className="mb-6 flex items-start sm:items-center gap-3 p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-200 text-sm animate-in fade-in-50 duration-200">
+            <AlertCircle className="h-5 w-5 shrink-0 text-amber-400 mt-0.5 sm:mt-0" />
+            <div className="flex-1">
+              <p className="font-semibold text-amber-300">
+                Your roaster profile is pending admin approval.
+              </p>
+              <p className="text-xs text-amber-300/80 mt-0.5">
+                Your storefront and listings remain private until reviewed and approved by an administrator.
+              </p>
+            </div>
+          </div>
+        )}
         {children}
       </DashboardPage>
     </div>

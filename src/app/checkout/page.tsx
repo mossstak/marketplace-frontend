@@ -65,7 +65,6 @@ export default function CheckoutPage() {
           amountInMinorUnit,
           currency: 'gbp',
           roasterProfileId,
-          feePercentage: 5.0,
           customerEmail: customerEmail || undefined,
         })
 

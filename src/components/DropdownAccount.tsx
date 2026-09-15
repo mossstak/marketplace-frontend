@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { api } from '../api/api'
 import { getRole } from '../auth/auth'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 type DropdownAccountProps = {
   logout: () => void
@@ -19,6 +19,7 @@ type MyDetails = {
 
 const DropdownAccount = ({ logout }: DropdownAccountProps) => {
   const router = useRouter()
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [details, setDetails] = useState<MyDetails | null>(null)
   const [loading, setLoading] = useState(true)
@@ -118,6 +119,21 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
           role="menu"
           className="absolute right-0 mt-2 w-48 rounded-md border border-white/10 bg-zinc-900 p-2 shadow-lg"
         >
+          {role === 'Seller' && (
+            <Link
+              href={pathname.startsWith('/seller') || pathname.startsWith('/roaster/dashboard') ? '/buyer/dashboard' : '/roaster/dashboard'}
+              role="menuitem"
+              className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold bg-amber-400/15 text-amber-300 hover:bg-amber-400/25 mb-1 transition"
+              onClick={() => setOpen(false)}
+            >
+              <span>
+                {pathname.startsWith('/seller') || pathname.startsWith('/roaster/dashboard')
+                  ? '🛒 Buyer Dashboard'
+                  : '☕ Roaster Dashboard'}
+              </span>
+            </Link>
+          )}
+
           <Link
             href={dashboardHref}
             role="menuitem"

@@ -1,3 +1,12 @@
+export type ApprovalStatus =
+  | 'Pending'
+  | 'Approved'
+  | 'Rejected'
+  | 'pending'
+  | 'approved'
+  | 'rejected'
+  | number
+
 export type RoasterForm = {
   id: string | number
   companyName?: string | null
@@ -7,6 +16,7 @@ export type RoasterForm = {
   websiteUrl?: string | null
   instagramUrl?: string | null
   isVerified?: boolean | null
+  approvalStatus?: ApprovalStatus | null
 }
 
 export type RoasterDetails = {
@@ -19,4 +29,5 @@ export type RoasterDetails = {
   websiteUrl?: string | null
   instagramUrl?: string | null
   isVerified?: boolean | null
+  approvalStatus?: ApprovalStatus | null
 }
