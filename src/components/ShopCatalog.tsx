@@ -715,10 +715,9 @@ export default function ShopCatalog({
                       {/* Bottom Footer: Roast Level & Starting Price */}
                       <div className="flex items-center justify-between text-sm mt-3 pt-2.5 border-t border-stone-100 dark:border-zinc-800">
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-800 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20">
-                          <Flame className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                          <span className="text-stone-600 dark:text-stone-400 font-normal">Roast Level:</span>
                           <strong className="font-semibold text-stone-900 dark:text-stone-100">
                             {roastLevel || 'Unspecified'}
+                            <span className="text-stone-600 dark:text-stone-400 font-normal"> Roast</span>
                           </strong>
                         </span>
                         {minPrice !== null && (
