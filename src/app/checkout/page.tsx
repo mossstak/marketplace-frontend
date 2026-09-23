@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/context/CartContext'
 import { api } from '@/api/api'
+import { getUserId } from '@/auth/auth'
 import StripeCheckoutWrapper from '@/components/StripeCheckoutForm'
 
 export default function CheckoutPage() {
@@ -31,6 +32,19 @@ export default function CheckoutPage() {
 
         if (totalPrice < 0.3) {
           setError('Minimum order amount for checkout is £0.30.')
+          setLoading(false)
+          return
+        }
+
+        const currentUserId = getUserId()
+        const hasOwnProduct = cart.some(
+          (item) =>
+            item.sellerId && currentUserId && item.sellerId === currentUserId,
+        )
+        if (hasOwnProduct) {
+          setError(
+            'Your cart contains items from your own roaster store. Sellers cannot purchase their own products. Please remove them to proceed.',
+          )
           setLoading(false)
           return
         }

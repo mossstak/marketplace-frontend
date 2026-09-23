@@ -15,7 +15,7 @@ const ForgotPasswordPage = () => {
     setMessage('')
 
     try {
-      // Calls POST /user/forgot-password
+      // Calls POST /User/forgot-password
       const res = await api.post('/User/forgot-password', { email })
       setStatus('success')
       setMessage(

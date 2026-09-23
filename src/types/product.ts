@@ -2,7 +2,7 @@ export type ProductDetails = {
     id: string
     productName: string
     productDescription: string | null
-    category: number | null
+    category: number | string | null
     roastLevel: string | null
     coffeeProcess: string | null
     origin: string | null

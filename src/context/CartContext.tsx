@@ -8,6 +8,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react'
+import { getUserId } from '@/auth/auth'
 
 export type CartProduct = {
   id: string | number
@@ -62,6 +63,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
   const addToCart = useCallback(
     (item: Omit<CartItem, 'quantity'>, quantity: number) => {
+      const currentUserId = getUserId()
+      if (currentUserId && item.sellerId && item.sellerId === currentUserId) {
+        alert('You cannot purchase your own products.')
+        return
+      }
+
       // 1. Open the drawer outside the state updater
       setIsCartOpen(true)
 

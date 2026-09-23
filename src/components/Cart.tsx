@@ -174,7 +174,7 @@ const Cart: React.FC = () => {
                 <Link
                   href="/checkout"
                   onClick={closeCart}
-                  className="flex-1 text-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
+                  className="flex-1 px-3 py-2 text-xs font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg transition"
                 >
                   Checkout
                 </Link>

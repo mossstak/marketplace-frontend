@@ -29,10 +29,12 @@ const Login = () => {
         res.data.roles?.[0] ??
         res.data.Roles?.[0]
 
+      const userId = res.data.userId ?? res.data.UserId
+
       if (!token) throw new Error('No token returned from API')
       if (!role) throw new Error('No role returned from API')
 
-      saveAuth(token, role)
+      saveAuth(token, role, userId)
 
       if (role === 'Admin') router.push('/admin/dashboard')
       else if (role === 'Seller') router.push('/seller/dashboard')

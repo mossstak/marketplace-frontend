@@ -1,3 +1,7 @@
+"use client"
+import { useState, useEffect } from "react"
+import Image from 'next/image';
+
 type NewUploadPickerProps = {
   imageFiles: File[]
   imageError: string
@@ -5,6 +9,23 @@ type NewUploadPickerProps = {
 }
 
 export function NewUploadPicker({ imageFiles, imageError, onFilesChange }: NewUploadPickerProps) {
+  const [previews, setPreviews] = useState<string[]>([]);
+
+  useEffect(() => {
+    const objectUrls = imageFiles.map((file) => URL.createObjectURL(file));
+    setPreviews(objectUrls);
+
+    return () => {
+      objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [imageFiles]);
+
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files){
+      onFilesChange(Array.from(e.target.files));
+    }
+  };
+
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Upload New Images</h4>
@@ -35,6 +56,15 @@ export function NewUploadPicker({ imageFiles, imageError, onFilesChange }: NewUp
                 key={`${file.name}-${index}`}
                 className="flex items-center gap-2 rounded bg-white/5 p-2 text-xs"
               >
+                {previews[index] && (
+                  <Image
+                    src={previews[index]}
+                    alt={file.name}
+                    className="h-10 w-10 rounded object-cover border border-white/10 shrink-0"
+                    width={40}
+                    height={40}
+                  />
+                )}
                 <span className="truncate">{file.name}</span>
               </label>
             ))}

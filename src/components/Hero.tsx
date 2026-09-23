@@ -8,6 +8,7 @@ import { api } from '@/api/api'
 import { useCart, type CartProduct } from '@/context/CartContext'
 import type { RoasterDetails } from '@/types/roaster'
 import { getWeeklyProductIndex } from '@/lib/utils'
+import { getUserId } from '@/auth/auth'
 
 function slugify(input: string) {
   return input
@@ -199,41 +200,67 @@ const Hero = () => {
 
                   {/* CTA Actions */}
                   <div className="flex items-center gap-2 pt-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const firstVariant = (featuredProduct as any)
-                          ?.variants?.[0]
-                        addToCart(
-                          {
-                            productId: Number(featuredProduct.id),
-                            productName: String(featuredProduct.productName),
-                            sellerId:
-                              (featuredProduct as any)?.sellerId ||
-                              (featuredProduct as any)?.userId ||
-                              roasterInfo?.userId,
-                            roasterProfileId: roasterInfo?.id
-                              ? Number(roasterInfo.id)
-                              : undefined,
-                            variant: {
-                              variantId: firstVariant?.id ?? 0,
-                              size: firstVariant?.size
-                                ? String(firstVariant.size)
-                                : 'Standard',
-                              price: Number(
-                                firstVariant?.price ??
-                                  (featuredProduct as any)?.price ??
-                                  0,
-                              ),
-                            },
-                          },
-                          1,
+                    {(() => {
+                      const currentUserId = getUserId()
+                      const featuredSellerId =
+                        (featuredProduct as any)?.sellerId ||
+                        (featuredProduct as any)?.userId ||
+                        roasterInfo?.userId
+                      const isOwner = Boolean(
+                        currentUserId &&
+                          featuredSellerId &&
+                          currentUserId === featuredSellerId,
+                      )
+
+                      if (isOwner) {
+                        return (
+                          <Link
+                            href="/seller/dashboard"
+                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-amber-600 hover:bg-amber-700 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition"
+                          >
+                            Your Listing (Dashboard)
+                          </Link>
                         )
-                      }}
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#582424] dark:bg-amber-400 px-4 py-2.5 text-xs font-bold text-white dark:text-zinc-950 shadow-sm transition hover:bg-[#441a1a] dark:hover:bg-amber-300 cursor-pointer"
-                    >
-                      <ShoppingBag className="h-4 w-4" /> Quick Add
-                    </button>
+                      }
+
+                      return (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const firstVariant = (featuredProduct as any)
+                              ?.variants?.[0]
+                            addToCart(
+                              {
+                                productId: Number(featuredProduct.id),
+                                productName: String(featuredProduct.productName),
+                                sellerId:
+                                  (featuredProduct as any)?.sellerId ||
+                                  (featuredProduct as any)?.userId ||
+                                  roasterInfo?.userId,
+                                roasterProfileId: roasterInfo?.id
+                                  ? Number(roasterInfo.id)
+                                  : undefined,
+                                variant: {
+                                  variantId: firstVariant?.id ?? 0,
+                                  size: firstVariant?.size
+                                    ? String(firstVariant.size)
+                                    : 'Standard',
+                                  price: Number(
+                                    firstVariant?.price ??
+                                      (featuredProduct as any)?.price ??
+                                      0,
+                                  ),
+                                },
+                              },
+                              1,
+                            )
+                          }}
+                          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#582424] dark:bg-amber-400 px-4 py-2.5 text-xs font-bold text-white dark:text-zinc-950 shadow-sm transition hover:bg-[#441a1a] dark:hover:bg-amber-300 cursor-pointer"
+                        >
+                          <ShoppingBag className="h-4 w-4" /> Quick Add
+                        </button>
+                      )
+                    })()}
 
                     <Link
                       href={`/shop/${featuredProduct.id}`}
