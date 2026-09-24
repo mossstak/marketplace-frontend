@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { api } from '@/api/api'
 import { getRole, isLoggedIn } from '@/auth/auth'
@@ -69,6 +70,15 @@ export default function SellerDashboardPage() {
   return (
     <div className="bg-gray-800/80 border border-gray-700/80 w-full p-6 sm:p-8 rounded-2xl shadow-lg space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-700">
+        <div className="shrink-0">
+                  <Image
+                    src="https://placehold.co/300/png"
+                    width={300}
+                    height={300}
+                    alt="Profile Picture"
+                    className="rounded-xl object-cover max-w-[180px] sm:max-w-[220px] w-full shadow-md border border-gray-700"
+                  />
+                </div>
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white">
             Welcome back, {details.firstName}!

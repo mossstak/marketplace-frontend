@@ -126,7 +126,7 @@ const Header = () => {
             className={buttonVariants({ variant: 'ghost' })}
           >
             <span className="text-base font-medium text-foreground/90 hover:text-foreground">
-              Shop
+              Coffee
             </span>
           </Link>
           <Link
@@ -273,7 +273,7 @@ const Header = () => {
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold transition ${
                       !isDashboardMode
-                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        ? 'bg-amber-500 text-zinc-950 font-bold shadow-sm'
                         : 'bg-card text-muted-foreground hover:text-foreground border border-border/50'
                     }`}
                   >
@@ -306,7 +306,7 @@ const Header = () => {
                 onClick={() => setIsOpen(false)}
               >
                 <Coffee className="h-4 w-4 text-primary" />
-                <span>Shop All Products</span>
+                <span>Explore Coffee</span>
               </Link>
               <Link
                 href="/roaster"

@@ -3,11 +3,14 @@ export type UserDetails = {
   firstName: string
   lastName: string
   email: string
+  phoneNumber?: string | null
   addressOne?: string | null
   addressTwo?: string | null
   city?: string | null
   country?: string | null
   postalCode?: string | null
+  profileImageUrl?: string | null
+  companyName?: string | null
   roles?: string[]
   hasRoasterProfile?: boolean
 }

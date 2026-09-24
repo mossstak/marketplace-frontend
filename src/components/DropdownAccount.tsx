@@ -15,6 +15,7 @@ type MyDetails = {
   id: string
   firstName: string
   lastName: string
+  profileImageUrl?: string | null
 }
 
 const DropdownAccount = ({ logout }: DropdownAccountProps) => {
@@ -97,20 +98,27 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-full p-2 hover:bg-gray-500/30"
+        className="flex items-center gap-2 rounded-full p-1.5 hover:bg-stone-200/50 dark:hover:bg-zinc-800/60 transition"
       >
-        <Image
-          src="https://placehold.co/40/png"
-          width={40}
-          height={40}
-          className="rounded-full"
-          alt="profile-img"
-        />
-        <p className="hidden sm:block">
+        {details.profileImageUrl ? (
+          <Image
+            src={details.profileImageUrl}
+            width={34}
+            height={34}
+            className="rounded-full object-cover w-8 h-8 ring-2 ring-amber-500/40"
+            alt={`${details.firstName || 'User'}'s avatar`}
+          />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-600 to-[#441a1a] text-white flex items-center justify-center font-bold text-xs shadow-xs ring-1 ring-white/20">
+            {details.firstName?.[0]?.toUpperCase() || 'U'}
+            {details.lastName?.[0]?.toUpperCase() || ''}
+          </div>
+        )}
+        <p className="hidden sm:block text-xs font-medium">
           {details.firstName} {details.lastName}
         </p>
         <ChevronDown
-          className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`h-3.5 w-3.5 opacity-70 transition-transform ${open ? 'rotate-180' : ''}`}
         />
       </button>
 
