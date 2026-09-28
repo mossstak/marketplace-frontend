@@ -60,49 +60,46 @@ export default function SellerDashboardPage() {
     loadSellerData()
   }, [router])
 
-  if (loading) return <div className="p-6 text-gray-200">Loading dashboard...</div>
-  if (error && !details) return <div className="p-6 text-red-400">{error}</div>
-  if (!details) return <div className="p-6 text-gray-200">No user data.</div>
+  if (loading) return <div className="p-6 text-muted-foreground">Loading dashboard...</div>
+  if (error && !details) return <div className="p-6 text-red-700 dark:text-red-400 font-medium">{error}</div>
+  if (!details) return <div className="p-6 text-muted-foreground">No user data.</div>
 
   const isPending = profile?.approvalStatus === 'Pending' || profile?.approvalStatus === 0 || profile?.approvalStatus === 'pending'
   const isApproved = profile?.approvalStatus === 'Approved' || profile?.approvalStatus === 1 || profile?.approvalStatus === 'approved'
 
   return (
-    <div className="bg-gray-800/80 border border-gray-700/80 w-full p-6 sm:p-8 rounded-2xl shadow-lg space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-700">
+    <div className="bg-card text-card-foreground border border-border w-full p-6 sm:p-8 rounded-2xl shadow-xs space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border">
         <div className="shrink-0">
-                  <Image
-                    src="https://placehold.co/300/png"
-                    width={300}
-                    height={300}
-                    alt="Profile Picture"
-                    className="rounded-xl object-cover max-w-[180px] sm:max-w-[220px] w-full shadow-md border border-gray-700"
-                  />
-                </div>
+          <Image
+            src="https://placehold.co/300/png"
+            width={300}
+            height={300}
+            alt="Profile Picture"
+            className="rounded-xl object-cover max-w-[180px] sm:max-w-[220px] w-full shadow-xs border border-border"
+          />
+        </div>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
             Welcome back, {details.firstName}!
           </h1>
-          <p className="text-sm sm:text-base text-gray-300 mt-1">{details.email}</p>
-        </div>
-        <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-400/20 text-amber-300 border border-amber-400/30 self-start sm:self-center">
-          Role: Seller
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">{details.email}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Roaster Profile Card */}
-        <div className="bg-gray-900/60 border border-gray-700/60 p-5 rounded-xl space-y-3">
+        <div className="bg-muted/30 border border-border p-5 rounded-2xl space-y-3 shadow-2xs">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-white uppercase tracking-wider">Roaster Profile</h2>
+            <h2 className="text-base font-bold text-foreground uppercase tracking-wider">Roaster Profile</h2>
             {profile?.approvalStatus !== undefined && profile?.approvalStatus !== null && (
               <span
                 className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
                   isPending
-                    ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+                    ? 'bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30'
                     : isApproved
-                      ? 'bg-green-500/20 text-green-300 border-green-500/30'
-                      : 'bg-red-500/20 text-red-300 border-red-500/30'
+                      ? 'bg-green-500/15 text-green-800 dark:text-green-300 border-green-500/30'
+                      : 'bg-red-500/15 text-red-800 dark:text-red-300 border-red-500/30'
                 }`}
               >
                 {isPending
@@ -114,25 +111,25 @@ export default function SellerDashboardPage() {
             )}
           </div>
           <div>
-            <p className="font-semibold text-lg text-amber-300">
+            <p className="font-semibold text-lg text-foreground">
               {profile?.companyName || 'Profile Incomplete'}
             </p>
-            <p className="text-sm text-gray-300 mt-1 leading-relaxed">
+            <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
               {profile?.bio || 'No bio entered yet. Complete your profile to attract coffee lovers.'}
             </p>
             {(profile?.city || profile?.country) && (
-              <p className="text-xs text-gray-400 mt-2 font-medium">
-                📍 {[profile?.city, profile?.country].filter(Boolean).join(', ')}
+              <p className="text-xs text-muted-foreground mt-2 font-medium">
+                {[profile?.city, profile?.country].filter(Boolean).join(', ')}
               </p>
             )}
           </div>
         </div>
 
         {/* Address Card */}
-        <div className="bg-gray-900/60 border border-gray-700/60 p-5 rounded-xl space-y-3">
-          <h2 className="text-lg font-bold text-white uppercase tracking-wider">Address</h2>
-          <div className="space-y-1 text-sm text-gray-300">
-            <p>{details.addressOne ?? 'N/A'}</p>
+        <div className="bg-muted/30 border border-border p-5 rounded-2xl space-y-3 shadow-2xs">
+          <h2 className="text-base font-bold text-foreground uppercase tracking-wider">Address</h2>
+          <div className="space-y-1 text-sm text-muted-foreground">
+            <p className="text-foreground font-medium">{details.addressOne ?? 'N/A'}</p>
             {details.addressTwo && <p>{details.addressTwo}</p>}
             <p>
               {details.city ?? ''} {details.postalCode ?? ''}

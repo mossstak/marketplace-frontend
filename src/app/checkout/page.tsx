@@ -49,6 +49,7 @@ export default function CheckoutPage() {
           return
         }
 
+
         const roasterProfileId =
           cart.find(
             (i) =>
@@ -102,14 +103,19 @@ export default function CheckoutPage() {
     initPaymentIntent()
   }, [cart, totalPrice])
 
-  const handlePaymentSuccess = async () => {
+  const handlePaymentSuccess = async (paymentIntentId?: string) => {
     try {
-      // ADDED: Pass the shipping address from state alongside the items
+      const resolvedPaymentIntentId =
+        paymentIntentId ||
+        (clientSecret ? clientSecret.split('_secret_')[0] : null)
+
+      // Pass the paymentIntentId and shipping address alongside the items
       await api.post('/Order/place', {
         items: cart.map((i) => ({
           variantId: i.variant.variantId,
           quantity: i.quantity,
         })),
+        paymentIntentId: resolvedPaymentIntentId,
         shippingAddressLine1: shippingAddress?.line1 || '',
         shippingAddressLine2: shippingAddress?.line2 || null,
         shippingCity: shippingAddress?.city || '',
@@ -142,10 +148,47 @@ export default function CheckoutPage() {
     <div className="max-w-xl mx-auto py-10 px-4">
       <h1 className="text-2xl font-bold mb-6">Complete Checkout</h1>
 
-      <div className="p-4 rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-zinc-900/60 mb-6">
-        <div className="flex justify-between items-center text-sm font-medium">
-          <span>Items ({cart.reduce((s, i) => s + i.quantity, 0)})</span>
-          <span>£{totalPrice.toFixed(2)}</span>
+      {/* Order Summary Box */}
+      <div className="p-4 sm:p-5 rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-zinc-900/60 mb-6 space-y-4">
+        <div className="flex justify-between items-center border-b border-black/10 dark:border-white/10 pb-3">
+          <h2 className="font-semibold text-sm text-stone-900 dark:text-stone-100">
+            Order Summary ({cart.reduce((s, i) => s + i.quantity, 0)}{' '}
+            {cart.reduce((s, i) => s + i.quantity, 0) === 1 ? 'item' : 'items'})
+          </h2>
+          <span className="font-bold text-base text-stone-900 dark:text-stone-100">
+            £{totalPrice.toFixed(2)}
+          </span>
+        </div>
+
+        <div className="divide-y divide-black/5 dark:divide-white/5 space-y-3">
+          {cart.map((item) => (
+            <div
+              key={item.variant.variantId}
+              className="flex justify-between items-start pt-3 first:pt-0 text-sm"
+            >
+              <div className="flex flex-col pr-4 min-w-0">
+                <span className="font-medium text-stone-900 dark:text-stone-100 truncate">
+                  {item.productName}
+                </span>
+
+                <div className="flex items-center gap-2 mt-0.5 text-xs text-stone-500 dark:text-stone-400">
+                  {item.roasterName && (
+                    <span className="font-medium text-amber-600 dark:text-amber-400">
+                      {item.roasterName}
+                    </span>
+                  )}
+                  {item.roasterName && <span>•</span>}
+                  {item.variant.size && <span>{item.variant.size}</span>}
+                  {item.variant.size && <span>•</span>}
+                  <span>Qty: {item.quantity}</span>
+                </div>
+              </div>
+
+              <span className="font-medium text-stone-900 dark:text-stone-100 whitespace-nowrap text-right">
+                £{((item.variant?.price ?? 0) * item.quantity).toFixed(2)}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 

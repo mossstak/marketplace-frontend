@@ -28,9 +28,9 @@ export function NewUploadPicker({ imageFiles, imageError, onFilesChange }: NewUp
 
   return (
     <div className="space-y-2">
-      <h4 className="font-semibold">Upload New Images</h4>
+      <h4 className="font-semibold text-foreground text-sm">Upload New Images</h4>
       <div className="flex flex-wrap items-center gap-3">
-        <label className="inline-flex cursor-pointer items-center rounded bg-white/20 px-3 py-2 text-sm">
+        <label className="inline-flex cursor-pointer items-center rounded-lg border border-border bg-muted hover:bg-muted/80 text-foreground px-3.5 py-2 text-xs font-semibold shadow-xs transition">
           Browse images
           <input
             type="file"
@@ -40,7 +40,7 @@ export function NewUploadPicker({ imageFiles, imageError, onFilesChange }: NewUp
             onChange={(e) => onFilesChange(Array.from(e.target.files ?? []))}
           />
         </label>
-        <span className="text-xs text-white/70">
+        <span className="text-xs text-muted-foreground">
           {imageFiles.length > 0
             ? `${imageFiles.length} file${imageFiles.length > 1 ? 's' : ''} selected`
             : 'No files selected'}
@@ -49,30 +49,30 @@ export function NewUploadPicker({ imageFiles, imageError, onFilesChange }: NewUp
 
       {imageFiles.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs text-white/70">Selected new files:</p>
+          <p className="text-xs font-medium text-muted-foreground">Selected new files:</p>
           <div className="grid gap-2 md:grid-cols-2">
             {imageFiles.map((file, index) => (
               <label
                 key={`${file.name}-${index}`}
-                className="flex items-center gap-2 rounded bg-white/5 p-2 text-xs"
+                className="flex items-center gap-2.5 rounded-lg border border-border bg-card p-2 text-xs text-foreground shadow-2xs"
               >
                 {previews[index] && (
                   <Image
                     src={previews[index]}
                     alt={file.name}
-                    className="h-10 w-10 rounded object-cover border border-white/10 shrink-0"
+                    className="h-10 w-10 rounded-md object-cover border border-border shrink-0"
                     width={40}
                     height={40}
                   />
                 )}
-                <span className="truncate">{file.name}</span>
+                <span className="truncate font-medium">{file.name}</span>
               </label>
             ))}
           </div>
         </div>
       )}
 
-      {imageError && <div className="text-sm text-red-300">{imageError}</div>}
+      {imageError && <div className="text-sm font-medium text-red-700 dark:text-red-400">{imageError}</div>}
     </div>
   )
 }

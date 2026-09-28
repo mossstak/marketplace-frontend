@@ -86,34 +86,31 @@ const Hero = () => {
     : '/roaster'
 
   return (
-    <section className="bg-background text-foreground transition-colors duration-200">
+    <section className="bg-secondary text-foreground transition-colors duration-200">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-24">
         {/* Left Column: Heading & CTAs */}
         <div>
-          {/* #582424 for headline in light mode, soft warm linen in dark mode */}
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#582424] dark:text-[#FAF7F2] leading-[1.08]">
+          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-primary dark:text-foreground leading-[1.08]">
             Find your next <br className="hidden sm:inline" />
             favourite coffee.
           </h1>
 
-          <p className="mt-5 max-w-lg text-base sm:text-lg leading-relaxed text-[#5c4d46] dark:text-muted-foreground font-normal">
+          <p className="mt-5 max-w-lg text-base sm:text-lg leading-relaxed text-muted-foreground font-normal">
             Browse independent roasters, discover artisan micro-lots, and order
             beans freshly roasted to order.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
-            {/* Primary Button: Solid Oxblood with light parchment text */}
             <Link
               href="/roaster"
-              className="inline-flex items-center justify-center rounded-xl border-l-2 border-[#d8cdc2] bg-[#faf7f2] text-[#2b211e] dark:text-gray-300 px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:bg-[#ede5df] hover:border-[#582424]/40 hover:text-[#582424] dark:hover:text-white hover:shadow-md active:scale-98"
+              className="inline-flex items-center justify-center rounded-xl border border-border bg-card text-foreground px-6 py-3.5 text-sm font-medium tracking-wide shadow-xs transition-all hover:bg-muted hover:border-primary/40 hover:text-primary dark:hover:text-foreground hover:shadow-sm active:scale-98"
             >
               Explore roasters
             </Link>
 
-            {/* Secondary Button: Clean border and surface against the oat background */}
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center rounded-xl border-l-2 border-[#d8cdc2] bg-[#faf7f2] text-[#2b211e] dark:text-gray-300 px-6 py-3.5 text-sm font-medium tracking-wide shadow-sm transition-all hover:bg-[#ede5df] hover:border-[#582424]/40 hover:text-[#582424] dark:hover:text-white hover:shadow-md active:scale-98"
+              className="inline-flex items-center justify-center rounded-xl border border-border bg-card text-foreground px-6 py-3.5 text-sm font-medium tracking-wide shadow-xs transition-all hover:bg-muted hover:border-primary/40 hover:text-primary dark:hover:text-foreground hover:shadow-sm active:scale-98"
             >
               View All Products
             </Link>
@@ -125,7 +122,7 @@ const Hero = () => {
           <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-lg dark:shadow-2xl sm:p-6 transition-colors">
             {/* Top Bar / Badging */}
             <div className="mb-4 flex items-center justify-between border-b border-border/80 pb-3">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#b05d33] dark:text-amber-300 uppercase">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-amber-700 dark:text-amber-400 uppercase">
                 ☕ Coffee of the Week
               </span>
               <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
@@ -166,7 +163,7 @@ const Hero = () => {
                     {/* Roaster Tag & Link */}
                     <Link
                       href={roasterLink}
-                      className="group inline-flex items-center gap-1.5 text-xs font-semibold text-[#8b4513] dark:text-amber-300 transition hover:underline"
+                      className="group inline-flex items-center gap-1.5 text-xs font-semibold text-amber-800 dark:text-amber-400 transition hover:underline"
                     >
                       <Store className="h-3.5 w-3.5" />
                       <span>Roasted by {roasterName}</span>
@@ -187,7 +184,7 @@ const Hero = () => {
 
                   {/* Price */}
                   <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-black text-[#582424] dark:text-amber-300">
+                    <span className="text-2xl font-black text-primary dark:text-amber-400">
                       £
                       {Number(
                         (featuredProduct as any)?.variants?.[0]?.price ??
@@ -255,7 +252,7 @@ const Hero = () => {
                               1,
                             )
                           }}
-                          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#582424] dark:bg-amber-400 px-4 py-2.5 text-xs font-bold text-white dark:text-zinc-950 shadow-sm transition hover:bg-[#441a1a] dark:hover:bg-amber-300 cursor-pointer"
+                          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 px-4 py-2.5 text-xs font-bold text-primary-foreground shadow-xs transition cursor-pointer"
                         >
                           <ShoppingBag className="h-4 w-4" /> Quick Add
                         </button>

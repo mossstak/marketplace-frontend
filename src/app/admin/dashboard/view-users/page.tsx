@@ -141,6 +141,7 @@ export default function ViewUsersPage() {
                 <tr className="border-b border-gray-700/60 text-gray-400 bg-gray-900/20">
                   <th className="py-3 pl-6 pr-4 font-semibold">Name</th>
                   <th className="py-3 px-4 font-semibold">Email</th>
+                  <th className="py-3 px-4 font-semibold">Company</th>
                   <th className="py-3 px-4 font-semibold">Roles</th>
                   <th className="py-3 pl-4 pr-6 font-semibold text-right">
                     Actions
@@ -159,12 +160,13 @@ export default function ViewUsersPage() {
                   ) : (
                     <tr
                       key={u.id}
-                      className="hover:bg-white/[0.02] transition-colors"
+                      className="hover:bg-white/2 transition-colors"
                     >
                       <td className="py-3.5 pl-6 pr-4 font-medium text-white whitespace-nowrap">
                         {u.firstName} {u.lastName}
                       </td>
                       <td className="py-3.5 px-4 text-gray-300">{u.email}</td>
+                      <td className="py-3.5 px-4 text-gray-300">{u.companyName ?? '—'}</td>
                       <td className="py-3.5 px-4">
                         <div className="flex flex-wrap gap-1.5">
                           {u.roles && u.roles.length > 0 ? (

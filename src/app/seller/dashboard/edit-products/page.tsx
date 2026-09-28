@@ -4,17 +4,21 @@ import Link from 'next/link'
 
 export default function EditProductsPage() {
   return (
-    <div className="border p-6 rounded bg-white/10 max-w-2xl">
-      <h1 className="text-xl font-semibold mb-2">Edit Products</h1>
-      <p className="text-sm opacity-80 mb-4">
-        To edit an existing product, please select the product from your products list.
-      </p>
-      <Link
-        href="/seller/dashboard/view-products"
-        className="inline-block rounded bg-blue-600 px-4 py-2 text-sm text-white font-medium hover:bg-blue-700 transition"
-      >
-        View Products List
-      </Link>
+    <div className="border border-border p-6 rounded-2xl bg-card text-card-foreground shadow-xs max-w-2xl space-y-4">
+      <div>
+        <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1">Edit Products</h1>
+        <p className="text-sm text-muted-foreground">
+          To edit an existing product, please select the product from your products list.
+        </p>
+      </div>
+      <div>
+        <Link
+          href="/seller/dashboard/view-products"
+          className="inline-flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-5 py-2.5 text-sm shadow-xs transition"
+        >
+          View Products List
+        </Link>
+      </div>
     </div>
   )
 }

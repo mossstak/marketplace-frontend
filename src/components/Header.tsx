@@ -97,7 +97,7 @@ const Header = () => {
     pathname.startsWith('/seller') || pathname.startsWith('/roaster/dashboard')
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 bg-background border-b-[5px] border-[#441a1a]/75 dark:border-stone-400 shadow-sm transition-colors duration-200">
+    <nav className="sticky top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-xs transition-colors duration-200">
       {/* Main Navigation Bar */}
       <div className="flex items-center justify-between px-2.5 py-2.5 sm:p-4 max-w-7xl mx-auto">
         <Link
@@ -170,7 +170,7 @@ const Header = () => {
           >
             <LucideShoppingCart className="h-5 w-5" />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c27d38] text-[10px] font-bold text-white shadow-sm">
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-xs">
                 {cartCount}
               </span>
             )}

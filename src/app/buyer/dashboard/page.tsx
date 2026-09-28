@@ -7,36 +7,62 @@ import { getRole, isLoggedIn } from '@/auth/auth'
 import { api } from '@/api/api'
 import { type UserDetails } from '@/types/user'
 import Link from 'next/link'
-import { Package, ShoppingBag, Store, Sparkles, ArrowRight } from 'lucide-react'
+import { Package, ShoppingBag, Store, Sparkles, ArrowRight, Truck } from 'lucide-react'
 import BecomeRoasterModal from '@/components/BecomeRoasterModal'
 
 type OrderItemData = {
   id: number
   productVariantId: number
   productName?: string
+  companyName?: string
   size?: string
   quantity: number
   unitPrice: number
   subtotal: number
 }
 
-type OrderData = {
+type SubOrderData = {
   id: number
-  totalAmount: number
+  roasterId?: string
+  companyName?: string
   status: string | number
-  createdAt: string
+  subtotal: number
+  shippingCost?: number
+  totalAmount: number
+  trackingNumber?: string
+  carrier?: string
+  shippedAt?: string
+  deliveredAt?: string
   items: OrderItemData[]
 }
 
+type OrderData = {
+  id: number
+  totalAmount: number
+  subtotalAmount?: number
+  status: string | number
+  createdAt: string
+  paymentIntentId?: string
+  packagesCount?: number
+  subOrders?: SubOrderData[]
+  items?: OrderItemData[]
+  legacyItems?: OrderItemData[]
+}
+
 const formatOrderStatus = (status: string | number) => {
-  if (typeof status === 'string') return status
-  const statuses: Record<number, string> = {
-    1: 'Pending',
-    2: 'Paid',
-    3: 'Shipped',
-    4: 'Cancelled',
+  if (typeof status === 'string') {
+    return { label: status, color: 'bg-blue-500/15 text-blue-800 dark:text-blue-300 border-blue-500/30' }
   }
-  return statuses[status] ?? 'Unknown'
+  const statuses: Record<number, { label: string; color: string }> = {
+    1: { label: 'Pending', color: 'bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30' },
+    2: { label: 'Paid', color: 'bg-blue-500/15 text-blue-800 dark:text-blue-300 border-blue-500/30' },
+    3: { label: 'Shipped', color: 'bg-green-500/15 text-green-800 dark:text-green-300 border-green-500/30' },
+    4: { label: 'Cancelled', color: 'bg-red-500/15 text-red-800 dark:text-red-300 border-red-500/30' },
+    5: { label: 'Delivered', color: 'bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-500/30' },
+    6: { label: 'Refunded', color: 'bg-purple-500/15 text-purple-800 dark:text-purple-300 border-purple-500/30' },
+    7: { label: 'Partially Refunded', color: 'bg-violet-500/15 text-violet-800 dark:text-violet-300 border-violet-500/30' },
+  }
+  return statuses[status] ?? { label: 'Unknown', color: 'bg-muted text-muted-foreground border-border' }
 }
 
 export default function BuyerDashboard() {
@@ -49,16 +75,16 @@ export default function BuyerDashboard() {
 
   const handleCancelOrder = async (orderId: number) => {
     const confirmed = window.confirm(
-      'Are you sure you want to cancel this order? Stock will be restored.',
+      'Are you sure you want to cancel this package? Stock will be restored.',
     )
     if (!confirmed) return
 
     try {
       await api.delete(`/Order/delete/${orderId}`)
-      // Remove the cancelled order from UI state
-      setOrders((prev) => prev.filter((order) => order.id !== orderId))
+      const ordersRes = await api.get<OrderData[]>('/Order/mine')
+      setOrders(ordersRes.data ?? [])
     } catch (err: any) {
-      alert(err?.response?.data || 'Failed to cancel order.')
+      alert(err?.response?.data || 'Failed to cancel package.')
     }
   }
 
@@ -104,18 +130,18 @@ export default function BuyerDashboard() {
     <DashboardPage
       sidebar={
         <div className="space-y-2">
-          <p className="text-xs font-bold uppercase tracking-wider text-gray-300 px-2 py-1">
+          <p className="text-xs font-bold uppercase tracking-wider text-foreground px-2 py-1">
             Buyer Dashboard
           </p>
           <Link
             href="/buyer/dashboard"
-            className="block rounded-lg px-3 py-2 bg-white/20 font-bold text-white text-sm"
+            className="block rounded-lg px-3 py-2 bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 text-sm shadow-xs"
           >
             My Orders
           </Link>
           <Link
             href="/shop"
-            className="block rounded-lg px-3 py-2 bg-white/5 hover:bg-white/10 text-gray-200 text-sm transition"
+            className="block rounded-lg px-3 py-2 hover:bg-muted text-muted-foreground hover:text-foreground text-sm transition"
           >
             Explore Shop
           </Link>
@@ -123,14 +149,14 @@ export default function BuyerDashboard() {
             <button
               type="button"
               onClick={() => setShowBecomeRoasterModal(true)}
-              className="w-full text-left rounded-lg px-3 py-2 bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 text-sm font-semibold transition flex items-center gap-1.5 cursor-pointer"
+              className="w-full text-left rounded-lg px-3 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 text-sm font-semibold transition flex items-center gap-1.5 cursor-pointer"
             >
               <Sparkles className="h-3.5 w-3.5" /> Become a Roaster
             </button>
           )}
           <Link
             href="/settings"
-            className="block rounded-lg px-3 py-2 bg-white/5 hover:bg-white/10 text-gray-200 text-sm transition"
+            className="block rounded-lg px-3 py-2 hover:bg-muted text-muted-foreground hover:text-foreground text-sm transition"
           >
             Account Settings
           </Link>
@@ -139,11 +165,11 @@ export default function BuyerDashboard() {
     >
       <div className="space-y-6">
         {/* Welcome Banner */}
-        <div className="bg-gray-800/80 border border-gray-700/80 p-6 sm:p-8 rounded-2xl shadow-lg">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
+        <div className="bg-card text-card-foreground border border-border p-6 sm:p-8 rounded-2xl shadow-xs">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
             Welcome back{details?.firstName ? `, ${details.firstName}` : ''}!
           </h1>
-          <p className="text-sm sm:text-base text-gray-300 mt-1">
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Track your artisan coffee orders and view your purchase history.
           </p>
         </div>
@@ -160,7 +186,9 @@ export default function BuyerDashboard() {
                   Become a Roaster on Roaster&apos;s Market
                 </h2>
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  Turn your coffee craft into a business. Set up your roastery storefront, sell signature bags directly to customers, and configure instant payouts with Stripe Express.
+                  Turn your coffee craft into a business. Set up your roastery
+                  storefront, sell signature bags directly to customers, and
+                  configure instant payouts with Stripe Express.
                 </p>
               </div>
 
@@ -184,108 +212,213 @@ export default function BuyerDashboard() {
         )}
 
         {/* Orders Section */}
-        <div className="bg-gray-800/80 border border-gray-700/80 p-6 sm:p-8 rounded-2xl shadow-lg space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-700">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Package className="h-5 w-5 text-amber-400" /> My Orders (
+        <div className="bg-card text-card-foreground border border-border p-6 sm:p-8 rounded-2xl shadow-xs space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <Package className="h-5 w-5 text-amber-500" /> My Orders (
               {orders.length})
             </h2>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-300 hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:underline"
             >
               <ShoppingBag className="h-3.5 w-3.5" /> Order More
             </Link>
           </div>
 
           {loading ? (
-            <p className="text-sm text-gray-300 py-4">Loading your orders...</p>
+            <p className="text-sm text-muted-foreground py-4">Loading your orders...</p>
           ) : error ? (
-            <p className="text-sm text-red-400 py-4">{error}</p>
+            <p className="text-sm text-red-700 dark:text-red-400 font-medium py-4">{error}</p>
           ) : orders.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-300 text-sm mb-4">
+              <p className="text-muted-foreground text-sm mb-4">
                 You haven&apos;t placed any orders yet.
               </p>
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-gray-100 transition"
+                className="inline-flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition"
               >
                 Browse Shop
               </Link>
             </div>
           ) : (
-            <div className="space-y-4 ">
-              {orders.map((order) => (
-                <div
-                  key={order.id}
-                  className="rounded-xl border border-gray-700 bg-gray-900/60 p-4 sm:p-5 text-sm space-y-3"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-700/60 pb-3">
-                    <div>
-                      <span className="font-semibold text-white">
-                        Order #{order.id}
-                      </span>
-                      <span className="text-xs text-gray-400 ml-2">
-                        {order.createdAt
-                          ? new Date(order.createdAt).toLocaleDateString()
-                          : ''}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                        {formatOrderStatus(order.status)}
-                      </span>
-                      <span className="font-bold text-amber-300 text-base">
-                        £{Number(order.totalAmount ?? 0).toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
+            <div className="space-y-6">
+              {orders.map((order) => {
+                const parentStatusInfo = formatOrderStatus(order.status)
+                const packages: SubOrderData[] =
+                  order.subOrders && order.subOrders.length > 0
+                    ? order.subOrders
+                    : [
+                        {
+                          id: order.id,
+                          roasterId: undefined,
+                          companyName:
+                            order.items?.[0]?.companyName || 'Artisan Roaster',
+                          status: order.status,
+                          subtotal: order.subtotalAmount ?? order.totalAmount,
+                          totalAmount: order.totalAmount,
+                          items: order.items ?? [],
+                        },
+                      ]
 
-                  <div className="space-y-1.5 pt-1">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                      Items ({order.items?.length ?? 0}):
-                    </p>
-                    <div className="flex flex-col gap-2 w-full">
-                      {(order.items ?? []).map((item) => (
-                        <div
-                          key={item.id}
-                          className="flex justify-between items-center text-xs bg-gray-800/60 px-4 py-2.5 rounded-lg border border-gray-700/40 w-full"
+                return (
+                  <div
+                    key={order.id}
+                    className="rounded-2xl border border-border bg-card text-card-foreground p-5 sm:p-6 shadow-xs space-y-4"
+                  >
+                    {/* Checkout Session Container Header */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <span className="font-bold text-foreground text-base">
+                          Order #{order.id}
+                        </span>
+                        <span className="text-muted-foreground text-xs">•</span>
+                        <span className="text-xs text-muted-foreground">
+                          Placed on{' '}
+                          {order.createdAt
+                            ? new Date(order.createdAt).toLocaleDateString(
+                                'en-GB',
+                                {
+                                  day: 'numeric',
+                                  month: 'short',
+                                  year: 'numeric',
+                                },
+                              )
+                            : ''}
+                        </span>
+                        <span className="text-muted-foreground text-xs">•</span>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-900 dark:text-amber-200 border border-amber-500/30">
+                          <Package className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                          {packages.length}{' '}
+                          {packages.length === 1 ? 'Package' : 'Packages'}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${parentStatusInfo.color}`}
                         >
-                          <div className="flex flex-col truncate pr-4">
-                            <span className="text-gray-200 font-medium truncate">
-                              {item.productName ??
-                                `Variant #${item.productVariantId}`}
-                            </span>
-                            <span className="text-gray-400 text-[11px]">
-                              {item.size ? `Size: ${item.size} • ` : ''}Qty:{' '}
-                              {item.quantity}
-                            </span>
-                          </div>
-                          <span className="font-semibold text-white whitespace-nowrap text-sm">
-                            £
-                            {Number(
-                              item.subtotal ?? item.unitPrice * item.quantity,
-                            ).toFixed(2)}
-                          </span>
+                          {parentStatusInfo.label}
+                        </span>
+                        <span className="font-bold text-foreground text-base">
+                          Total: £{Number(order.totalAmount ?? 0).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
 
-                          {/* Allow buyer to cancel if pending */}
-                          {(order.status === 1 ||
-                            order.status === 'Pending') && (
-                            <button
-                              type="button"
-                              onClick={() => handleCancelOrder(order.id)}
-                              className="text-xs px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg transition cursor-pointer"
-                            >
-                              Cancel Order
-                            </button>
-                          )}
-                        </div>
-                      ))}
+                    {/* Sub-Packages Nested Inside Checkout Container */}
+                    <div className="space-y-3">
+                      {packages.map((pkg, idx) => {
+                        const pkgStatusInfo = formatOrderStatus(pkg.status)
+                        const isPending =
+                          pkg.status === 1 || pkg.status === 'Pending'
+
+                        return (
+                          <div
+                            key={pkg.id || idx}
+                            className="rounded-xl border border-border bg-muted/20 p-4 sm:p-5 space-y-3 transition hover:border-amber-500/40"
+                          >
+                            {/* Roaster / Package Header */}
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+                              <div className="flex items-center gap-2">
+                                <Store className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                                <span className="font-semibold text-foreground text-sm">
+                                  {pkg.companyName || 'Artisan Roaster'}
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                  (Package #{pkg.id})
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span
+                                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${pkgStatusInfo.color}`}
+                                >
+                                  {pkgStatusInfo.label}
+                                </span>
+                                <span className="font-semibold text-foreground text-sm">
+                                  £
+                                  {Number(
+                                    pkg.totalAmount ?? pkg.subtotal ?? 0,
+                                  ).toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Tracking Information Banner if Shipped */}
+                            {(pkg.trackingNumber || pkg.carrier) && (
+                              <div className="flex flex-wrap items-center gap-2 text-xs bg-amber-500/10 border border-amber-500/20 px-3 py-2 rounded-xl text-amber-950 dark:text-amber-200">
+                                <Truck className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                                <span className="font-medium">
+                                  Shipped via {pkg.carrier || 'Standard Carrier'}
+                                </span>
+                                {pkg.trackingNumber && (
+                                  <span className="font-mono bg-amber-500/20 px-2 py-0.5 rounded text-foreground font-semibold">
+                                    Tracking: {pkg.trackingNumber}
+                                  </span>
+                                )}
+                                {pkg.shippedAt && (
+                                  <span className="text-muted-foreground ml-auto">
+                                    Shipped on{' '}
+                                    {new Date(
+                                      pkg.shippedAt,
+                                    ).toLocaleDateString()}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Items in this specific Roaster Package */}
+                            <div className="space-y-1.5">
+                              <div className="flex flex-col gap-2 w-full">
+                                {(pkg.items ?? []).map((item) => (
+                                  <div
+                                    key={item.id}
+                                    className="flex justify-between items-center text-xs bg-muted/40 px-4 py-2.5 rounded-xl border border-border w-full"
+                                  >
+                                    <div className="flex flex-col min-w-0 pr-4">
+                                      <span className="text-foreground font-medium truncate">
+                                        {item.productName ??
+                                          `Variant #${item.productVariantId}`}
+                                      </span>
+                                      <span className="text-muted-foreground text-[11px]">
+                                        {item.size
+                                          ? `Size: ${item.size} • `
+                                          : ''}
+                                        Qty: {item.quantity}
+                                      </span>
+                                    </div>
+                                    <span className="font-semibold text-foreground whitespace-nowrap text-sm text-right min-w-[70px]">
+                                      £
+                                      {Number(
+                                        item.subtotal ??
+                                          item.unitPrice * item.quantity,
+                                      ).toFixed(2)}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Cancel Package Action (Only available if this package is Pending) */}
+                            {isPending && (
+                              <div className="flex justify-end pt-1">
+                                <button
+                                  type="button"
+                                  onClick={() => handleCancelOrder(pkg.id)}
+                                  className="text-xs px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/30 rounded-lg transition cursor-pointer font-medium"
+                                >
+                                  Cancel Package
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>

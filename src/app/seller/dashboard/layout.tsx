@@ -18,7 +18,9 @@ export default function SellerDashboardLayout({
 }) {
   const router = useRouter()
   const pathname = usePathname()
-  const [profileStatus, setProfileStatus] = useState<string | number | null>(null)
+  const [profileStatus, setProfileStatus] = useState<string | number | null>(
+    null,
+  )
   const authSnapshot = useMemo(() => {
     const loggedIn = isLoggedIn()
     return {
@@ -47,7 +49,8 @@ export default function SellerDashboardLayout({
 
   useEffect(() => {
     if (!isSeller) return
-    api.get<RoasterDetails>('/RoasterProfile/me')
+    api
+      .get<RoasterDetails>('/RoasterProfile/me')
       .then((res) => {
         if (res.data?.approvalStatus !== undefined) {
           setProfileStatus(res.data.approvalStatus)
@@ -56,7 +59,10 @@ export default function SellerDashboardLayout({
       .catch(() => {})
   }, [isSeller, pathname])
 
-  const isPending = profileStatus === 'Pending' || profileStatus === 0 || profileStatus === 'pending'
+  const isPending =
+    profileStatus === 'Pending' ||
+    profileStatus === 0 ||
+    profileStatus === 'pending'
 
   if (!isSeller) return <div className="p-6">Loading dashboard...</div>
 
@@ -71,8 +77,8 @@ export default function SellerDashboardLayout({
               href="/seller/dashboard"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard'
-                  ? 'bg-white/20 font-bold text-white'
-                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+                  ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs'
+                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               Dashboard Overview
@@ -81,8 +87,8 @@ export default function SellerDashboardLayout({
               href="/seller/dashboard/create-products"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/create-products'
-                  ? 'bg-white/20 font-bold text-white'
-                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+                  ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs'
+                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               Create Products
@@ -91,8 +97,8 @@ export default function SellerDashboardLayout({
               href="/seller/dashboard/view-products"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/view-products'
-                  ? 'bg-white/20 font-bold text-white'
-                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+                  ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs'
+                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               View Products
@@ -102,8 +108,8 @@ export default function SellerDashboardLayout({
               href="/seller/dashboard/order"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/order'
-                  ? 'bg-white/20 font-bold text-white'
-                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+                  ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs'
+                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               Check Orders
@@ -113,8 +119,8 @@ export default function SellerDashboardLayout({
               href="/seller/dashboard/profile"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/profile'
-                  ? 'bg-white/20 font-bold text-white'
-                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+                  ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs'
+                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               Edit Profile
@@ -124,8 +130,8 @@ export default function SellerDashboardLayout({
               href="/seller/dashboard/payouts"
               className={`block rounded-lg px-3 py-2 text-sm transition ${
                 pathname === '/seller/dashboard/payouts'
-                  ? 'bg-white/20 font-bold text-white'
-                  : 'bg-white/5 hover:bg-white/10 text-gray-200'
+                  ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs'
+                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               Payouts & Stripe
@@ -141,7 +147,8 @@ export default function SellerDashboardLayout({
                 Your roaster profile is pending admin approval.
               </p>
               <p className="text-xs text-amber-300/80 mt-0.5">
-                Your storefront and listings remain private until reviewed and approved by an administrator.
+                Your storefront and listings remain private until reviewed and
+                approved by an administrator.
               </p>
             </div>
           </div>

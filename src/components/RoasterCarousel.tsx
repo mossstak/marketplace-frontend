@@ -66,33 +66,33 @@ export default function RoasterCarousel({
             <Link
               key={r.userId}
               href={`/roaster/${r.userId}__${slugify(r.companyName ?? 'Unknown-Roaster')}`}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-[#582424]/40 dark:hover:border-amber-400/40 hover:shadow-md"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
             >
               {/* Subtle warm glow on hover */}
-              <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-[#582424]/5 dark:bg-amber-400/10 blur-2xl transition-all duration-300 group-hover:scale-150" />
+              <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-primary/5 dark:bg-primary/10 blur-2xl transition-all duration-300 group-hover:scale-150" />
 
               <div className="relative flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4 min-w-0">
                   {/* Brand Monogram Badge */}
-                  <div className="relative flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-[#582424] text-lg font-serif font-bold text-[#FAF7F2] shadow-xs ring-2 ring-[#582424]/10 dark:bg-[#2e2320] dark:text-amber-300 dark:ring-border">
+                  <div className="relative flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-primary text-lg font-serif font-bold text-primary-foreground shadow-xs ring-2 ring-primary/10 dark:ring-border">
                     {(r.companyName?.[0] ?? 'R').toUpperCase()}
                   </div>
 
                   {/* Roaster Info */}
                   <div className="min-w-0">
-                    <h3 className="truncate font-semibold tracking-tight text-foreground group-hover:text-[#582424] dark:group-hover:text-amber-300 transition-colors">
+                    <h3 className="truncate font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
                       {r.companyName ?? 'Unnamed Roaster'}
                     </h3>
                     <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
                       <span>Single Origin</span>
                       <span>&bull;</span>
-                      <span className="text-[#8b4513] dark:text-amber-400/90 font-medium">Micro-lot</span>
+                      <span className="text-amber-700 dark:text-amber-400 font-medium">Micro-lot</span>
                     </p>
                   </div>
                 </div>
 
                 {/* Corner link arrow on hover */}
-                <div className="shrink-0 p-1.5 rounded-full text-muted-foreground/40 group-hover:text-[#582424] dark:group-hover:text-amber-300 group-hover:bg-muted/80 transition-all">
+                <div className="shrink-0 p-1.5 rounded-full text-muted-foreground/40 group-hover:text-primary group-hover:bg-muted/80 transition-all">
                   <ArrowUpRight className="h-4 w-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </div>

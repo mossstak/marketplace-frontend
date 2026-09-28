@@ -51,94 +51,93 @@
 :root {
   --radius: 0.625rem;
 
-  /* Low-glare Warm Oat canvas */
-  --background: #f2ece4; 
-  --foreground: #231a17;
+  /* Clean, crisp canvas */
+  --background: #ffffff; 
+  --foreground: #18181b;
 
-  /* Elevated Crema surfaces */
-  --card: #faf7f2;
-  --card-foreground: #231a17;
-  --popover: #f3efea;
-  --popover-foreground: #2b211e;
+  /* Elevated card surfaces */
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
 
-  /* Brand Accents */
-  --primary: #582424; /* Deep Oxblood / Cherry roast */
-  --primary-foreground: #faf7f2;
-  --secondary: #ded6cd;
-  --secondary-foreground: #2b211e;
-  --muted: #e6ded3;
-  --muted-foreground: #706259;
-  --accent: #c48b58; /* Warm Amber */
-  --accent-foreground: #2b211e;
-  --destructive: #9e2a2b;
+  /* Brand Accents - Rich Artisan Coffee Roast */
+  --primary: #3c1e14; /* Deep espresso roast */
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f4; /* Clean warm off-white */
+  --secondary-foreground: #18181b;
+  --muted: #f5f5f4;
+  --muted-foreground: #57534e; /* High contrast stone-600 */
+  --accent: #f5f5f4;
+  --accent-foreground: #18181b;
+  --destructive: #dc2626;
 
-  /* Subtle Warm Dividers */
-  --border: #d8cdc2;
-  --input: #d8cdc2;
-  --ring: #582424;
+  /* Crisp dividers & inputs */
+  --border: #e7e5e4;
+  --input: #e7e5e4;
+  --ring: #78350f;
 
   /* Charts */
-  --chart-1: #582424;
-  --chart-2: #c48b58;
-  --chart-3: #8a9a5b;
-  --chart-4: #8b6248;
-  --chart-5: #4a3528;
+  --chart-1: #78350f;
+  --chart-2: #b45309;
+  --chart-3: #15803d;
+  --chart-4: #a16207;
+  --chart-5: #3c1e14;
 
   /* Sidebar */
-  --sidebar: #e3dbd3;
-  --sidebar-foreground: #2b211e;
-  --sidebar-primary: #582424;
-  --sidebar-primary-foreground: #faf7f2;
-  --sidebar-accent: #ded6cd;
-  --sidebar-accent-foreground: #2b211e;
-  --sidebar-border: #d8cdc2;
-  --sidebar-ring: #582424;
+  --sidebar: #fafaf9;
+  --sidebar-foreground: #18181b;
+  --sidebar-primary: #3c1e14;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f5f5f4;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: #e7e5e4;
+  --sidebar-ring: #78350f;
 }
 
 .dark {
-  /* Warm Dark Espresso - zero pure black halation */
-  --background: #1c1715;
-  --foreground: #e8dfd8;
+  /* Rich deep dark roast canvas */
+  --background: #12100e;
+  --foreground: #fafaf9;
 
   /* Roasted Bean surfaces */
-  --card: #251f1c;
-  --card-foreground: #e8dfd8;
-  --popover: #251f1c;
-  --popover-foreground: #e8dfd8;
+  --card: #1c1917;
+  --card-foreground: #fafaf9;
+  --popover: #1c1917;
+  --popover-foreground: #fafaf9;
 
   /* Primary & Crema highlights */
-  --primary: #d48259; /* Toasted Caramel / Cinnamon */
-  --primary-foreground: #1c1715;
-  --secondary: #2f2723;
-  --secondary-foreground: #e8dfd8;
-  --muted: #2f2723;
-  --muted-foreground: #a3938b;
-  --border: #ddd4c8;
-  --accent: #582424; /* Oxblood container tint */
-  --accent-foreground: #e8dfd8;
-  --destructive: #cf4341;
+  --primary: #e08c4e; /* Warm golden toasted caramel */
+  --primary-foreground: #12100e;
+  --secondary: #292524;
+  --secondary-foreground: #fafaf9;
+  --muted: #292524;
+  --muted-foreground: #a8a29e; /* High contrast stone-400 */
+  --accent: #292524;
+  --accent-foreground: #fafaf9;
+  --destructive: #ef4444;
 
-  /* Low-strain boundaries */
-  --border: #352c28;
-  --input: #352c28;
-  --ring: #d48259;
+  /* Clean boundaries */
+  --border: #292524;
+  --input: #292524;
+  --ring: #e08c4e;
 
   /* Charts */
-  --chart-1: #d48259;
-  --chart-2: #c48b58;
-  --chart-3: #8a3b3b;
-  --chart-4: #a3938b;
-  --chart-5: #582424;
+  --chart-1: #e08c4e;
+  --chart-2: #f59e0b;
+  --chart-3: #4ade80;
+  --chart-4: #fbbf24;
+  --chart-5: #a8a29e;
 
   /* Sidebar */
-  --sidebar: #201a17;
-  --sidebar-foreground: #e8dfd8;
-  --sidebar-primary: #d48259;
-  --sidebar-primary-foreground: #1c1715;
-  --sidebar-accent: #2f2723;
-  --sidebar-accent-foreground: #e8dfd8;
-  --sidebar-border: #352c28;
-  --sidebar-ring: #d48259;
+  --sidebar: #181513;
+  --sidebar-foreground: #fafaf9;
+  --sidebar-primary: #e08c4e;
+  --sidebar-primary-foreground: #12100e;
+  --sidebar-accent: #292524;
+  --sidebar-accent-foreground: #fafaf9;
+  --sidebar-border: #292524;
+  --sidebar-ring: #e08c4e;
 }
 
 @layer base {

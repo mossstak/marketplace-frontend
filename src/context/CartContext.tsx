@@ -19,6 +19,7 @@ export type CartProduct = {
   weight?: string[]
   price?: string[]
   roasterProfileId?: number
+  roasterName?: string
   sellerId?: string
 }
 
@@ -32,6 +33,7 @@ export type CartItem = {
   productId: number
   productName: string
   roasterProfileId?: number
+  roasterName?: string
   sellerId?: string
   variant: SelectedVariant
   quantity: number

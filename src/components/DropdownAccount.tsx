@@ -109,7 +109,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
             alt={`${details.firstName || 'User'}'s avatar`}
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-600 to-[#441a1a] text-white flex items-center justify-center font-bold text-xs shadow-xs ring-1 ring-white/20">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-600 to-amber-900 text-white flex items-center justify-center font-bold text-xs shadow-xs ring-1 ring-white/20">
             {details.firstName?.[0]?.toUpperCase() || 'U'}
             {details.lastName?.[0]?.toUpperCase() || ''}
           </div>
@@ -125,13 +125,13 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-48 rounded-md border border-white/10 bg-zinc-900 p-2 shadow-lg"
+          className="absolute right-0 mt-2 w-48 rounded-xl border border-border bg-popover text-popover-foreground p-1.5 shadow-lg space-y-0.5"
         >
           {role === 'Seller' && (
             <Link
               href={pathname.startsWith('/seller') || pathname.startsWith('/roaster/dashboard') ? '/buyer/dashboard' : '/roaster/dashboard'}
               role="menuitem"
-              className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold bg-amber-400/15 text-amber-300 hover:bg-amber-400/25 mb-1 transition"
+              className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 hover:bg-amber-500/20 mb-1 transition"
               onClick={() => setOpen(false)}
             >
               <span>
@@ -145,7 +145,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
           <Link
             href={dashboardHref}
             role="menuitem"
-            className="block rounded-lg px-3 py-2 hover:bg-white/10 text-white"
+            className="block rounded-lg px-3 py-2 hover:bg-muted text-foreground transition text-xs font-medium"
             onClick={() => setOpen(false)}
           >
             Dashboard
@@ -154,7 +154,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
           <Link
             href="/settings"
             role="menuitem"
-            className="block rounded-lg px-3 py-2 hover:bg-white/10 text-white"
+            className="block rounded-lg px-3 py-2 hover:bg-muted text-foreground transition text-xs font-medium"
             onClick={() => setOpen(false)}
           >
             Settings
@@ -163,7 +163,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
           <Link
             href={dashboardHref}
             role="menuitem"
-            className="block rounded-lg px-3 py-2 hover:bg-white/10 text-white"
+            className="block rounded-lg px-3 py-2 hover:bg-muted text-foreground transition text-xs font-medium"
             onClick={() => setOpen(false)}
           >
             Orders
@@ -172,7 +172,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
           <button
             type="button"
             role="menuitem"
-            className="block w-full rounded-lg px-3 py-2 text-left hover:bg-white/10 text-white"
+            className="block w-full rounded-lg px-3 py-2 text-left hover:bg-muted text-destructive hover:text-destructive transition text-xs font-medium cursor-pointer"
             onClick={logout}
           >
             Logout

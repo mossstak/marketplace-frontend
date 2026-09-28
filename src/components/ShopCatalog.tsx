@@ -622,7 +622,7 @@ export default function ShopCatalog({
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#582424] dark:bg-amber-400 text-white dark:text-zinc-950 font-semibold px-4 py-2 text-xs transition hover:opacity-90 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-4 py-2 text-xs transition cursor-pointer shadow-xs"
           >
             <RotateCcw className="h-3.5 w-3.5" /> Reset All Filters
           </button>

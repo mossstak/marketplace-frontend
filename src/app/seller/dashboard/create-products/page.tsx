@@ -242,16 +242,18 @@ export default function Page () {
   }
 
   return (
-    <div className="border border-white/15 p-4 sm:p-6 rounded-xl bg-white/10 max-w-4xl">
-      <h1 className="font-semibold text-xl mb-1">Add Products</h1>
-      <p className="mb-4 text-sm text-gray-300">Add a product to your shopfront.</p>
+    <div className="border border-border p-4 sm:p-6 rounded-2xl bg-card text-card-foreground shadow-xs max-w-4xl space-y-6">
+      <div>
+        <h1 className="font-bold text-xl sm:text-2xl text-foreground mb-1">Add Products</h1>
+        <p className="text-sm text-muted-foreground">Add a product to your shopfront.</p>
+      </div>
 
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Product Name</span>
+      <form onSubmit={onSubmit} className="space-y-5">
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Product Name</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.productName}
               onChange={(e) =>
                 setForm((f) => ({ ...f, productName: e.target.value }))
@@ -261,10 +263,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Category</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Category</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               list="category-options"
               value={form.category}
               onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
@@ -281,10 +283,10 @@ export default function Page () {
           </label>
         </div>
 
-        <label className="flex flex-col gap-1">
-          <span className="text-sm">Product Description</span>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-xs font-semibold text-foreground">Product Description</span>
           <textarea
-            className="rounded bg-white/10 p-2"
+            className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
             rows={3}
             value={form.productDescription}
             onChange={(e) =>
@@ -294,11 +296,11 @@ export default function Page () {
           />
         </label>
 
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Roast Level</span>
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Roast Level</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.roastLevel}
               onChange={(e) => setForm((f) => ({ ...f, roastLevel: e.target.value }))}
               placeholder="Light"
@@ -306,10 +308,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Coffee Process</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Coffee Process</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.coffeeProcess}
               onChange={(e) =>
                 setForm((f) => ({ ...f, coffeeProcess: e.target.value }))
@@ -319,10 +321,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Origin</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Origin</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.origin}
               onChange={(e) => setForm((f) => ({ ...f, origin: e.target.value }))}
               placeholder="Ethiopia"
@@ -330,10 +332,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Region</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Region</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.region}
               onChange={(e) => setForm((f) => ({ ...f, region: e.target.value }))}
               placeholder="Sidamo"
@@ -341,10 +343,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Producer</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Producer</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.producer}
               onChange={(e) => setForm((f) => ({ ...f, producer: e.target.value }))}
               placeholder="Bekele Estate"
@@ -352,10 +354,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Varietal</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Varietal</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.varietal}
               onChange={(e) => setForm((f) => ({ ...f, varietal: e.target.value }))}
               placeholder="Heirloom"
@@ -363,10 +365,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Altitude (MASL)</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Altitude (MASL)</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               type="number"
               value={form.altitudeValue}
               onChange={(e) =>
@@ -378,11 +380,11 @@ export default function Page () {
           </label>
         </div>
 
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Tasting Notes</span>
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Tasting Notes</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               value={form.tastingNotes}
               onChange={(e) =>
                 setForm((f) => ({ ...f, tastingNotes: e.target.value }))
@@ -391,10 +393,10 @@ export default function Page () {
             />
           </label>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm">Roast Date</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-foreground">Roast Date</span>
             <input
-              className="rounded bg-white/10 p-2"
+              className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
               type="date"
               value={form.roastDate}
               onChange={(e) => setForm((f) => ({ ...f, roastDate: e.target.value }))}
@@ -403,55 +405,57 @@ export default function Page () {
           </label>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
-            <h4 className="font-semibold">Variants</h4>
+            <h4 className="font-semibold text-base text-foreground">Variants</h4>
             <button
               type="button"
-              className="rounded bg-white/20 px-3 py-1 text-sm"
+              className="rounded-lg border border-border bg-muted hover:bg-muted/80 text-foreground px-3.5 py-1.5 text-xs font-semibold transition cursor-pointer disabled:opacity-50"
               onClick={addVariant}
               disabled={variants.length >= 6}
             >
-              Add Variant
+              + Add Variant
             </button>
           </div>
 
-          {variants.map((variant, index) => (
-            <div key={index} className="grid gap-2 md:grid-cols-4">
-              <input
-                className="rounded bg-white/10 p-2"
-                placeholder="Size (250g)"
-                value={variant.size}
-                onChange={(e) => updateVariant(index, 'size', e.target.value)}
-              />
-              <input
-                className="rounded bg-white/10 p-2"
-                type="number"
-                step="0.01"
-                placeholder="Price"
-                value={variant.price}
-                onChange={(e) => updateVariant(index, 'price', e.target.value)}
-              />
-              <input
-                className="rounded bg-white/10 p-2"
-                type="number"
-                placeholder="Quantity"
-                value={variant.quantity}
-                onChange={(e) => updateVariant(index, 'quantity', e.target.value)}
-              />
-              <button
-                type="button"
-                className="rounded bg-red-500/60 px-3 py-2 text-sm"
-                onClick={() => removeVariant(index)}
-                disabled={variants.length === 1}
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+          <div className="space-y-2">
+            {variants.map((variant, index) => (
+              <div key={index} className="grid gap-2 md:grid-cols-4 items-center">
+                <input
+                  className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
+                  placeholder="Size (250g)"
+                  value={variant.size}
+                  onChange={(e) => updateVariant(index, 'size', e.target.value)}
+                />
+                <input
+                  className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
+                  type="number"
+                  step="0.01"
+                  placeholder="Price"
+                  value={variant.price}
+                  onChange={(e) => updateVariant(index, 'price', e.target.value)}
+                />
+                <input
+                  className="rounded-lg border border-input bg-background text-foreground px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
+                  type="number"
+                  placeholder="Quantity"
+                  value={variant.quantity}
+                  onChange={(e) => updateVariant(index, 'quantity', e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/30 px-3 py-2 text-xs font-semibold transition cursor-pointer disabled:opacity-50"
+                  onClick={() => removeVariant(index)}
+                  disabled={variants.length === 1}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="space-y-5 bg-gray-700/60 p-4 rounded-xl border border-white/10">
+        <div className="space-y-5 bg-muted/40 p-4 sm:p-5 rounded-2xl border border-border">
           <UploadedImageGallery
             uploadedImages={uploadedImages}
             selectedImageIds={selectedUploadedImageIds}
@@ -460,7 +464,7 @@ export default function Page () {
             onToggle={toggleUploadedImageSelection}
           />
 
-          <hr />
+          <hr className="border-border" />
 
           <NewUploadPicker
             imageFiles={imageFiles}
@@ -476,13 +480,21 @@ export default function Page () {
             onChange={setPrimaryImageChoice}
           />
 
-          <hr/>
-          {error && <div className="text-sm text-red-300">{error}</div>}
-          {success && <div className="text-sm text-green-300">{success}</div>}
+          <hr className="border-border" />
+          {error && (
+            <div className="p-3.5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400 text-sm font-medium">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="p-3.5 rounded-xl border border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400 text-sm font-medium">
+              {success}
+            </div>
+          )}
 
           <button
             type="submit"
-            className="rounded bg-white/30 px-4 py-2"
+            className="inline-flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-2.5 text-sm shadow-xs transition cursor-pointer disabled:opacity-50"
             disabled={saving || imageUploading}
           >
             {saving || imageUploading ? 'Saving...' : 'Save Product'}

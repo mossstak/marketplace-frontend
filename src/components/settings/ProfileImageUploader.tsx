@@ -158,7 +158,7 @@ export default function ProfileImageUploader({
                 sizes="112px"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-amber-600 via-amber-700 to-[#441a1a] text-white flex items-center justify-center font-bold text-3xl">
+              <div className="w-full h-full bg-gradient-to-br from-amber-600 via-amber-700 to-amber-950 text-white flex items-center justify-center font-bold text-3xl">
                 {initials}
               </div>
             )}
@@ -208,7 +208,7 @@ export default function ProfileImageUploader({
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading || deleting}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#582424] hover:bg-[#441a1a] dark:bg-amber-400 dark:hover:bg-amber-500 text-white dark:text-zinc-950 text-xs font-semibold shadow-xs transition cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-semibold shadow-xs transition cursor-pointer disabled:opacity-50"
             >
               {uploading ? (
                 <>

@@ -13,16 +13,16 @@ const DashboardPage = ({ sidebar, children }: DashboardPageProps) => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gray-700 text-white">
+    <div className="min-h-screen bg-secondary text-foreground">
       {/* Mobile Dashboard Sub-Header */}
-      <div className="md:hidden flex items-center justify-between bg-gray-800/90 px-4 py-2.5 border-b border-gray-600">
-        <span className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+      <div className="md:hidden flex items-center justify-between px-4 py-2.5 border-b border-border bg-card">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Dashboard Menu
         </span>
         <button
           type="button"
           onClick={() => setMobileNavOpen((prev) => !prev)}
-          className="flex items-center gap-1.5 text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-gray-200 transition font-medium"
+          className="flex items-center gap-1.5 text-xs bg-muted hover:bg-muted/80 px-3 py-1.5 rounded-lg text-foreground transition font-medium"
           aria-expanded={mobileNavOpen}
         >
           {mobileNavOpen ? (
@@ -39,7 +39,7 @@ const DashboardPage = ({ sidebar, children }: DashboardPageProps) => {
 
       {/* Mobile Dropdown Nav */}
       {mobileNavOpen && (
-        <div className="md:hidden bg-gray-800 border-b border-gray-600 p-4">
+        <div className="md:hidden bg-card border-b border-border p-4">
           <div onClick={() => setMobileNavOpen(false)}>
             {sidebar}
           </div>
@@ -48,7 +48,7 @@ const DashboardPage = ({ sidebar, children }: DashboardPageProps) => {
 
       <div className="flex flex-col md:flex-row min-h-screen">
         {/* Desktop Sticky Sidebar */}
-        <aside className="hidden md:block sticky top-0 h-screen w-64 shrink-0 bg-gray-600 p-4">
+        <aside className="hidden md:block sticky top-0 h-screen w-64 shrink-0 bg-card border-r border-border p-4">
           {sidebar}
         </aside>
 

@@ -20,5 +20,6 @@ export type AdminUser = {
   firstName: string
   lastName: string
   email: string
+  companyName?: string | null
   roles: string[]
 }

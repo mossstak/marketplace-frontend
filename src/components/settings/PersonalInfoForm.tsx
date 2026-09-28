@@ -369,7 +369,7 @@ export default function PersonalInfoForm({
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#582424] hover:bg-[#441a1a] dark:bg-amber-400 dark:hover:bg-amber-500 text-white dark:text-zinc-950 text-xs font-bold shadow-sm transition cursor-pointer disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold shadow-xs transition cursor-pointer disabled:opacity-50"
         >
           {saving ? (
             <>

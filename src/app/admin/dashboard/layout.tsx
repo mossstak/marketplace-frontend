@@ -42,15 +42,21 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
           <div className="space-y-1">
             <Link
               href="/admin/dashboard/view-users"
-              className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard/view-users' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
+              className={`block rounded-lg px-3 py-2 text-sm transition ${pathname === '/admin/dashboard/view-users' ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs' : 'hover:bg-muted text-muted-foreground hover:text-foreground'}`}
             >
               View Users
             </Link>
             <Link
               href="/admin/dashboard/verify-roasters"
-              className={`block rounded px-2 py-1 ${pathname === '/admin/dashboard/roasters' ? 'bg-white/20 font-bold' : 'bg-white/5'}`}
+              className={`block rounded-lg px-3 py-2 text-sm transition ${pathname === '/admin/dashboard/verify-roasters' ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs' : 'hover:bg-muted text-muted-foreground hover:text-foreground'}`}
             >
               Verify Roasters
+            </Link>
+            <Link
+              href="/admin/dashboard/orders"
+              className={`block rounded-lg px-3 py-2 text-sm transition ${pathname.startsWith('/admin/dashboard/orders') ? 'bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold border border-amber-500/30 shadow-xs' : 'hover:bg-muted text-muted-foreground hover:text-foreground'}`}
+            >
+              Orders & Refunds
             </Link>
           </div>
         }
