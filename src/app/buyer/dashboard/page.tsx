@@ -176,7 +176,7 @@ export default function BuyerDashboard() {
 
         {/* Become a Roaster Banner/Card (for accounts without a roaster profile) */}
         {!isRoaster && (
-          <div className="relative overflow-hidden rounded-2xl border border-amber-500/40 bg-gradient-to-r from-stone-900 via-amber-950/40 to-stone-900 p-6 sm:p-8 shadow-xl">
+          <div className="relative overflow-hidden rounded-2xl border border-amber-500/40 bg-linear-to-r from-stone-900 via-amber-950/40 to-stone-900 p-6 sm:p-8 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
               <div className="space-y-2 max-w-xl">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-400/20 text-amber-300 border border-amber-400/30">
@@ -388,7 +388,7 @@ export default function BuyerDashboard() {
                                         Qty: {item.quantity}
                                       </span>
                                     </div>
-                                    <span className="font-semibold text-foreground whitespace-nowrap text-sm text-right min-w-[70px]">
+                                    <span className="font-semibold text-foreground whitespace-nowrap text-sm text-right min-w-17.5">
                                       £
                                       {Number(
                                         item.subtotal ??

@@ -86,7 +86,7 @@ const Hero = () => {
     : '/roaster'
 
   return (
-    <section className="bg-secondary text-foreground transition-colors duration-200">
+    <section className="text-foreground transition-colors duration-200">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-24">
         {/* Left Column: Heading & CTAs */}
         <div>

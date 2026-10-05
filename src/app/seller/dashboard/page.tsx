@@ -76,7 +76,7 @@ export default function SellerDashboardPage() {
             width={300}
             height={300}
             alt="Profile Picture"
-            className="rounded-xl object-cover max-w-[180px] sm:max-w-[220px] w-full shadow-xs border border-border"
+            className="rounded-xl object-cover max-w-45 sm:max-w-55 w-full shadow-xs border border-border"
           />
         </div>
         <div>

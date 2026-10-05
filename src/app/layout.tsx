@@ -54,7 +54,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <CartProvider>
-            <main className="main">
+            <main className="main bg-secondary">
               <Header />
               {children}
             </main>
