@@ -15,6 +15,7 @@ export function useSellerImagePicker() {
   const [uploadedLoadError, setUploadedLoadError] = useState('')
   const [imageUploading, setImageUploading] = useState(false)
   const [imageError, setImageError] = useState('')
+  const [deletingImageId, setDeletingImageId] = useState<number | null>(null)
   const [primaryImageChoice, setPrimaryImageChoice] = useState<PrimaryImageChoice>('')
 
   useEffect(() => {
@@ -67,6 +68,31 @@ export function useSellerImagePicker() {
       return wasSelected ? prev.filter((id) => id !== imageId) : [...prev, imageId]
     })
   }
+const deleteUploadedImage = async (imageId: number) => {
+  const confirmed = window.confirm('Are you sure you want to delete this image?')
+  if (!confirmed) return
+
+  try {
+    setDeletingImageId(imageId)
+    
+    // Fix: Match the route to your seller images endpoint
+    await api.delete(`/seller/images/${imageId}`)
+
+    // Update local state ONLY if the API call succeeded
+    setUploadedImages((prev) => prev.filter((img) => img.id !== imageId))
+    setSelectedUploadedImageIds((prev) => prev.filter((id) => id !== imageId))
+
+    if (primaryImageChoice === `existing:${imageId}`) {
+      setPrimaryImageChoice('')
+    }
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : 'Failed to delete image.'
+    alert(message)
+  } finally {
+    setDeletingImageId(null)
+  }
+}
 
   const uploadSellerImage = async (file: File) => {
     setImageUploading(true)
@@ -182,10 +208,12 @@ export function useSellerImagePicker() {
     uploadedLoadError,
     imageUploading,
     imageError,
+    deletingImageId,
     primaryImageChoice,
     setPrimaryImageChoice,
     setNewImageFiles,
     toggleUploadedImageSelection,
+    deleteUploadedImage,
     prepareSubmissionImages,
     resetImagePicker,
   }

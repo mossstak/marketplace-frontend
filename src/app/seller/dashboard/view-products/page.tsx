@@ -64,7 +64,6 @@ export default function SellerProducts() {
             <tr>
               <th className="px-4 py-3 border-b border-border text-xs uppercase tracking-wider">Image</th>
               <th className="px-4 py-3 border-b border-border text-xs uppercase tracking-wider">Name</th>
-              <th className="px-4 py-3 border-b border-border text-xs uppercase tracking-wider">Category</th>
               <th className="px-4 py-3 border-b border-border text-xs uppercase tracking-wider">Variants</th>
               <th className="px-4 py-3 border-b border-border text-xs uppercase tracking-wider">Actions</th>
             </tr>
@@ -89,12 +88,8 @@ export default function SellerProducts() {
                   )}
                 </td>
 
-                <td className="px-4 py-3 font-medium text-foreground">
+                <td className="px-4 py-3 font-medium text-foreground text-center">
                   {product.productName}
-                </td>
-
-                <td className="px-4 py-3 text-muted-foreground">
-                  {product.category ?? '—'}
                 </td>
 
                 <td className="px-4 py-3">

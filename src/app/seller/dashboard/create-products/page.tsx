@@ -62,6 +62,8 @@ export default function Page () {
     toggleUploadedImageSelection,
     prepareSubmissionImages,
     resetImagePicker,
+    deleteUploadedImage,
+    deletingImageId,
   } = useSellerImagePicker()
 
   const normalizeCategory = (value: string) =>
@@ -461,7 +463,9 @@ export default function Page () {
             selectedImageIds={selectedUploadedImageIds}
             loading={loadingUploaded}
             error={uploadedLoadError}
+            deletingImageId={deletingImageId}
             onToggle={toggleUploadedImageSelection}
+            onDelete={deleteUploadedImage}
           />
 
           <hr className="border-border" />
