@@ -12,6 +12,7 @@ import {
   Search,
   LogOut,
   Coffee,
+  Newspaper,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState, Suspense } from 'react'
@@ -135,6 +136,14 @@ const Header = () => {
           >
             <span className="text-base font-medium text-foreground/90 hover:text-foreground">
               Roasters
+            </span>
+          </Link>
+          <Link
+            href="/blog"
+            className={buttonVariants({ variant: 'ghost' })}
+          >
+            <span className="text-base font-medium text-foreground/90 hover:text-foreground">
+              Blog
             </span>
           </Link>
           {mounted && loggedIn ? (
@@ -315,6 +324,14 @@ const Header = () => {
               >
                 <Store className="h-4 w-4 text-primary" />
                 <span>Explore Roasters</span>
+              </Link>
+              <Link
+                href="/blog"
+                className={`${buttonVariants({ variant: 'ghost' })} justify-start text-sm sm:text-base font-semibold py-2.5 px-3 rounded-lg hover:bg-muted flex items-center gap-2.5 text-foreground`}
+                onClick={() => setIsOpen(false)}
+              >
+                <Newspaper className="h-4 w-4 text-primary" />
+                <span>Blog</span>
               </Link>
 
               {mounted && loggedIn && (

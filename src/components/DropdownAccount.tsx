@@ -151,6 +151,17 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
             Dashboard
           </Link>
 
+          {role === 'Admin' && (
+            <Link
+              href="/admin/blog"
+              role="menuitem"
+              className="block rounded-lg px-3 py-2 hover:bg-muted text-foreground transition text-xs font-medium"
+              onClick={() => setOpen(false)}
+            >
+              Admin Blog
+            </Link>
+          )}
+
           <Link
             href="/settings"
             role="menuitem"
