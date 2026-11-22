@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/context/CartContext'
 import { api } from '@/api/api'
@@ -22,10 +22,34 @@ export default function CheckoutPage() {
     0,
   )
 
+  // Identifies what the payment intent is for. Equal carts produce equal signatures even when
+  // `cart` is a new array, so a re-render or Strict Mode's double effect run doesn't create a second intent.
+  const cartSignature = useMemo(
+    () =>
+      cart
+        .map(
+          (i) =>
+            `${i.variant?.variantId}:${i.quantity}:${i.variant?.price ?? 0}`,
+        )
+        .sort()
+        .join('|'),
+    [cart],
+  )
+
+  // Signature the current payment intent was created for. A ref survives Strict Mode's simulated remount.
+  const initializedSignatureRef = useRef<string | null>(null)
+
   useEffect(() => {
-    if (cart.length === 0) return
+    if (cart.length === 0) {
+      initializedSignatureRef.current = null
+      return
+    }
+    if (initializedSignatureRef.current === cartSignature) return
+    initializedSignatureRef.current = cartSignature
 
     const initPaymentIntent = async () => {
+      // True once the cart has changed since this request started; a newer request owns the state then
+      let stale = false
       try {
         setLoading(true)
         setError(null)
@@ -64,8 +88,6 @@ export default function CheckoutPage() {
           return
         }
 
-        const amountInMinorUnit = Math.round(totalPrice * 100)
-
         let customerEmail: string | undefined = undefined
         try {
           const userRes = await api.get('/User/me')
@@ -76,17 +98,32 @@ export default function CheckoutPage() {
           // Guest or unauthenticated
         }
 
+        // The server prices the cart from the database and always charges GBP, so no amount or currency is sent
         const res = await api.post('/api/StripeConnect/create-payment-intent', {
-          amountInMinorUnit,
-          currency: 'gbp',
           roasterProfileId,
           customerEmail: customerEmail || undefined,
+          items: cart.map((i) => ({
+            variantId: i.variant.variantId,
+            quantity: i.quantity,
+          })),
         })
+
+        // Ignore a response for a cart that has changed since this request started
+        if (initializedSignatureRef.current !== cartSignature) {
+          stale = true
+          return
+        }
 
         if (res.data?.clientSecret) {
           setClientSecret(res.data.clientSecret)
         }
       } catch (err: any) {
+        if (initializedSignatureRef.current !== cartSignature) {
+          stale = true
+          return
+        }
+        // Allow a retry for the same cart after a failure
+        initializedSignatureRef.current = null
         const backendError =
           err.response?.data?.message ||
           err.response?.data?.title ||
@@ -96,12 +133,12 @@ export default function CheckoutPage() {
         console.error('Payment intent error:', err.response?.data || err)
         setError(backendError)
       } finally {
-        setLoading(false)
+        if (!stale) setLoading(false)
       }
     }
 
     initPaymentIntent()
-  }, [cart, totalPrice])
+  }, [cart, cartSignature, totalPrice])
 
   const handlePaymentSuccess = async (paymentIntentId?: string) => {
     try {
@@ -126,9 +163,11 @@ export default function CheckoutPage() {
 
       clearCart()
       router.push('/buyer/dashboard')
-    } catch {
+    } catch (err: any) {
+      // The backend's message says whether the payment was refunded automatically
       setError(
-        'Payment was received, but we encountered an issue creating your order record.',
+        (typeof err.response?.data === 'string' && err.response.data) ||
+          'Payment was received, but we encountered an issue creating your order record.',
       )
     }
   }
