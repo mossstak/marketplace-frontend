@@ -109,7 +109,7 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
             alt={`${details.firstName || 'User'}'s avatar`}
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-600 to-amber-900 text-white flex items-center justify-center font-bold text-xs shadow-xs ring-1 ring-white/20">
+          <div className="w-8 h-8 rounded-full bg-linear-to-br from-amber-600 to-amber-900 text-white flex items-center justify-center font-bold text-xs shadow-xs ring-1 ring-white/20">
             {details.firstName?.[0]?.toUpperCase() || 'U'}
             {details.lastName?.[0]?.toUpperCase() || ''}
           </div>
