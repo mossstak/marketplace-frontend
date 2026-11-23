@@ -129,16 +129,33 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
         >
           {role === 'Seller' && (
             <Link
-              href={pathname.startsWith('/seller') || pathname.startsWith('/roaster/dashboard') ? '/buyer/dashboard' : '/roaster/dashboard'}
+              href={
+                pathname.startsWith('/seller') ||
+                pathname.startsWith('/roaster/dashboard')
+                  ? '/buyer/dashboard'
+                  : '/roaster/dashboard'
+              }
               role="menuitem"
               className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 hover:bg-amber-500/20 mb-1 transition"
               onClick={() => setOpen(false)}
             >
               <span>
-                {pathname.startsWith('/seller') || pathname.startsWith('/roaster/dashboard')
+                {pathname.startsWith('/seller') ||
+                pathname.startsWith('/roaster/dashboard')
                   ? '🛒 Buyer Dashboard'
                   : '☕ Roaster Dashboard'}
               </span>
+            </Link>
+          )}
+
+          {role === 'Admin' && (
+            <Link
+              href="/admin/blog"
+              role="menuitem"
+              className="block rounded-lg px-3 py-2 hover:bg-muted text-foreground transition text-xs font-medium"
+              onClick={() => setOpen(false)}
+            >
+              Blog Setting
             </Link>
           )}
 
@@ -151,17 +168,6 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
             Dashboard
           </Link>
 
-          {role === 'Admin' && (
-            <Link
-              href="/admin/blog"
-              role="menuitem"
-              className="block rounded-lg px-3 py-2 hover:bg-muted text-foreground transition text-xs font-medium"
-              onClick={() => setOpen(false)}
-            >
-              Admin Blog
-            </Link>
-          )}
-
           <Link
             href="/settings"
             role="menuitem"
@@ -169,15 +175,6 @@ const DropdownAccount = ({ logout }: DropdownAccountProps) => {
             onClick={() => setOpen(false)}
           >
             Settings
-          </Link>
-
-          <Link
-            href={dashboardHref}
-            role="menuitem"
-            className="block rounded-lg px-3 py-2 hover:bg-muted text-foreground transition text-xs font-medium"
-            onClick={() => setOpen(false)}
-          >
-            Orders
           </Link>
 
           <button

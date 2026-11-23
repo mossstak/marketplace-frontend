@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useCart, type CartProduct } from '@/context/CartContext'
+import { CustomSelect } from '@/components/CustomSelect'
 import { getUserId } from '@/auth/auth'
 
 type ProductDetailClientProps = {
@@ -25,7 +26,11 @@ export default function ProductDetailClient({
 
   useEffect(() => {
     const currentUserId = getUserId()
-    if (currentUserId && product.sellerId && currentUserId === product.sellerId) {
+    if (
+      currentUserId &&
+      product.sellerId &&
+      currentUserId === product.sellerId
+    ) {
       setIsOwner(true)
     }
   }, [product.sellerId])
@@ -42,7 +47,8 @@ export default function ProductDetailClient({
           <span>☕ You are the seller of this product</span>
         </div>
         <p className="text-xs text-stone-600 dark:text-stone-300">
-          You cannot purchase your own listing. You can manage inventory, pricing, and details in your seller dashboard.
+          You cannot purchase your own listing. You can manage inventory,
+          pricing, and details in your seller dashboard.
         </p>
         <Link
           href={`/seller/dashboard/edit-products/${product.id}`}
@@ -61,21 +67,17 @@ export default function ProductDetailClient({
           <label htmlFor="variant" className="text-sm font-medium">
             Size:
           </label>
-          <select
+
+          <CustomSelect
             id="variant"
-            className="rounded border border-black/30 bg-white/80 dark:bg-zinc-800 px-2.5 py-1.5 text-sm"
             value={selectedIndex}
-            onChange={(e) => setSelectedIndex(Number(e.target.value))}
-          >
-            {variants.map((variant, index) => (
-              <option
-                key={variant.id ?? `${variant.size}-${index}`}
-                value={index}
-              >
-                {variant.size}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => setSelectedIndex(val)}
+            options={variants.map((variant, index) => ({
+              value: index,
+              label: variant.size,
+            }))}
+          />
+
           <div className="text-sm font-semibold">
             Price:{' '}
             {selectedVariant?.price !== undefined
@@ -85,7 +87,7 @@ export default function ProductDetailClient({
         </div>
       )}
       <div className="flex flex-wrap items-center gap-3 pt-1">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 rounded-full border border-black/30 dark:border-zinc-700 bg-white/80 dark:bg-zinc-800 px-3.5 py-1.5 text-sm font-medium text-foreground shadow-2xs transition hover:border-black/50 dark:hover:border-zinc-500 cursor-pointer">
           <label htmlFor="quantity" className="text-sm font-medium">
             Quantity:
           </label>
@@ -95,7 +97,7 @@ export default function ProductDetailClient({
             min={1}
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
-            className="w-16 border border-black/30 bg-white/80 dark:bg-zinc-800 rounded px-2 py-1.5 text-sm"
+            className="w-16 text-right border-none border-black/30 bg-white/80 dark:bg-zinc-800 px-2 py-1.5 text-sm"
           />
         </div>
         <button

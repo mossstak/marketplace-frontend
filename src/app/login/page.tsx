@@ -97,9 +97,19 @@ const Login = () => {
             Forgot your password?{' '}
             <Link
               href="/forgot-password"
-              className="font-medium text-amber-600 dark:text-amber-400 hover:underline"
+              className="font-bold text-[12pt] text-amber-600 dark:text-amber-400 hover:underline"
             >
               Reset it here.
+            </Link>
+          </p>
+
+          <p className="text-center text-xs sm:text-sm text-stone-500 dark:text-stone-400 pt-2">
+            Don't have an account?{' '}
+            <Link
+              href="/register"
+              className="font-bold text-[12pt] text-amber-600 dark:text-amber-400 hover:underline"
+            >
+              Register Here
             </Link>
           </p>
         </form>

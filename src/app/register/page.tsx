@@ -233,9 +233,10 @@ export default function RegisterPage() {
 
           <p className="text-center text-xs sm:text-sm text-stone-500 dark:text-stone-400 pt-2">
             Already have an account?{' '}
+            <br/>
             <Link
               href="/login"
-              className="font-medium text-amber-600 dark:text-amber-400 hover:underline"
+              className="font-bold text-[12pt] text-amber-600 dark:text-amber-400 hover:underline"
             >
               Log in
             </Link>

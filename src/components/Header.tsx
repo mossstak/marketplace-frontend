@@ -13,6 +13,7 @@ import {
   LogOut,
   Coffee,
   Newspaper,
+  UserRound,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState, Suspense } from 'react'
@@ -138,10 +139,7 @@ const Header = () => {
               Roasters
             </span>
           </Link>
-          <Link
-            href="/blog"
-            className={buttonVariants({ variant: 'ghost' })}
-          >
+          <Link href="/blog" className={buttonVariants({ variant: 'ghost' })}>
             <span className="text-base font-medium text-foreground/90 hover:text-foreground">
               Blog
             </span>
@@ -149,24 +147,14 @@ const Header = () => {
           {mounted && loggedIn ? (
             <DropdownAccount logout={handleLogout} />
           ) : (
-            <>
-              <Link
-                href={registerpath()}
-                className={buttonVariants({ variant: 'ghost' })}
-              >
-                <span className="text-base font-medium text-foreground/90 hover:text-foreground">
-                  Register
-                </span>
-              </Link>
-              <Link
-                href={loginpath()}
-                className={buttonVariants({ variant: 'ghost' })}
-              >
-                <span className="text-base font-medium text-foreground/90 hover:text-foreground">
-                  Login
-                </span>
-              </Link>
-            </>
+            <Link
+              href={loginpath()}
+              className="p-2 border text-foreground/90 hover:text-foreground hover:bg-muted/60 rounded-md transition"
+              aria-label="Login"
+              title="Login"
+            >
+              <UserRound className="h-5 w-5" />
+            </Link>
           )}
           <ThemeSwticher />
 
@@ -368,20 +356,13 @@ const Header = () => {
 
               <div className="pt-3 mt-2 border-t border-border">
                 {!loggedIn ? (
-                  <div className="grid grid-cols-2 gap-2.5 pt-1">
+                  <div className="grid grid-cols-1 gap-2.5 pt-1">
                     <Link
                       href={loginpath()}
                       className={`${buttonVariants({ variant: 'outline' })} justify-center text-sm font-semibold py-2 rounded-lg border-border`}
                       onClick={() => setIsOpen(false)}
                     >
                       Login
-                    </Link>
-                    <Link
-                      href={registerpath()}
-                      className={`${buttonVariants({ variant: 'default' })} justify-center text-sm font-semibold py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90`}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Register
                     </Link>
                   </div>
                 ) : (
